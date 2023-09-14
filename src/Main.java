@@ -10,14 +10,16 @@ import java.util.concurrent.TimeUnit;
 
 public class Main extends JFrame implements KeyListener {
 
-    // Declare the components
-    private JLabel questionLabel;
-    private JLabel answerLabel;
-    private JLabel questionText;
-    private JLabel answerText;
-    private String[] AUFs = {" "," U "," U' "," U2 "};
-    private String[] inserts = {"R U R'","R U' R'","R U2 R'","R' F R F'","L' U L","L' U' L","L' U2 L","L F' L' F"};
-    private String[] rotations = {
+    private final JLabel questionText;
+    private final JLabel answerText;
+    private final String[] AUFs = {" "," U "," U' "," U2 "};
+    private final String[] inserts = {
+            "R U R'","R U' R'","R U2 R'","R' F R F'",
+            "L' U L","L' U' L","L' U2 L","L F' L' F",
+            "R' U R","R' U' R","R' U2 R",
+            "L U L'","L U' L'","L U2 L'"
+    };
+    private final String[] rotations = {
             "","y","y2","y'",
             "x","x y","x y2","x y'",
             "x'","x' y","x' y2","x' y'",
@@ -25,15 +27,7 @@ public class Main extends JFrame implements KeyListener {
             "z'","z' y","z' y2","z' y'",
             "z2","z2 y","z2 y2","z2 y'"
     };
-    private String[] rotationInverses = {
-            "","y'","y2","y",
-            "x'","y' x'","y2 x'","y x'",
-            "x","y' x","y2 x","y x",
-            "z'","y' z'","y2 z'","y z'",
-            "z","y' z","y2 z","y z",
-            "z2","y' z2","y2 z2","y z2",
-    };
-    private String[] ZBLLs = {
+    private final String[] ZBLLs = {
             "U' L' U2 L U L' U L R U2 R' U' R U' R'",//U 2GLL
             "U2 R U R' U R U2 R' U R U2 R' U' R U' R'",
             "U' R U R' U' R U' R' U2 R U' R' U2 R U R'",
@@ -49,13 +43,14 @@ public class Main extends JFrame implements KeyListener {
     };
     private int ZBLL;
     // Constructor to initialize the components, layout and arrays
-    public Main() throws IOException, InterruptedException {
+    public Main() {
         // Set the title of the window
         super("ZBLL trainer");
 
         // Create the components
-        questionLabel = new JLabel("Solution:");
-        answerLabel = new JLabel("Scramble:");
+        // Declare the components
+        JLabel questionLabel = new JLabel("Solution:");
+        JLabel answerLabel = new JLabel("Scramble:");
         questionText = new JLabel();
         answerText = new JLabel();
         questionText.setHorizontalAlignment(SwingConstants.LEFT);
@@ -130,23 +125,23 @@ public class Main extends JFrame implements KeyListener {
     }
 
     // Main method to create an instance of the window with some sample questions and answers
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) {
         // Create an instance of the window with these arrays as parameters
         new Main();
 
     }
 
     public String generateScramble (int ZBLL){
-        ProcessBuilder pb = new ProcessBuilder("nissy","twophase","R' U' F "+inserts[ThreadLocalRandom.current().nextInt(6)]+AUFs[ThreadLocalRandom.current().nextInt(4)]+ZBLLs[ZBLL]+AUFs[ThreadLocalRandom.current().nextInt(4)]+" R' U' F");
+        ProcessBuilder pb = new ProcessBuilder("nissy","twophase","R' U' F "+inserts[ThreadLocalRandom.current().nextInt(inserts.length)]+AUFs[ThreadLocalRandom.current().nextInt(AUFs.length)]+ZBLLs[ZBLL]+AUFs[ThreadLocalRandom.current().nextInt(AUFs.length)]+" R' U' F");
         pb.directory(new File("/Users/michaelvogel/Downloads/nissy-2.0.5"));
-        Process p = null;
+        Process p;
         try {
             p = pb.start();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
         InputStream is = p.getInputStream();
-        boolean finished = false;
+        boolean finished;
         try {
             finished = p.waitFor(1000, TimeUnit.SECONDS);
         } catch (InterruptedException ex) {
@@ -158,7 +153,7 @@ public class Main extends JFrame implements KeyListener {
             StringBuilder sb = new StringBuilder();
             while (true) {
                 try {
-                    if (!((line = br.readLine()) != null)) break;
+                    if ((line = br.readLine()) == null) break;
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -174,7 +169,7 @@ public class Main extends JFrame implements KeyListener {
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
-            return rotations[ThreadLocalRandom.current().nextInt(24)]+" R' U' F "+ sb +" R' U' F";
+            return rotations[ThreadLocalRandom.current().nextInt(rotations.length)]+" R' U' F "+ sb +" R' U' F";
         } else {
             return "took too long";
         }
