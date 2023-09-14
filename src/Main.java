@@ -2,6 +2,11 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
+import java.lang.ProcessBuilder;
+import java.lang.Process;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 public class Main extends JFrame implements KeyListener {
 
@@ -10,16 +15,41 @@ public class Main extends JFrame implements KeyListener {
     private JLabel answerLabel;
     private JLabel questionText;
     private JLabel answerText;
-
-    // Declare the arrays of questions and answers
-    private String[] questions;
-    private String[] answers;
-
-    // Declare a variable to keep track of the current index
-    private int index;
-
+    private String[] AUFs = {" "," U "," U' "," U2 "};
+    private String[] inserts = {"R U R'","R U' R'","R U2 R'","R' F R F'","L' U L","L' U' L","L' U2 L","L F' L' F"};
+    private String[] rotations = {
+            "","y","y2","y'",
+            "x","x y","x y2","x y'",
+            "x'","x' y","x' y2","x' y'",
+            "z","z y","z y2","z y'",
+            "z'","z' y","z' y2","z' y'",
+            "z2","z2 y","z2 y2","z2 y'"
+    };
+    private String[] rotationInverses = {
+            "","y'","y2","y",
+            "x'","y' x'","y2 x'","y x'",
+            "x","y' x","y2 x","y x",
+            "z'","y' z'","y2 z'","y z'",
+            "z","y' z","y2 z","y z",
+            "z2","y' z2","y2 z2","y z2",
+    };
+    private String[] ZBLLs = {
+            "U' L' U2 L U L' U L R U2 R' U' R U' R'",//U 2GLL
+            "U2 R U R' U R U2 R' U R U2 R' U' R U' R'",
+            "U' R U R' U' R U' R' U2 R U' R' U2 R U R'",
+            "U R U2 R' U' R U' R' U' R U R' U R U2 R'",
+            "U R' U2 R U R' U R U R' U' R U' R' U2 R",
+            "U R' U2 R2 U R2 U R U' R U R' U' R U' R'",
+            "U R U2 R2 U' R2 U' R' U R' U' R U R' U R",
+            "R' U' R U' R' U2 R2 U R' U R U2 R'",
+            "U2 R U R' U R U2 R2 U' R U' R' U2 R",
+            "x' R2 D2 R' U' R D2 R2 D R U R' D' x",
+            "U2 R U R' U R' U2 R2 U R2 U R2 U' R'",
+            "R' U' R U' R U2 R2 U' R2 U' R2 U R"
+    };
+    private int ZBLL;
     // Constructor to initialize the components, layout and arrays
-    public Main(String[] questions, String[] answers) {
+    public Main() throws IOException, InterruptedException {
         // Set the title of the window
         super("ZBLL trainer");
 
@@ -63,7 +93,7 @@ public class Main extends JFrame implements KeyListener {
         getContentPane().add(panel);
 
         // Set the size and location of the window
-        setSize(400, 200);
+        setSize(600, 200);
         setLocation(100, 100);
 
         // Set the default close operation of the window
@@ -72,16 +102,10 @@ public class Main extends JFrame implements KeyListener {
         // Make the window visible
         setVisible(true);
 
-        // Initialize the arrays of questions and answers with the parameters
-        this.questions = questions;
-        this.answers = answers;
-
-        // Initialize the index to zero
-        index = 0;
-
         // Display the first question and answer in the text labels
-        questionText.setText(questions[index]);
-        answerText.setText(answers[index]);
+        ZBLL = ThreadLocalRandom.current().nextInt(ZBLLs.length);
+        questionText.setText("");
+        answerText.setText(generateScramble(ZBLL));
 
         // Add an action listener to this window to handle keyboard events
         addKeyListener(this);
@@ -99,27 +123,60 @@ public class Main extends JFrame implements KeyListener {
 
     // Method to handle keyboard events when any button is typed
     public void keyTyped(KeyEvent e) {
-
-        // Increment the index by one and wrap around if it reaches the end of the array length
-        index = (index + 1) % questions.length;
-
-        // Display the next question and answer in the text labels
-        questionText.setText(questions[index]);
-        answerText.setText(answers[index]);
+        questionText.setText(ZBLLs[ZBLL]);
+        ZBLL = ThreadLocalRandom.current().nextInt(ZBLLs.length);
+        answerText.setText(generateScramble(ZBLL));
 
     }
 
     // Main method to create an instance of the window with some sample questions and answers
-    public static void main(String[] args) {
-
-        // Create an array of questions
-        String[] questions = {"asdf","asdff","What is the capital of Switzerland?", "What is 2 + 2?", "Who wrote Hamlet?"};
-
-        // Create an array of answers
-        String[] answers = {"asdffe","eofejf","Bern", "4", "William Shakespeare"};
-
+    public static void main(String[] args) throws IOException, InterruptedException {
         // Create an instance of the window with these arrays as parameters
-        new Main(questions, answers);
+        new Main();
 
+    }
+
+    public String generateScramble (int ZBLL){
+        ProcessBuilder pb = new ProcessBuilder("nissy","twophase","R' U' F "+inserts[ThreadLocalRandom.current().nextInt(6)]+AUFs[ThreadLocalRandom.current().nextInt(4)]+ZBLLs[ZBLL]+AUFs[ThreadLocalRandom.current().nextInt(4)]+" R' U' F");
+        pb.directory(new File("/Users/michaelvogel/Downloads/nissy-2.0.5"));
+        Process p = null;
+        try {
+            p = pb.start();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+        InputStream is = p.getInputStream();
+        boolean finished = false;
+        try {
+            finished = p.waitFor(1000, TimeUnit.SECONDS);
+        } catch (InterruptedException ex) {
+            throw new RuntimeException(ex);
+        }
+        if (finished) {
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            String line;
+            StringBuilder sb = new StringBuilder();
+            while (true) {
+                try {
+                    if (!((line = br.readLine()) != null)) break;
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                sb.append(line);
+            }
+            try {
+                is.close();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            try {
+                br.close();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            return rotations[ThreadLocalRandom.current().nextInt(24)]+" R' U' F "+ sb +" R' U' F";
+        } else {
+            return "took too long";
+        }
     }
 }
