@@ -30,6 +30,20 @@ public class Main extends JFrame implements KeyListener {
             "z2","z2 y","z2 y2","z2 y'"
     };
     private String[] ZBLLs = {
+            "R U R' L' U2 R U' R' U' R U' M' x'",//U diag
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+    };
+    private final String[] _2GLLs = {
             "U' L' U2 L U L' U L R U2 R' U' R U' R'",//U 2GLL
             "U2 R U R' U R U2 R' U R U2 R' U' R U' R'",
             "U' R U R' U' R U' R' U2 R U' R' U2 R U R'",
@@ -41,9 +55,7 @@ public class Main extends JFrame implements KeyListener {
             "U2 R U R' U R U2 R2 U' R U' R' U2 R",
             "R U R' U' R U' R U2 R2 U' R U R' U' R2 U' R2",
             "U2 R U R' U R' U2 R2 U R2 U R2 U' R'",
-            "R' U' R U' R U2 R2 U' R2 U' R2 U R"
-    };
-    private final String[] _2GLLs = {
+            "R' U' R U' R U2 R2 U' R2 U' R2 U R",
             "U' R U R' U R U2 R' L' U' L U' L' U2 L",//T 2GLL
             "U2 R U' R' U2 R U R' U2 R U R' U R U' R'",
             "U' R U R' U R U2 R' U' R U2 R' U' R U' R'",
