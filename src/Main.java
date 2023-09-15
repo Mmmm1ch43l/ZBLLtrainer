@@ -84,7 +84,7 @@ public class Main extends JFrame implements KeyListener {
             "U R U2 R' U' R U' R' U' R' U' R U' R' U2 R",
             "U R U2 R' U' R U R' U' R U' R'",
             "U R' U2 R U R' U' R U R' U R",
-            "R U R' U R U' R' U R U2 R",
+            "R U R' U R U' R' U R U2 R'",
             "R' U' R U' R' U R U' R' U2 R",
             "R U R' U R U' R' U R U' R' U R' U' R2 U' R' U R' U R",
             "R U R' U R U2 R' U' R' U2 R U R' U R"
