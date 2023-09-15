@@ -10,6 +10,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Main extends JFrame implements KeyListener {
 
+    private final boolean include2GLL = true;
+
     private final JLabel questionText;
     private final JLabel answerText;
     private final String[] AUFs = {" "," U "," U' "," U2 "};
@@ -27,7 +29,7 @@ public class Main extends JFrame implements KeyListener {
             "z'","z' y","z' y2","z' y'",
             "z2","z2 y","z2 y2","z2 y'"
     };
-    private final String[] ZBLLs = {
+    private String[] ZBLLs = {
             "U' L' U2 L U L' U L R U2 R' U' R U' R'",//U 2GLL
             "U2 R U R' U R U2 R' U R U2 R' U' R U' R'",
             "U' R U R' U' R U' R' U2 R U' R' U2 R U R'",
@@ -37,15 +39,69 @@ public class Main extends JFrame implements KeyListener {
             "U R U2 R2 U' R2 U' R' U R' U' R U R' U R",
             "R' U' R U' R' U2 R2 U R' U R U2 R'",
             "U2 R U R' U R U2 R2 U' R U' R' U2 R",
-            "x' R2 D2 R' U' R D2 R2 D R U R' D' x",
+            "R U R' U' R U' R U2 R2 U' R U R' U' R2 U' R2",
             "U2 R U R' U R' U2 R2 U R2 U R2 U' R'",
             "R' U' R U' R U2 R2 U' R2 U' R2 U R"
+    };
+    private final String[] _2GLLs = {
+            "U' R U R' U R U2 R' L' U' L U' L' U2 L",//T 2GLL
+            "U2 R U' R' U2 R U R' U2 R U R' U R U' R'",
+            "U' R U R' U R U2 R' U' R U2 R' U' R U' R'",
+            "R U2 R' U' R U' R' U R U R' U R U2 R'",
+            "U2 R' U2 R U R' U R U' R' U' R U' R' U2 R",
+            "U' R U R' U R U' R' U R' U' R2 U' R2 U2 R",
+            "U' R' U' R U' R' U R U' R U R2 U R2 U2 R'",
+            "R U2 R' U' R U' R2 U2 R U R' U R",
+            "U2 R' U2 R U R' U R2 U2 R' U' R U' R'",
+            "U2 R U' R' U2 R U R' U R' U' R U R U R' U' R' U R",
+            "U' R' U' R2 U R2 U R2 U2 R' U R' U R",
+            "U' R U R2 U' R2 U' R2 U2 R U' R U' R'",
+            "R U2 R' U2 R' U' R U R U' R' U2 R' U2 R",//L 2GLL
+            "U2 R U R' U R U2 R' U2 R U2 R' U' R U' R'",
+            "U2 R U2 R' U' R U' R' U R' U2 R U R' U R",
+            "U R' U2 R U R' U R U' R U2 R' U' R U' R'",
+            "U2 R U R' U R U2 R' U R' U' R U' R' U2 R",
+            "U R' U' R U' R' U2 R U' R U R' U R U2 R'",
+            "R2 U R' U R' U' R U' R' U' R U R U' R2",
+            "U2 R2 U' R U R U' R' U' R U' R' U R' U R2",
+            "U' R2 U' R U' R U R' U R U R' U' R' U R2",
+            "U R2 U R' U' R' U R U R' U R U' R U' R2",
+            "R U R' U R U' R' U R U' R' U R U2 R'",
+            "U2 R U2 R' U' R U' R' U2 R U R' U R U2 R'",
+            "R U R' U R U2 R' R' U2 R U R' U R",//Pi 2GLL
+            "R U2 R' U' R U' R' R' U' R U' R' U2 R",
+            "R U2 R' U' R U' R' U R U2 R' U' R U' R'",
+            "U' R' U' R U' R' U2 R U R' U' R U' R' U2 R",
+            "U2 R U2 R' U2 R U' R' U2 R U' R' U2 R U R'",
+            "R' U2 R U2 R' U R U2 R' U R U2 R' U' R",
+            "U R U' R' U2 R U R' U2 R U R' U2 R U2 R'",
+            "U R' U R U2 R' U' R U2 R' U' R U2 R' U2 R",
+            "U' R U2 R2 U' R2 U' R2 U2 R",
+            "U' R' U2 R2 U R2 U R2 U2 R'",
+            "U' R U2 R' U' R U' R' U' R U2 R' U' R U' R'",
+            "U' F R U R' U' R U R' U' F' R U R' U' M' U R U' Rw'",
+            "U R' U2 R U R' U R U R U R' U R U2 R'",//H 2GLL
+            "U R U2 R' U' R U' R' U' R' U' R U' R' U2 R",
+            "U R U2 R' U' R U R' U' R U' R'",
+            "U R' U2 R U R' U' R U R' U R",
+            "R U R' U R U' R' U R U2 R",
+            "R' U' R U' R' U R U' R' U2 R",
+            "R U R' U R U' R' U R U' R' U R' U' R2 U' R' U R' U R",
+            "R U R' U R U2 R' U' R' U2 R U R' U R"
     };
     private int ZBLL;
     // Constructor to initialize the components, layout and arrays
     public Main() {
         // Set the title of the window
         super("ZBLL trainer");
+
+
+        if(include2GLL){
+            String[] temp = new String[ZBLLs.length+_2GLLs.length];
+            System.arraycopy(ZBLLs, 0, temp, 0, ZBLLs.length);
+            System.arraycopy(_2GLLs, 0, temp, ZBLLs.length, _2GLLs.length);
+            ZBLLs = temp;
+        }
 
         // Create the components
         // Declare the components
