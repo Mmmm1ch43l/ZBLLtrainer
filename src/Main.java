@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Main extends JFrame implements KeyListener {
 
-    private final boolean include2GLL = true;
+    private final boolean include2GLL = false;
 
     private final JLabel questionText;
     private final JLabel answerText;
@@ -21,27 +21,43 @@ public class Main extends JFrame implements KeyListener {
             "R' U R","R' U' R","R' U2 R",
             "L U L'","L U' L'","L U2 L'"
     };
-    private final String[] rotations = {
-            "","y","y2","y'",
-            "x","x y","x y2","x y'",
-            "x'","x' y","x' y2","x' y'",
-            "z","z y","z y2","z y'",
-            "z'","z' y","z' y2","z' y'",
-            "z2","z2 y","z2 y2","z2 y'"
+    private final String[] rotatedSalt1 = {
+            "","R' Uw ","R' Uw2 ","R' Uw' ",
+            "Rw ","Rw Uw ","Rw Uw2 ","Rw Uw' ",
+            "Rw' ","Rw' Uw ","Rw' Uw2 ","Rw' Uw' ",
+            "Fw ","Fw Uw ","Fw Uw2 ","Fw Uw' ",
+            "Fw' ","Fw' Uw ","Fw' Uw2 ","Fw' Uw' ",
+            "Rw2 ","Rw2 Uw ","Fw2 ","Rw2 Uw' "
     };
-    private String[] ZBLLs = {
-            "R U R' L' U2 R U' R' U' R U' M' x'",//U diag
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
+    private final String[] rotatedSalt2 = {
+            "R' U' F","F","F","F",
+            "U' F","F","F","F",
+            "U' F","F","F","F",
+            "U' R","R","R","R",
+            "U' R","R","R","R",
+            "U' F","F","U' R","F"
+    };
+    private final String[] rotationSalt = {
+            "R' U' F","F' D F","L' D2 F","B' D' F",
+            "L U' F","B D F","R D2 F","F D' F",
+            "L' U' F","B' D F","R' D2 F","F' D' F",
+            "B U' R","R D R","F D2 R","L D' R",
+            "B' U' R","R' D R","F' D2 R","L' D' R",
+            "R2 U' F","F2 D F","B2 U' R","B2 D' F"
+    };
+    private String[] ZBLLs = {//U diag
+            "R U R' L' U2 R U' R' U' R U' M' x'",// block left (fl)
+            "U2 L' R U R' U R U R' U2 L R U' R'",// block right (fr)
+            "R2 D' R U R' D R U R U' R' U' R",// pair left front (fL)
+            "U' R' D' R U' R' D R2 U2 R' U R U R'",// pair right front (fR)
+            "R U' R' U' R U2 R2 D' R U R' D R",// pair front left (Fl)
+            "U' F U' R' U R U F' R' U2 R",// pair front right (Fr)
+            "U' Rw U2 R2 F R F' U2 Rw' R U R U' R'",// two pairs left like N-perm (fL+Fr)
+            "U' R' U2 R F U' R' U R U R' U R U' F'",// two pairs right like N-perm (Fl+fR)
+            "U F U R U' R' F' R U R' U' M' U R U' Rw'",// two pairs in the back (bL+bR)
+            "F U R U2 R' U R U R' U R U2 R' U R U R' F'",// no pairs
+            "F U R U2 R2 U2 R U R' U R U2 R U R' F'",// pair right back (bR)
+            "U' R U2 R2 D' R U' R' D R U' R' F R U R U' R' F'"// pair left back (bL)
     };
     private final String[] _2GLLs = {
             "U' L' U2 L U L' U L R U2 R' U' R U' R'",//U 2GLL
@@ -199,8 +215,9 @@ public class Main extends JFrame implements KeyListener {
 
     }
 
-    public String generateScramble (int ZBLL){
-        ProcessBuilder pb = new ProcessBuilder("nissy","twophase","R' U' F "+inserts[ThreadLocalRandom.current().nextInt(inserts.length)]+AUFs[ThreadLocalRandom.current().nextInt(AUFs.length)]+ZBLLs[ZBLL]+AUFs[ThreadLocalRandom.current().nextInt(AUFs.length)]+" R' U' F");
+    private String generateScramble (int ZBLL){
+        int rotation = ThreadLocalRandom.current().nextInt(rotationSalt.length);
+        ProcessBuilder pb = new ProcessBuilder("nissy","twophase","R' U' F "+inserts[ThreadLocalRandom.current().nextInt(inserts.length)]+AUFs[ThreadLocalRandom.current().nextInt(AUFs.length)]+ZBLLs[ZBLL]+AUFs[ThreadLocalRandom.current().nextInt(AUFs.length)]+" "+rotationSalt[rotation]);
         pb.directory(new File("/Users/michaelvogel/Downloads/nissy-2.0.5"));
         Process p;
         try {
@@ -237,9 +254,49 @@ public class Main extends JFrame implements KeyListener {
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
-            return rotations[ThreadLocalRandom.current().nextInt(rotations.length)]+" R' U' F "+ sb +" R' U' F";
+            return rotatedSalt1[rotation]+cancel(rotatedSalt2[rotation],cancel(sb.toString(),"R' U' F"));
         } else {
             return "took too long";
         }
+    }
+
+    private String cancel(String left, String right){
+        if(left.isEmpty()||right.isEmpty()) return left + right;
+        if(right.length()<3) right = right + " ";
+        if(left.charAt(left.length()-1)=='\''){
+            if(left.charAt(left.length()-2)==right.charAt(0)){
+                if(right.charAt(1)=='\''){
+                    return left.substring(0,left.length()-1)+"2"+right.substring(2);
+                } else if(right.charAt(1)=='2'){
+                    return left.substring(0,left.length()-1)+right.substring(2);
+                } else {
+                    if(left.length()>2) return cancel(left.substring(0,left.length()-3),right.substring(2));
+                    else return right.substring(2);
+                }
+            }
+        } else if (left.charAt(left.length()-1)=='2'){
+            if(left.charAt(left.length()-2)==right.charAt(0)){
+                if(right.charAt(1)=='\''){
+                    return left.substring(0,left.length()-1)+right.substring(2);
+                } else if(right.charAt(1)=='2'){
+                    if(left.length()>2) return cancel(left.substring(0,left.length()-3),right.substring(3));
+                    else return right.substring(3);
+                } else {
+                    return left.substring(0,left.length()-1)+"'"+right.substring(1);
+                }
+            }
+        } else {
+            if(left.charAt(left.length()-1)==right.charAt(0)){
+                if(right.charAt(1)=='\''){
+                    if(left.length()>1) return cancel(left.substring(0,left.length()-2),right.substring(3));
+                    else return right.substring(3);
+                } else if(right.charAt(1)=='2'){
+                    return left+"'"+right.substring(2);
+                } else {
+                    return left+"2"+right.substring(1);
+                }
+            }
+        }
+        return left + " " + right;
     }
 }
