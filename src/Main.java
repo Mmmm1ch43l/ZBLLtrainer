@@ -43,7 +43,7 @@ public class Main extends JFrame implements KeyListener {
             "L' U' F","B' D F","R' D2 F","F' D' F",
             "B U' R","R D R","F D2 R","L D' R",
             "B' U' R","R' D R","F' D2 R","L' D' R",
-            "R2 U' F","F2 D F","B2 U' R","B2 D' F"
+            "L2 U' F","B2 D F","B2 U' R","F2 D' F"
     };
     private String[] ZBLLs = {//U diag
             "R U R' L' U2 R U' R' U' R U' M' x'",// block left (fl)
@@ -57,7 +57,20 @@ public class Main extends JFrame implements KeyListener {
             "U F U R U' R' F' R U R' U' M' U R U' Rw'",// two pairs in the back (bL+bR)
             "F U R U2 R' U R U R' U R U2 R' U R U R' F'",// no pairs
             "F U R U2 R2 U2 R U R' U R U2 R U R' F'",// pair right back (bR)
-            "U' R U2 R2 D' R U' R' D R U' R' F R U R U' R' F'"// pair left back (bL)
+            "U' R U2 R2 D' R U' R' D R U' R' F R U R U' R' F'",// pair left back (bL)
+            //U bars
+            "R' F R U' R' U' R U R' F' R U R' U' R' F R F' R",// big block front right
+            "D R D' R2 F' R U R' Fw R Fw' R' U' F R2",// big block front left
+            "U' R2 F' R U R' U' R' F R2 U' R' U2 R2 U R' U R",// bar in front (opposites on both sides)
+            "U R' U R U R' F' R U R' U' R' F R2 U' R' U2 R U' R' U2 R",// T-perm in front
+            "x' R2 U2 R' U2 R' F R F' Rw U' L' U R'",// pair left front (fL)
+            "x' L2 U2 L U2 L F' L' F Lw' U R U' L",// pair right front (fR)
+            "U' Rw U R' U' Rw' F R2 U' R' U' R U2 R' U' F",// pair left back (bL) + FR edge opposite
+            "R2 F R U R U' R' F' R U' R2 D' R U R' D R2",// pair right back (bR) + FR edge opposite
+            "U R' U' R U' R' U2 R U' R' U2 R' D' R U2 R' D R2",// pair right back (bR) + FR edge adjacent
+            "U R U R' U R U2 R' U R U2 R D R' U2 R D' R2",// pair left back (bL) + FR edge adjacent
+            "U' R' U' R F R2 D' R U R' D R2 U' F'",// nothing + FR edge goes right
+            "U' F U R2 D' R U' R' D R2 F' R' U R"// nothing + FR edge goes left
     };
     private final String[] _2GLLs = {
             "U' L' U2 L U L' U L R U2 R' U' R U' R'",//U 2GLL
