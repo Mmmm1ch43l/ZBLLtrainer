@@ -77,7 +77,7 @@ public class Main extends JFrame implements KeyListener {
             "U2 x R2 D2 R U2 R' D2 R U2 R x'",// block left
             "x' R2 D2 R' U2 R D2 R' U2 R' x",// block right
             "R U R' U R U' R' U2 R' D' R U2 R' D R2 U' R'",// two pairs left like N-perm (fL+Fr)
-            "U' R' U2 R U R' U R' D R' U2 R D' R' U2 R'",// two pairs right like N-perm (Fl+fR)
+            "U' R' U2 R U R' U R R R D R' U2 R D' R' U2 R'",// two pairs right like N-perm (Fl+fR)
             "R' U2 R U R' U R' D' R U' R' D R U R",// pair right front (fR)
             "U2 R U2 R' U' R' D' R U R' D R U' R U' R'",// pair left front (fL)
             "U' R U' R' U' R U' R' U R' D' R U R' D R2 U R'",// two pairs right like other N-perm, i.e. more back (Fr+bR)
