@@ -85,28 +85,28 @@ public class Main extends JFrame implements KeyListener {
             "R' U' R U2 R' F' R U R' U' R' F R2 U2 R' U R",// pair right back (bR)
             "U2 R U R' U R U R' U2 R U' R2 D' R U' R' D R",// pair left back (bL)
             // U left slash (BL and FR)
-            "",//
-            "",//
-            "",//
-            "",//
-            "",//
-            "",//
-            "",//
-            "",//
-            "",//
-            "",//
-            "",//
-            "",//
-            // U left slash (BL and FR)
-            "",//
-            "",//
-            "",//
-            "",//
-            "",//
-            "",//
-            "",//
-            "",//
-            "",//
+            "R2 D' R U2 R' D R U2 R",// block left
+            "R2 D' Rw U2 Rw' D R U2 R",// block right
+            "U R' U' R2 D R' U' R D' R2 U2 R",// two pairs right front (Fl+fR)
+            "U2 R' U R U R' U2 R U R D R' U2 R D' R'",// pair front right and two pairs in back (Fr+bL+bR)
+            "U2 F R U R' U' R2 D R' U' R D' R2 U' R U R' F'",// one pair front right (Fr)
+            "U' R2 F' R U2 R U2 R' F U' R U R' U' R",// pair front left and right back (Fl+bR)
+            "U' R' U R U R' U2 R U' D' R U' R' U2 R U' R' D",// pair right front (fR)
+            "U' L U2 R' F R U' R U R' U F' R U2 R' L'",// pair left front (fL)
+            "U F U R U2 R' U R U2 R2 F R F' R U' R' F'",// pair right back and H perm left side (bR)
+            "U R U R' U R U' R' U R U' R' U' Rw' F R F' M'",// no pairs and H perm right side
+            "U' R' U2 R' D' R U2 R' D R U2 R U R' U R",// pair left back and Z perm right side (bL)
+            "U' R' U R U' R' U' R U2 R D R' U' R D' R2 U' R",// no pairs and nothing else either (sorta G-perm-ish)
+            // U right slash (FL and BR)
+            "U2 R2 D R' U2 R D' R' U2 R'",// block right
+            "U2 R2 D Rw' U2 Rw D' R' U2 R'",// block left
+            "U R U R2 D' R U R' D R2 U2 R'",// two pairs left front (Fr+fL)
+            "R U' R' U' R U2 R' U' R' D' R U2 R' D R",// pair front left and two pairs in back (Fl+bL+bR)
+            "R' U' R U R U R' U' R' U F R U R U' R' F'",// one pair front left (Fl)
+            "U' R U R' U R U' R' U F' R U2 R' U2 R' F R",// pair front right and left back (Fr+bL)
+            "R U R' U' R U R2 D' R U R' D R2 U R' U' R U' R'",// pair left front (fL)
+            "U R' U R' U' D' R U' R' U2 R U' R' D R U' R",// pair right front (fR)
+            "Rw U R' U R' D' R U R' D R U Rw' F R F'",// pair left back and H perm right side (bR)
             "",//
             "",//
             "",//
