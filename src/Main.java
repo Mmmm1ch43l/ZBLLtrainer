@@ -73,7 +73,7 @@ public class Main extends JFrame implements KeyListener {
             "U' F U R2 D' R U' R' D R2 F' R' U R",// nothing + FR edge goes left
             // U Checkerboard
             "F R U' R' U R U R' U R U' R' F'",// nothing + like Y-perm
-            "U F' R U R' U' R' F R2 U R' U2 R U' R' U2 R U' R'",// nothing + like V-perm
+            "U F' R U R' U' R' F R2 U R' U2 R U R' U2 R U' R'",// nothing + like V-perm
             "U2 x R2 D2 R U2 R' D2 R U2 R x'",// block left
             "x' R2 D2 R' U2 R D2 R' U2 R' x",// block right
             "R U R' U R U' R' U2 R' D' R U2 R' D R2 U' R'",// two pairs left like N-perm (fL+Fr)
