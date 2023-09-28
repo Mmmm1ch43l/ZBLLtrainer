@@ -83,7 +83,35 @@ public class Main extends JFrame implements KeyListener {
             "U' R U' R' U' R U' R' U R' D' R U R' D R2 U R'",// two pairs right like other N-perm, i.e. more back (Fr+bR)
             "U' R' U R U R' U R U' R D R' U' R D' R2 U' R",// two pairs left like other N-perm, i.e. more back (Fl+bL)
             "R' U' R U2 R' F' R U R' U' R' F R2 U2 R' U R",// pair right back (bR)
-            "U2 R U R' U R U R' U2 R U' R2 D' R U' R' D R"// pair left back (bL)
+            "U2 R U R' U R U R' U2 R U' R2 D' R U' R' D R",// pair left back (bL)
+            // U left slash (BL and FR)
+            "",//
+            "",//
+            "",//
+            "",//
+            "",//
+            "",//
+            "",//
+            "",//
+            "",//
+            "",//
+            "",//
+            "",//
+            // U left slash (BL and FR)
+            "",//
+            "",//
+            "",//
+            "",//
+            "",//
+            "",//
+            "",//
+            "",//
+            "",//
+            "",//
+            "",//
+            "",//
+            //stopper
+            ""
     };
     private final String[] _2GLLs = {
             "U' L' U2 L U L' U L R U2 R' U' R U' R'",// U 2GLL
@@ -229,7 +257,11 @@ public class Main extends JFrame implements KeyListener {
     // Method to handle keyboard events when any button is typed
     public void keyTyped(KeyEvent e) {
         questionText.setText(ZBLLs[ZBLL]);
-        ZBLL = ThreadLocalRandom.current().nextInt(ZBLLs.length);
+        String temp = "";
+        while(temp.isEmpty()){
+            ZBLL = ThreadLocalRandom.current().nextInt(ZBLLs.length);
+            temp = ZBLLs[ZBLL];
+        }
         answerText.setText(generateScramble(ZBLL));
 
     }
