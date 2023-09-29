@@ -84,7 +84,7 @@ public class Main extends JFrame implements KeyListener {
             "U' R' U R U R' U R U' R D R' U' R D' R2 U' R",// two pairs left like other N-perm, i.e. more back (Fl+bL)
             "R' U' R U2 R' F' R U R' U' R' F R2 U2 R' U R",// pair right back (bR)
             "U2 R U R' U R U R' U2 R U' R2 D' R U' R' D R",// pair left back (bL)
-            // U left slash (BL and FR)
+            /*// U left slash (BL and FR)
             "R2 D' R U2 R' D R U2 R",// block left
             "R2 D' Rw U2 Rw' D R U2 R",// block right
             "U R' U' R2 D R' U' R D' R2 U2 R",// two pairs right front (Fl+fR)
@@ -109,7 +109,7 @@ public class Main extends JFrame implements KeyListener {
             "Rw U R' U R' D' R U R' D R U Rw' F R F'",// pair left back and H perm right side (bR)
             "U R U R' U R U' R' U R U' R' U' Rw' F R F' M'",// no pairs and H perm left side
             "U' R U2 R D R' U2 R D' R' U2 R' U' R U' R'",// pair right back and Z perm left side (bR)
-            "U' R U' R' U R U R' U2 R' D' R U R' D R2 U R'",// no pairs and nothing else either (sorta G-perm-ish)
+            "U' R U' R' U R U R' U2 R' D' R U R' D R2 U R'",// no pairs and nothing else either (sorta G-perm-ish)*/
             //stopper
             ""
     };
