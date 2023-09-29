@@ -107,9 +107,9 @@ public class Main extends JFrame implements KeyListener {
             "R U R' U' R U R2 D' R U R' D R2 U R' U' R U' R'",// pair left front (fL)
             "U R' U R' U' D' R U' R' U2 R U' R' D R U' R",// pair right front (fR)
             "Rw U R' U R' D' R U R' D R U Rw' F R F'",// pair left back and H perm right side (bR)
-            "",//
-            "",//
-            "",//
+            "U R U R' U R U' R' U R U' R' U' Rw' F R F' M'",// no pairs and H perm left side
+            "U' R U2 R D R' U2 R D' R' U2 R' U' R U' R'",// pair right back and Z perm left side (bR)
+            "U' R U' R' U R U R' U2 R' D' R U R' D R2 U R'",// no pairs and nothing else either (sorta G-perm-ish)
             //stopper
             ""
     };
