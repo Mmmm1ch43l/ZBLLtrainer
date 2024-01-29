@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Main extends JFrame implements KeyListener {
 
-    private final boolean include2GLL = false;
+    private final boolean include2GLL = true;
 
     private final JLabel questionText;
     private final JLabel answerText;
@@ -46,7 +46,7 @@ public class Main extends JFrame implements KeyListener {
             "L2 U' F","B2 D F","B2 U' R","F2 D' F"
     };
     private String[] ZBLLs = {// U diag
-            "R U R' L' U2 R U' R' U' R U' M' x'",// block left (fl)
+            /*"R U R' L' U2 R U' R' U' R U' M' x'",// block left (fl)
             "U2 L' R U R' U R U R' U2 L R U' R'",// block right (fr)
             "R2 D' R U R' D R U R U' R' U' R",// pair left front (fL)
             "U' R' D' R U' R' D R2 U2 R' U R U R'",// pair right front (fR)
@@ -84,7 +84,7 @@ public class Main extends JFrame implements KeyListener {
             "U' R' U R U R' U R U' R D R' U' R D' R2 U' R",// two pairs left like other N-perm, i.e. more back (Fl+bL)
             "R' U' R U2 R' F' R U R' U' R' F R2 U2 R' U R",// pair right back (bR)
             "U2 R U R' U R U R' U2 R U' R2 D' R U' R' D R",// pair left back (bL)
-            /*// U left slash (BL and FR)
+            // U left slash (BL and FR)
             "R2 D' R U2 R' D R U2 R",// block left
             "R2 D' Rw U2 Rw' D R U2 R",// block right
             "U R' U' R2 D R' U' R D' R2 U2 R",// two pairs right front (Fl+fR)
@@ -276,7 +276,7 @@ public class Main extends JFrame implements KeyListener {
     private String generateScramble (int ZBLL){
         int rotation = ThreadLocalRandom.current().nextInt(rotationSalt.length);
         ProcessBuilder pb = new ProcessBuilder("nissy","twophase","R' U' F "+inserts[ThreadLocalRandom.current().nextInt(inserts.length)]+AUFs[ThreadLocalRandom.current().nextInt(AUFs.length)]+ZBLLs[ZBLL]+AUFs[ThreadLocalRandom.current().nextInt(AUFs.length)]+" "+rotationSalt[rotation]);
-        pb.directory(new File("/Users/michaelvogel/Downloads/nissy-2.0.5"));
+        pb.directory(new File("/Users/michaelvogel/Documents/FMC/nissy-2.0.5"));
         Process p;
         try {
             p = pb.start();
