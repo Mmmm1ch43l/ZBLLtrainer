@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Main extends JFrame implements KeyListener {
 
-    private final boolean include2GLL = true;
+    private final boolean include2GLL = false;
 
     private final JLabel questionText;
     private final JLabel answerText;
@@ -46,7 +46,7 @@ public class Main extends JFrame implements KeyListener {
             "L2 U' F","B2 D F","B2 U' R","F2 D' F"
     };
     private String[] ZBLLs = {// U diag
-            /*"R U R' L' U2 R U' R' U' R U' M' x'",// block left (fl)
+            "R U R' L' U2 R U' R' U' R U' M' x'",// block left (fl)
             "U2 L' R U R' U R U R' U2 L R U' R'",// block right (fr)
             "R2 D' R U R' D R U R U' R' U' R",// pair left front (fL)
             "U' R' D' R U' R' D R2 U2 R' U R U R'",// pair right front (fR)
@@ -58,7 +58,7 @@ public class Main extends JFrame implements KeyListener {
             "F U R U2 R' U R U R' U R U2 R' U R U R' F'",// no pairs
             "F U R U2 R2 U2 R U R' U R U2 R U R' F'",// pair right back (bR)
             "U' R U2 R2 D' R U' R' D R U' R' F R U R U' R' F'",// pair left back (bL)
-            // U bars
+            /*// U bars
             "R' F R U' R' U' R U R' F' R U R' U' R' F R F' R",// big block front right
             "D R D' R2 F' R U R' Fw R Fw' R' U' F R2",// big block front left
             "U' R2 F' R U R' U' R' F R2 U' R' U2 R2 U R' U R",// bar in front (opposites on both sides)
