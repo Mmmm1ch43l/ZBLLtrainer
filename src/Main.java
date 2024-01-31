@@ -58,7 +58,7 @@ public class Main extends JFrame implements KeyListener {
             "F U R U2 R' U R U R' U R U2 R' U R U R' F'",// no pairs
             "F U R U2 R2 U2 R U R' U R U2 R U R' F'",// pair right back (bR)
             "U' R U2 R2 D' R U' R' D R U' R' F R U R U' R' F'",// pair left back (bL)
-            /*// U bars
+            // U bars
             "R' F R U' R' U' R U R' F' R U R' U' R' F R F' R",// big block front right
             "D R D' R2 F' R U R' Fw R Fw' R' U' F R2",// big block front left
             "U' R2 F' R U R' U' R' F R2 U' R' U2 R2 U R' U R",// bar in front (opposites on both sides)
@@ -71,7 +71,7 @@ public class Main extends JFrame implements KeyListener {
             "U R U R' U R U2 R' U R U2 R D R' U2 R D' R2",// pair left back (bL) + FR edge adjacent
             "U' R' U' R F R2 D' R U R' D R2 U' F'",// nothing + FR edge goes right
             "U' F U R2 D' R U' R' D R2 F' R' U R",// nothing + FR edge goes left
-            // U Checkerboard
+            /*// U Checkerboard
             "F R U' R' U R U R' U R U' R' F'",// nothing + like Y-perm
             "U F' R U R' U' R' F R2 U R' U2 R U R' U2 R U' R'",// nothing + like V-perm
             "U2 x R2 D2 R U2 R' D2 R U2 R x'",// block left
