@@ -5,12 +5,14 @@ import java.awt.event.*;
 import java.io.*;
 import java.lang.ProcessBuilder;
 import java.lang.Process;
+import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 public class Main extends JFrame implements KeyListener {
+    private static boolean runningWindows = false;
 
-    private final boolean include2GLL = false;
+    private final boolean include2GLL = true;
 
     private final JLabel questionText;
     private final JLabel answerText;
@@ -174,10 +176,12 @@ public class Main extends JFrame implements KeyListener {
     private int ZBLL;
     // Constructor to initialize the components, layout and arrays
     public Main() {
+
         // Set the title of the window
         super("ZBLL trainer");
 
 
+        if(System.getProperty("os.name").startsWith("Windows")) runningWindows = true;
         if(include2GLL){
             String[] temp = new String[ZBLLs.length+_2GLLs.length];
             System.arraycopy(ZBLLs, 0, temp, 0, ZBLLs.length);
@@ -275,47 +279,7 @@ public class Main extends JFrame implements KeyListener {
 
     private String generateScramble (int ZBLL){
         int rotation = ThreadLocalRandom.current().nextInt(rotationSalt.length);
-        ProcessBuilder pb = new ProcessBuilder("nissy","twophase","R' U' F "+inserts[ThreadLocalRandom.current().nextInt(inserts.length)]+AUFs[ThreadLocalRandom.current().nextInt(AUFs.length)]+ZBLLs[ZBLL]+AUFs[ThreadLocalRandom.current().nextInt(AUFs.length)]+" "+rotationSalt[rotation]);
-        pb.directory(new File("/Users/michaelvogel/Documents/FMC/nissy-2.0.5"));
-        Process p;
-        try {
-            p = pb.start();
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-        InputStream is = p.getInputStream();
-        boolean finished;
-        try {
-            finished = p.waitFor(1000, TimeUnit.SECONDS);
-        } catch (InterruptedException ex) {
-            throw new RuntimeException(ex);
-        }
-        if (finished) {
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            String line;
-            StringBuilder sb = new StringBuilder();
-            while (true) {
-                try {
-                    if ((line = br.readLine()) == null) break;
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-                sb.append(line);
-            }
-            try {
-                is.close();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-            try {
-                br.close();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-            return rotatedSalt1[rotation]+cancel(rotatedSalt2[rotation],cancel(sb.toString(),"R' U' F"));
-        } else {
-            return "took too long";
-        }
+        return rotatedSalt1[rotation]+cancel(rotatedSalt2[rotation],cancel(nissy("twophase","R' U' F "+inserts[ThreadLocalRandom.current().nextInt(inserts.length)]+AUFs[ThreadLocalRandom.current().nextInt(AUFs.length)]+ZBLLs[ZBLL]+AUFs[ThreadLocalRandom.current().nextInt(AUFs.length)]+" "+rotationSalt[rotation]),"R' U' F"));
     }
 
     private String cancel(String left, String right){
@@ -356,5 +320,61 @@ public class Main extends JFrame implements KeyListener {
             }
         }
         return left + " " + right;
+    }
+
+
+    private static String nissy(String... input){
+        String[] commands;
+        String directory;
+        if(runningWindows){
+            commands = new String[]{"cmd", "/c", "start", "/b", "/wait", "nissy-2.0.5.exe"};
+            directory = "C:\\Users\\lolra\\Downloads";
+        } else {
+            commands = new String[]{"nissy"};
+            directory = "/Users/michaelvogel/Documents/FMC/nissy-2.0.5";
+        }
+        String[] inputs = Arrays.copyOf (commands,commands.length+input.length);
+        System.arraycopy (input, 0, inputs, commands.length, input.length);
+        ProcessBuilder pb = new ProcessBuilder(inputs);
+        pb.directory(new File(directory));
+        Process p;
+        try {
+            p = pb.start();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+        InputStream is = p.getInputStream();
+        boolean finished;
+        try {
+            finished = p.waitFor(1000, TimeUnit.SECONDS);
+        } catch (InterruptedException ex) {
+            throw new RuntimeException(ex);
+        }
+        if (finished) {
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            String line;
+            StringBuilder sb = new StringBuilder();
+            while (true) {
+                try {
+                    if ((line = br.readLine()) == null) break;
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                sb.append(line);
+            }
+            try {
+                is.close();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            try {
+                br.close();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            return sb.toString();
+        } else {
+            return "took too long";
+        }
     }
 }
