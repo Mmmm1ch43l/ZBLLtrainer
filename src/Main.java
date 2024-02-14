@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 public class Main extends JFrame implements KeyListener {
     private static boolean runningWindows = false;
 
-    private final boolean include2GLL = true;
+    private final boolean include2GLL = false;
 
     private final JLabel questionText;
     private final JLabel answerText;
@@ -134,7 +134,7 @@ public class Main extends JFrame implements KeyListener {
             "R U2 R' U' R U' R' U R U R' U R U2 R'",
             "U2 R' U2 R U R' U R U' R' U' R U' R' U2 R",
             "U' R U R' U R U' R' U R' U' R2 U' R2 U2 R",
-            "U' R' U' R U' R' U R U' R U R2 U R2 U2 R'",
+            "R' U R2 U R' U R' U' R U' R' U' R U R U' R'",
             "R U2 R' U' R U' R2 U2 R U R' U R",
             "U2 R' U2 R U R' U R2 U2 R' U' R U' R'",
             "U2 R U' R' U2 R U R' U R' U' R U R U R' U' R' U R",
