@@ -123,12 +123,12 @@ public class Main extends JFrame implements KeyListener {
     private final String[] HZBLLs = {//H diag
             "U F U R U' R' U R U' R' U R U' R' F'",// opposites
             "x' U' R U' R' U R' F2 R U' R U R' U x",// bars
-            "",//
-            "",//
-            "",//
-            "",//
-            "",//
-            "",//
+            "U' R U R' U y' R' U R U' R2 F R F' R y",// bar front, back matches right
+            "F' U' F U' R U' R' U R2 B' R' B R'",// bar front, back matches left
+            "U Rw U2 R2 F R F' R U2 Rw2 F2 Rw U Rw' F Rw",// back opposite, front matches right
+            "R' U' F' U F R U' F U R U' R' U R U' R' F'",// back opposite, front matches left
+            "Rw U2 R2 F R F' R U2 Rw2 F' Rw U' Rw' F2 Rw",// adjacents, front matches right
+            "R U' R' U R U R' U' L U L' U' R U R' U2 L U L'",// adjacents, front matches left
     };
     private final String[] _2GLLs = {
             "U' L' U2 L U L' U L R U2 R' U' R U' R'",// U 2GLL
