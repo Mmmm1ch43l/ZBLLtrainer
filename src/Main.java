@@ -13,6 +13,8 @@ public class Main extends JFrame implements KeyListener {
     private static boolean runningWindows = false;
 
     private final boolean include2GLL = false;
+    private final boolean includeU = false;
+    private final boolean includeH = true;
 
     private final JLabel questionText;
     private final JLabel answerText;
@@ -47,7 +49,9 @@ public class Main extends JFrame implements KeyListener {
             "B' U' R","R' D R","F' D2 R","L' D' R",
             "L2 U' F","B2 D F","B2 U' R","F2 D' F"
     };
-    private String[] ZBLLs = {// U diag
+
+    private String[] ZBLLs = new String[0];
+    private final String[] UZBLLs = {// U diag
             "R U R' L' U2 R U' R' U' R U' M' x'",// block left (fl)
             "U2 L' R U R' U R U R' U2 L R U' R'",// block right (fr)
             "R2 D' R U R' D R U R U' R' U' R",// pair left front (fL)
@@ -114,6 +118,17 @@ public class Main extends JFrame implements KeyListener {
             "U' R U' R' U R U R' U2 R' D' R U R' D R2 U R'",// no pairs and nothing else either (sorta G-perm-ish)*/
             //stopper
             ""
+    };
+
+    private final String[] HZBLLs = {//H diag
+            "U F U R U' R' U R U' R' U R U' R' F'",// opposites
+            "x' U' R U' R' U R' F2 R U' R U R' U x",// bars
+            "",//
+            "",//
+            "",//
+            "",//
+            "",//
+            "",//
     };
     private final String[] _2GLLs = {
             "U' L' U2 L U L' U L R U2 R' U' R U' R'",// U 2GLL
@@ -188,6 +203,18 @@ public class Main extends JFrame implements KeyListener {
             System.arraycopy(_2GLLs, 0, temp, ZBLLs.length, _2GLLs.length);
             ZBLLs = temp;
         }
+        if(includeU){
+            String[] temp = new String[ZBLLs.length+UZBLLs.length];
+            System.arraycopy(ZBLLs, 0, temp, 0, ZBLLs.length);
+            System.arraycopy(UZBLLs, 0, temp, ZBLLs.length, UZBLLs.length);
+            ZBLLs = temp;
+        }
+        if(includeH){
+            String[] temp = new String[ZBLLs.length+HZBLLs.length];
+            System.arraycopy(ZBLLs, 0, temp, 0, ZBLLs.length);
+            System.arraycopy(HZBLLs, 0, temp, ZBLLs.length, HZBLLs.length);
+            ZBLLs = temp;
+        }
 
         // Create the components
         // Declare the components
@@ -240,7 +267,11 @@ public class Main extends JFrame implements KeyListener {
         setVisible(true);
 
         // Display the first question and answer in the text labels
-        ZBLL = ThreadLocalRandom.current().nextInt(ZBLLs.length);
+        String temp = "";
+        while(temp.isEmpty()){
+            ZBLL = ThreadLocalRandom.current().nextInt(ZBLLs.length);
+            temp = ZBLLs[ZBLL];
+        }
         questionText.setText("");
         answerText.setText(generateScramble(ZBLL));
 
