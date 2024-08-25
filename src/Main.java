@@ -147,16 +147,16 @@ public class Main extends JFrame implements KeyListener {
             //H horizontal column (on front)
             "F R U' R' U R U2 R' U' R U R' U' F'",// opposites front and back
             "U2 R U R' U R U' R2 F' R U2 R U2 R' F R U' R'",// bar front and back
-            "U F R' F' Rw U R U' Rw2 F2 Rw U L' U L",// bar in the back + pair front right (Fr)
-            "U' F' Rw U R' U' Rw' F R2 U2 R' U' R U' R'",// bar in the back + pair front left (Fl)
-            "U R U2 R' U' R U R' U' F' R U R' U' R' F R2 U' R'",// back matching right + pair front right (Fr)
-            "R' U2 R2 U R2 U R U2 R' F R U R U' R' F'",// back matching left + pair front left (Fl)
             "U2 F U' R U2 R' U2 R U' R' U' R U R' U F'",// back opposite + pair front right (Fr)
             "U2 R F R2 U' R2 U' R2 U2 R2 U' F' R'",// back opposite + pair front left (Fl)
-            "R' U2 R U R' U R2 R D R' U R D' R' U' R'",// back matching left + bar front
-            "U2 R U2 R' U' R U' R2 R' D' R U' R' D R U R",// back matching right + bar front
+            "U F R' F' Rw U R U' Rw2 F2 Rw U L' U L",// bar in the back + pair front right (Fr)
+            "U' F' Rw U R' U' Rw' F R2 U2 R' U' R U' R'",// bar in the back + pair front left (Fl)
             "U R' U2 R U2 R2 F' R U R U' R' F U R",// back matching right + front opposite
             "U' F' R U2 R' U2 R' F R U R U R' U' R U' R'",// back matching left + front opposite
+            "U2 R U2 R' U' R U' R2 R' D' R U' R' D R U R",// back matching right + bar front
+            "R' U2 R U R' U R2 R D R' U R D' R' U' R'",// back matching left + bar front
+            "U R U2 R' U' R U R' U' F' R U R' U' R' F R2 U' R'",// back matching right + pair front right (Fr)
+            "R' U2 R2 U R2 U R U2 R' F R U R U' R' F'",// back matching left + pair front left (Fl)
     };
     private final String[] _2GLLs = {
             "U' L' U2 L U L' U L R U2 R' U' R U' R'",// U 2GLL
