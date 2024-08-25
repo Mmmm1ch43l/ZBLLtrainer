@@ -16,6 +16,8 @@ public class Main extends JFrame implements KeyListener {
     private final boolean includeU = false;
     private final boolean includeH = true;
 
+    private final PseudoRandomNumberGenerator prng;
+
     private final JLabel questionText;
     private final JLabel answerText;
     private final String[] AUFs = {" "," U "," U' "," U2 "};
@@ -142,6 +144,19 @@ public class Main extends JFrame implements KeyListener {
             "U' R U2 R' U' R2 D R' U R D' R2 U' R U' R'",// pair back left (Bl) + bar right
             "U' R' U2 R U R' U' F' R U R' U' R' F R U2 R",// solved/checkerboard thingy front left (fl)
             "U2 R2 D' R U' R' D R2 U' R2 D' R U2 R' D R2",// solved/checkerboard thingy back left (bl)
+            //H horizontal column (on front)
+            "F R U' R' U R U2 R' U' R U R' U' F'",// opposites front and back
+            "U2 R U R' U R U' R2 F' R U2 R U2 R' F R U' R'",// bar front and back
+            "U F R' F' Rw U R U' Rw2 F2 Rw U L' U L",// bar in the back + pair front right (Fr)
+            "U' F' Rw U R' U' Rw' F R2 U2 R' U' R U' R'",// bar in the back + pair front left (Fl)
+            "U R U2 R' U' R U R' U' F' R U R' U' R' F R2 U' R'",// back matching right + pair front right (Fr)
+            "R' U2 R2 U R2 U R U2 R' F R U R U' R' F'",// back matching left + pair front left (Fl)
+            "U2 F U' R U2 R' U2 R U' R' U' R U R' U F'",// back opposite + pair front right (Fr)
+            "U2 R F R2 U' R2 U' R2 U2 R2 U' F' R'",// back opposite + pair front left (Fl)
+            "R' U2 R U R' U R2 R D R' U R D' R' U' R'",// back matching left + bar front
+            "U2 R U2 R' U' R U' R2 R' D' R U' R' D R U R",// back matching right + bar front
+            "U R' U2 R U2 R2 F' R U R U' R' F U R",// back matching right + front opposite
+            "U' F' R U2 R' U2 R' F R U R U R' U' R U' R'",// back matching left + front opposite
     };
     private final String[] _2GLLs = {
             "U' L' U2 L U L' U L R U2 R' U' R U' R'",// U 2GLL
@@ -279,10 +294,12 @@ public class Main extends JFrame implements KeyListener {
         // Make the window visible
         setVisible(true);
 
+        prng = new PseudoRandomNumberGenerator(ZBLLs.length);
+
         // Display the first question and answer in the text labels
         String temp = "";
         while(temp.isEmpty()){
-            ZBLL = ThreadLocalRandom.current().nextInt(ZBLLs.length);
+            ZBLL = prng.generate();
             temp = ZBLLs[ZBLL];
         }
         questionText.setText("");
@@ -307,7 +324,7 @@ public class Main extends JFrame implements KeyListener {
         questionText.setText(ZBLLs[ZBLL]);
         String temp = "";
         while(temp.isEmpty()){
-            ZBLL = ThreadLocalRandom.current().nextInt(ZBLLs.length);
+            ZBLL = prng.generate();
             temp = ZBLLs[ZBLL];
         }
         answerText.setText(generateScramble(ZBLL));
