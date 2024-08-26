@@ -15,6 +15,7 @@ public class Main extends JFrame implements KeyListener {
     private final boolean include2GLL = false;
     private final boolean includeU = false;
     private final boolean includeH = true;
+    private final double pseudoRandomNumberGeneratorDecay = 0.8;
 
     private final PseudoRandomNumberGenerator prng;
 
@@ -294,7 +295,7 @@ public class Main extends JFrame implements KeyListener {
         // Make the window visible
         setVisible(true);
 
-        prng = new PseudoRandomNumberGenerator(ZBLLs.length);
+        prng = new PseudoRandomNumberGenerator(ZBLLs.length,pseudoRandomNumberGeneratorDecay);
 
         // Display the first question and answer in the text labels
         String temp = "";
