@@ -123,7 +123,17 @@ public class Main extends JFrame implements KeyListener {
             ""
     };
 
-    private final String[] HZBLLs = {//H diag
+    private final String[] HZBLLs = {
+            // H 2GLL
+            "U R' U2 R U R' U R U R U R' U R U2 R'",
+            "U R U2 R' U' R U' R' U' R' U' R U' R' U2 R",
+            "U R U2 R' U' R U R' U' R U' R'",
+            "U R' U2 R U R' U' R U R' U R",
+            "R U R' U R U' R' U R U2 R'",
+            "R' U' R U' R' U R U' R' U2 R",
+            "R U R' U R U' R' U R U' R' U R' U' R2 U' R' U R' U R",
+            "R U R' U R U2 R' U' R' U2 R U R' U R",
+            //H diag
             "U F U R U' R' U R U' R' U R U' R' F'",// opposites
             "x' U' R U' R' U R' F2 R U' R U R' U x",// bars
             "U' R U R' U y' R' U R U' R2 F R F' R y",// bar front, back matches right
@@ -208,14 +218,6 @@ public class Main extends JFrame implements KeyListener {
             "U' R' U2 R2 U R2 U R2 U2 R'",
             "U' R U2 R' U' R U' R' U' R U2 R' U' R U' R'",
             "U' F R U R' U' R U R' U' F' R U R' U' M' U R U' Rw'",
-            "U R' U2 R U R' U R U R U R' U R U2 R'",// H 2GLL
-            "U R U2 R' U' R U' R' U' R' U' R U' R' U2 R",
-            "U R U2 R' U' R U R' U' R U' R'",
-            "U R' U2 R U R' U' R U R' U R",
-            "R U R' U R U' R' U R U2 R'",
-            "R' U' R U' R' U R U' R' U2 R",
-            "R U R' U R U' R' U R U' R' U R' U' R2 U' R' U R' U R",
-            "R U R' U R U2 R' U' R' U2 R U R' U R"
     };
     private int ZBLL;
     // Constructor to initialize the components, layout and arrays
