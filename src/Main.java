@@ -13,9 +13,9 @@ public class Main extends JFrame implements KeyListener {
     private static boolean runningWindows = false;
 
     private final boolean include2GLL = false;
-    private final boolean includeU = false;
-    private final boolean includeH = true;
-    private final double pseudoRandomNumberGeneratorDecay = 0.8;
+    private final boolean includeU = true;
+    private final boolean includeH = false;
+    private final double pseudoRandomNumberGeneratorDecay = 0.95;
 
     private final PseudoRandomNumberGenerator prng;
 
@@ -54,7 +54,21 @@ public class Main extends JFrame implements KeyListener {
     };
 
     private String[] ZBLLs = new String[0];
-    private final String[] UZBLLs = {// U diag
+    private final String[] UZBLLs = {
+            // U 2GLL
+            "U' L' U2 L U L' U L R U2 R' U' R U' R'",
+            "U2 R U R' U R U2 R' U R U2 R' U' R U' R'",
+            "U' R U R' U' R U' R' U2 R U' R' U2 R U R'",
+            "U R U2 R' U' R U' R' U' R U R' U R U2 R'",
+            "U R' U2 R U R' U R U R' U' R U' R' U2 R",
+            "U R' U2 R2 U R2 U R U' R U R' U' R U' R'",
+            "U R U2 R2 U' R2 U' R' U R' U' R U R' U R",
+            "R' U' R U' R' U2 R2 U R' U R U2 R'",
+            "U2 R U R' U R U2 R2 U' R U' R' U2 R",
+            "R U R' U' R U' R U2 R2 U' R U R' U' R2 U' R2",
+            "U2 R U R' U R' U2 R2 U R2 U R2 U' R'",
+            "R' U' R U' R U2 R2 U' R2 U' R2 U R",
+            // U diag
             "R U R' L' U2 R U' R' U' R U' M' x'",// block left (fl)
             "U2 L' R U R' U R U R' U2 L R U' R'",// block right (fr)
             "R2 D' R U R' D R U R U' R' U' R",// pair left front (fL)
@@ -67,6 +81,7 @@ public class Main extends JFrame implements KeyListener {
             "F U R U2 R' U R U R' U R U2 R' U R U R' F'",// no pairs
             "F U R U2 R2 U2 R U R' U R U2 R U R' F'",// pair right back (bR)
             "U' R U2 R2 D' R U' R' D R U' R' F R U R U' R' F'",// pair left back (bL)
+            /*
             // U bars
             "R' F R U' R' U' R U R' F' R U R' U' R' F R F' R",// big block front right
             "D R D' R2 F' R U R' Fw R Fw' R' U' F R2",// big block front left
@@ -93,7 +108,7 @@ public class Main extends JFrame implements KeyListener {
             "U' R' U R U R' U R U' R D R' U' R D' R2 U' R",// two pairs left like other N-perm, i.e. more back (Fl+bL)
             "R' U' R U2 R' F' R U R' U' R' F R2 U2 R' U R",// pair right back (bR)
             "U2 R U R' U R U R' U2 R U' R2 D' R U' R' D R",// pair left back (bL)
-            /*// U left slash (BL and FR)
+            // U left slash (BL and FR)
             "R2 D' R U2 R' D R U2 R",// block left
             "R2 D' Rw U2 Rw' D R U2 R",// block right
             "U R' U' R2 D R' U' R D' R2 U2 R",// two pairs right front (Fl+fR)
@@ -118,9 +133,8 @@ public class Main extends JFrame implements KeyListener {
             "Rw U R' U R' D' R U R' D R U Rw' F R F'",// pair left back and H perm right side (bR)
             "U R U R' U R U' R' U R U' R' U' Rw' F R F' M'",// no pairs and H perm left side
             "U' R U2 R D R' U2 R D' R' U2 R' U' R U' R'",// pair right back and Z perm left side (bR)
-            "U' R U' R' U R U R' U2 R' D' R U R' D R2 U R'",// no pairs and nothing else either (sorta G-perm-ish)*/
-            //stopper
-            ""
+            "U' R U' R' U R U R' U2 R' D' R U R' D R2 U R'",// no pairs and nothing else either (sorta G-perm-ish)
+            */
     };
 
     private final String[] HZBLLs = {
@@ -170,18 +184,6 @@ public class Main extends JFrame implements KeyListener {
             "R' U2 R2 U R2 U R U2 R' F R U R U' R' F'",// back matching left + pair front left (Fl)
     };
     private final String[] _2GLLs = {
-            "U' L' U2 L U L' U L R U2 R' U' R U' R'",// U 2GLL
-            "U2 R U R' U R U2 R' U R U2 R' U' R U' R'",
-            "U' R U R' U' R U' R' U2 R U' R' U2 R U R'",
-            "U R U2 R' U' R U' R' U' R U R' U R U2 R'",
-            "U R' U2 R U R' U R U R' U' R U' R' U2 R",
-            "U R' U2 R2 U R2 U R U' R U R' U' R U' R'",
-            "U R U2 R2 U' R2 U' R' U R' U' R U R' U R",
-            "R' U' R U' R' U2 R2 U R' U R U2 R'",
-            "U2 R U R' U R U2 R2 U' R U' R' U2 R",
-            "R U R' U' R U' R U2 R2 U' R U R' U' R2 U' R2",
-            "U2 R U R' U R' U2 R2 U R2 U R2 U' R'",
-            "R' U' R U' R U2 R2 U' R2 U' R2 U R",
             "U' R U R' U R U2 R' L' U' L U' L' U2 L",// T 2GLL
             "U2 R U' R' U2 R U R' U2 R U R' U R U' R'",
             "U' R U R' U R U2 R' U' R U2 R' U' R U' R'",
@@ -288,7 +290,7 @@ public class Main extends JFrame implements KeyListener {
         getContentPane().add(panel);
 
         // Set the size and location of the window
-        setSize(600, 200);
+        setSize(630, 200);
         setLocation(100, 100);
 
         // Set the default close operation of the window
