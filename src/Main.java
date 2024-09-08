@@ -94,20 +94,20 @@ public class Main extends JFrame implements KeyListener {
             "U R U R' U R U2 R' U R U2 R D R' U2 R D' R2",// pair left back (bL) + FR edge adjacent
             "U' R' U' R F R2 D' R U R' D R2 U' F'",// nothing + FR edge goes right
             "U' F U R2 D' R U' R' D R2 F' R' U R",// nothing + FR edge goes left
-            /*
             // U Checkerboard
             "F R U' R' U R U R' U R U' R' F'",// nothing + like Y-perm
             "U F' R U R' U' R' F R2 U R' U2 R U R' U2 R U' R'",// nothing + like V-perm
-            "U2 x R2 D2 R U2 R' D2 R U2 R x'",// block left
             "x' R2 D2 R' U2 R D2 R' U2 R' x",// block right
-            "R U R' U R U' R' U2 R' D' R U2 R' D R2 U' R'",// two pairs left like N-perm (fL+Fr)
-            "U' R' U2 R U R' U R R R D R' U2 R D' R' U2 R'",// two pairs right like N-perm (Fl+fR)
+            "U2 x R2 D2 R U2 R' D2 R U2 R x'",// block left
             "R' U2 R U R' U R' D' R U' R' D R U R",// pair right front (fR)
             "U2 R U2 R' U' R' D' R U R' D R U' R U' R'",// pair left front (fL)
-            "U' R U' R' U' R U' R' U R' D' R U R' D R2 U R'",// two pairs right like other N-perm, i.e. more back (Fr+bR)
-            "U' R' U R U R' U R U' R D R' U' R D' R2 U' R",// two pairs left like other N-perm, i.e. more back (Fl+bL)
             "R' U' R U2 R' F' R U R' U' R' F R2 U2 R' U R",// pair right back (bR)
             "U2 R U R' U R U R' U2 R U' R2 D' R U' R' D R",// pair left back (bL)
+            "U' R' U2 R U R' U R R R D R' U2 R D' R' U2 R'",// two pairs right like N-perm (Fl+fR)
+            "R U R' U R U' R' U2 R' D' R U2 R' D R2 U' R'",// two pairs left like N-perm (fL+Fr)
+            "U' R U' R' U' R U' R' U R' D' R U R' D R2 U R'",// two pairs right like other N-perm, i.e. more back (Fr+bR)
+            "U' R' U R U R' U R U' R D R' U' R D' R2 U' R",// two pairs left like other N-perm, i.e. more back (Fl+bL)
+            /*
             // U left slash (BL and FR)
             "R2 D' R U2 R' D R U2 R",// block left
             "R2 D' Rw U2 Rw' D R U2 R",// block right
