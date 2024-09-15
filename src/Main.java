@@ -107,7 +107,6 @@ public class Main extends JFrame implements KeyListener {
             "R U R' U R U' R' U2 R' D' R U2 R' D R2 U' R'",// two pairs left like N-perm (fL+Fr)
             "U' R U' R' U' R U' R' U R' D' R U R' D R2 U R'",// two pairs right like other N-perm, i.e. more back (Fr+bR)
             "U' R' U R U R' U R U' R D R' U' R D' R2 U' R",// two pairs left like other N-perm, i.e. more back (Fl+bL)
-            /*
             // U left slash (BL and FR)
             "R2 D' R U2 R' D R U2 R",// block left
             "R2 D' Rw U2 Rw' D R U2 R",// block right
@@ -118,9 +117,10 @@ public class Main extends JFrame implements KeyListener {
             "U' R' U R U R' U2 R U' D' R U' R' U2 R U' R' D",// pair right front (fR)
             "U' L U2 R' F R U' R U R' U F' R U2 R' L'",// pair left front (fL)
             "U F U R U2 R' U R U2 R2 F R F' R U' R' F'",// pair right back and H perm left side (bR)
-            "U R U R' U R U' R' U R U' R' U' Rw' F R F' M'",// no pairs and H perm right side
+            "U' R U R' U2 F2 R U2 R' U2 R' F2 R2 U R'",// no pairs and H perm right side
             "U' R' U2 R' D' R U2 R' D R U2 R U R' U R",// pair left back and Z perm right side (bL)
             "U' R' U R U' R' U' R U2 R D R' U' R D' R2 U' R",// no pairs and nothing else either (sorta G-perm-ish)
+            /*
             // U right slash (FL and BR)
             "U2 R2 D R' U2 R D' R' U2 R'",// block right
             "U2 R2 D Rw' U2 Rw D' R' U2 R'",// block left
@@ -290,8 +290,8 @@ public class Main extends JFrame implements KeyListener {
         getContentPane().add(panel);
 
         // Set the size and location of the window
-        setSize(630, 200);
-        setLocation(100, 100);
+        setSize(630, 140);
+        setLocation(10, 10);
 
         // Set the default close operation of the window
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
