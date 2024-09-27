@@ -120,7 +120,6 @@ public class Main extends JFrame implements KeyListener {
             "U' R U R' U2 F2 R U2 R' U2 R' F2 R2 U R'",// no pairs and H perm right side
             "U' R' U2 R' D' R U2 R' D R U2 R U R' U R",// pair left back and Z perm right side (bL)
             "U' R' U R U' R' U' R U2 R D R' U' R D' R2 U' R",// no pairs and nothing else either (sorta G-perm-ish)
-            /*
             // U right slash (FL and BR)
             "U2 R2 D R' U2 R D' R' U2 R'",// block right
             "U2 R2 D Rw' U2 Rw D' R' U2 R'",// block left
@@ -134,7 +133,6 @@ public class Main extends JFrame implements KeyListener {
             "U R U R' U R U' R' U R U' R' U' Rw' F R F' M'",// no pairs and H perm left side
             "U' R U2 R D R' U2 R D' R' U2 R' U' R U' R'",// pair right back and Z perm left side (bR)
             "U' R U' R' U R U R' U2 R' D' R U R' D R2 U R'",// no pairs and nothing else either (sorta G-perm-ish)
-            */
     };
 
     private final String[] HZBLLs = {
