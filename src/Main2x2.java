@@ -23,26 +23,9 @@ public class Main2x2 extends JFrame implements KeyListener {
     private final String[] inserts = {
             "R U R'","R U' R'","R U2 R'",
             "L' U L","L' U' L","L' U2 L",
-            "R' U R","R' U' R","R' U2 R",
-            "L U L'","L U' L'","L U2 L'"
+            "R' U R","R' U' R","R' U2 R"
     };
-    private final String[] rotatedSalt1 = {
-            "","R' U ","R' U2 ","R' U' ",
-            "R ","R U ","R U2 ","R U' ",
-            "R' ","R' U ","R' U2 ","R' U' ",
-            "F ","F U ","F U2 ","F U' ",
-            "F' ","F' U ","F' U2 ","F' U' ",
-            "R2 ","R2 U ","F2 ","R2 U' "
-    };
-    private final String[] rotatedSalt2 = {
-            "R' U' F","F","F","F",
-            "U' F","F","F","F",
-            "U' F","F","F","F",
-            "U' R","R","R","R",
-            "U' R","R","R","R",
-            "U' F","F","U' R","F"
-    };
-    private final String[] rotationSalt = {
+    private final String[] rotatedSalt = {
             "R' U' F","F' D F","L' D2 F","B' D' F",
             "L U' F","B D F","R D2 F","F D' F",
             "L' U' F","B' D F","R' D2 F","F' D' F",
@@ -50,14 +33,69 @@ public class Main2x2 extends JFrame implements KeyListener {
             "B' U' R","R' D R","F' D2 R","L' D' R",
             "L2 U' F","B2 D F","B2 U' R","F2 D' F"
     };
+    private final String[] rotationSalt = {
+            "R' U' F","R' U F","R' U2 F","R' U' F",
+            "R U' F","R U F","R U2 F","R U' F",
+            "R' U' F","R' U F","R' U2 F","R' U' F",
+            "F U' R","F U R","F U2 R","F U' R",
+            "F' U' R","F' U R","F' U2 R","F' U' R",
+            "R2 U' F","R2 U F","F2 U' R","R2 U' F"
+    };
 
     private String[] algs = new String[0];
     private final String[] CLLs = {
             //CPLL
-            "z R U R' U R U2 R2 F R F' R U R",
+            "R U R' U' R' F R2 U' R' U' R U R' F'",
+            "F R U' R' U' R U R' F' R U R' U' R' F R F'",
+            //H CLL
+            "R2 U2 R' U2 R2",// pure (vertically, right bar goes front)
+            "x' U2 R U2 R2 F2 R U2 x",// diag (vertically, rotate up, bars swap)
+            "R U R' U R U L' U R' U' L",// vertical bar (bar on right, stays)
+            "F R2 U' R2 U' R2 U R2 F'",// horizontal bar (bar on front, goes back)
+            //U CLL
+            "R2 F2 R U R' F R2 U2 R' U' R",// pure (U' preAUF, bar goes front)
+            "F R U R' U2 F' R U' R' F",//  bars (U2 preAUF, bars swap)
+            "R' U R' F R F' R U2 R' U R",// LF-RB slash (slash goes right)
+            "F R' F' R U' R U' R' U2 R U' R'",// slashes (U' preAUF, FR corner goes FL)
+            "R U' R2 F R F' R U R' U' R U R'",// RF-LB slash (slash goes right)
+            "F U R U' R' F'",// diag (U preAUF, bar goes left)
+            //T CLL
+            "x' U' R U' R2 F R F R' F' R U2 x",// pure (U2 preAUF, rotate up, up bar goes left)
+            "R' U R U2 R2 F R F' R",// front bar (bar goes back)
+            "L' U' L U L F' L' F",// bar right (U preAUF, bar goes left)
+            "x2 R' F R U' R U R' U R' x2",// up bar (put bar DL, DBL corner stays, FU bar goes LF)
+            "R U R' U' R' F R F'",// bar left (U' preAUF, bar goes right)
+            "z' F R F' R U R' U R' F' R U2 z",// diag (U2 preAUF, put up on left, front bars stay)
+            //L CLL
+            "R' U R' U2 R U' R' U R U' R2",// pure (U' preAUF, FL goes FR)
+            "R U' R' U R U' R' F R' F' R2 U R'",// matching up opposite RF (U preAUF, FL stays)
+            "R' F R U' R' F R F' R U R2 F' R",// matching up opposite FR (FR stays)
+            "F R' F' R U R U' R'",// UB matching RF (U2 preAUF, FR stays)
+            "F' R U R' U' R' F R",// UL matching FR (U' preAUF, FL stays)
+            "R U2 R2 F R F' R U2 R'",// diag (U2 preAUF, FR goes RB)
+            //Pi CLL
+            "R U' R2 U R2 U R2 U' R",// pure (U' preAUF, bar goes left)
+            "F R' F' R U2 R U' R' U R U2 R'",// LF-RB slash (slash goes left)
+            "F R2 U' R2 U R2 U R2 F'",// slashes (bar goes back)
+            "R U2 R' U' R U R' U2 R' F R F'",// RF-LB slash (U' preAUF, slash goes back)
+            "R' F R F' R U' R' U' R U' R'",// bars (U preAUF, bars stay)
+            "R' U' R' F R F' R U' R' U2 R",// diag (U2 preAUF, bar goes back)
+            //S CLL
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            //AS CLL
+            "",
+            "",
+            "",
+            "",
+            "",
             "",
     };
-    private int ALGS;
+    private int alg;
     // Constructor to initialize the components, layout and arrays
     public Main2x2() {
 
@@ -128,11 +166,11 @@ public class Main2x2 extends JFrame implements KeyListener {
         // Display the first question and answer in the text labels
         String temp = "";
         while(temp.isEmpty()){
-            ALGS = prng.generate();
-            temp = algs[ALGS];
+            alg = prng.generate();
+            temp = algs[alg];
         }
         questionText.setText("");
-        answerText.setText(generateScramble(ALGS));
+        answerText.setText(generateScramble(alg));
 
         // Add an action listener to this window to handle keyboard events
         addKeyListener(this);
@@ -150,13 +188,13 @@ public class Main2x2 extends JFrame implements KeyListener {
 
     // Method to handle keyboard events when any button is typed
     public void keyTyped(KeyEvent e) {
-        questionText.setText(algs[ALGS]);
+        questionText.setText(algs[alg]);
         String temp = "";
         while(temp.isEmpty()){
-            ALGS = prng.generate();
-            temp = algs[ALGS];
+            alg = prng.generate();
+            temp = algs[alg];
         }
-        answerText.setText(generateScramble(ALGS));
+        answerText.setText(generateScramble(alg));
 
     }
 
@@ -169,7 +207,7 @@ public class Main2x2 extends JFrame implements KeyListener {
 
     private String generateScramble (int ZBLL){
         int rotation = ThreadLocalRandom.current().nextInt(rotationSalt.length);
-        return rotatedSalt1[rotation]+cancel(rotatedSalt2[rotation],cancel(nissy("twophase","R' U' F "+inserts[ThreadLocalRandom.current().nextInt(inserts.length)]+AUFs[ThreadLocalRandom.current().nextInt(AUFs.length)]+ algs[ZBLL]+AUFs[ThreadLocalRandom.current().nextInt(AUFs.length)]+" "+rotationSalt[rotation]),"R' U' F"));
+        return cancel(rotatedSalt[rotation],cancel(trim(nissy("solve","corners","R' U' F "+inserts[ThreadLocalRandom.current().nextInt(inserts.length)]+AUFs[ThreadLocalRandom.current().nextInt(AUFs.length)]+ algs[ZBLL]+AUFs[ThreadLocalRandom.current().nextInt(AUFs.length)]+" "+rotationSalt[rotation])),"R' U' F"));
     }
 
     private String cancel(String left, String right){
@@ -210,6 +248,13 @@ public class Main2x2 extends JFrame implements KeyListener {
             }
         }
         return left + " " + right;
+    }
+
+    private String trim(String input){
+        while (input.charAt(input.length() - 1)!=' '){
+            input = input.substring(0,input.length()-1);
+        }
+        return input.substring(0,input.length()-1);
     }
 
 
