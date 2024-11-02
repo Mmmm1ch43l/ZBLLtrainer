@@ -61,7 +61,7 @@ public class Main2x2 extends JFrame implements KeyListener {
             {"R U' R2 F R F' R U R' U' R U R'",     "RF-LB slash (slash goes right)"},
             {"R' U R' F R F' R U2 R' U R",          "LF-RB slash (slash goes right)"},
             //T CLL
-            {"x' U' R U' R2 F R F R' F' R U2 x",    "pure (U2 preAUF, rotate up, up bar goes left)"},
+            {"F2 R U R' F R2 U2 R' U' R U'",        "pure (U preAUF, put up on left, bars swap)"},
             {"z' F R F' R U R' U R' F' R U2 z",     "diag (U2 preAUF, put up on left, front bars stay)"},
             {"R U R' U' R' F R F'",                 "bar left (U' preAUF, bar goes right)"},
             {"L' U' L U L F' L' F",                 "bar right (U preAUF, bar goes left)"},
