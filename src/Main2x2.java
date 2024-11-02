@@ -18,6 +18,7 @@ public class Main2x2 extends JFrame implements KeyListener {
     private final PseudoRandomNumberGenerator prng;
 
     private final JLabel questionText;
+    private final JLabel descriptionText;
     private final JLabel answerText;
     private final String[] AUFs = {" "," U "," U' "," U2 "};
     private final String[] inserts = {
@@ -42,58 +43,58 @@ public class Main2x2 extends JFrame implements KeyListener {
             "R2 U' F","R2 U F","F2 U' R","R2 U' F"
     };
 
-    private String[] algs = new String[0];
-    private final String[] CLLs = {
+    private String[][] algs = new String[0][];
+    private final String[][] CLLs = {
             //CPLL
-            "R U R' U' R' F R2 U' R' U' R U R' F'",
-            "F R U' R' U' R U R' F' R U R' U' R' F R F'",
+            {"x R' U R U2 R2 F R F' R U2 x'",       "adj (bar on back, rotate down, bar stays)"},
+            {"R U' R' U' F2 U' R U R' U F2",        "opp (LF stays)"},
             //H CLL
-            "R2 U2 R' U2 R2",// pure (vertically, right bar goes front)
-            "x' U2 R U2 R2 F2 R U2 x",// diag (vertically, rotate up, bars swap)
-            "R U R' U R U L' U R' U' L",// vertical bar (bar on right, stays)
-            "F R2 U' R2 U' R2 U R2 F'",// horizontal bar (bar on front, goes back)
+            {"R2 U2 R' U2 R2",                      "pure (vertically, right bar goes front)"},
+            {"x' U2 R U2 R2 F2 R U2 x",             "diag (vertically, rotate up, bars swap)"},
+            {"R U R' U R U L' U R' U' L",           "vertical bar (bar on right, stays)"},
+            {"F R2 U' R2 U' R2 U R2 F'",            "horizontal bar (bar on front, goes back)"},
             //U CLL
-            "R2 F2 R U R' F R2 U2 R' U' R",// pure (U' preAUF, bar goes front)
-            "F U R U' R' F'",// diag (U preAUF, bar goes left)
-            "F R U R' U2 F' R U' R' F",//  bars (U2 preAUF, bars swap)
-            "F R' F' R U' R U' R' U2 R U' R'",// slashes (U' preAUF, FR corner goes FL)
-            "R U' R2 F R F' R U R' U' R U R'",// RF-LB slash (slash goes right)
-            "R' U R' F R F' R U2 R' U R",// LF-RB slash (slash goes right)
+            {"R2 F2 R U R' F R2 U2 R' U' R",        "pure (U' preAUF, bar goes front)"},
+            {"F U R U' R' F'",                      "diag (U preAUF, bar goes left)"},
+            {"F R U R' U2 F' R U' R' F",            "bars (U2 preAUF, bars swap)"},
+            {"F R' F' R U' R U' R' U2 R U' R'",     "slashes (U' preAUF, FR corner goes FL)"},
+            {"R U' R2 F R F' R U R' U' R U R'",     "RF-LB slash (slash goes right)"},
+            {"R' U R' F R F' R U2 R' U R",          "LF-RB slash (slash goes right)"},
             //T CLL
-            "x' U' R U' R2 F R F R' F' R U2 x",// pure (U2 preAUF, rotate up, up bar goes left)
-            "z' F R F' R U R' U R' F' R U2 z",// diag (U2 preAUF, put up on left, front bars stay)
-            "R U R' U' R' F R F'",// bar left (U' preAUF, bar goes right)
-            "L' U' L U L F' L' F",// bar right (U preAUF, bar goes left)
-            "R' U R U2 R2 F R F' R",// front bar (bar goes back)
-            "x2 R' F R U' R U R' U R' x2",// up bar (put bar DL, DBL corner stays, FU bar goes LF)
+            {"x' U' R U' R2 F R F R' F' R U2 x",    "pure (U2 preAUF, rotate up, up bar goes left)"},
+            {"z' F R F' R U R' U R' F' R U2 z",     "diag (U2 preAUF, put up on left, front bars stay)"},
+            {"R U R' U' R' F R F'",                 "bar left (U' preAUF, bar goes right)"},
+            {"L' U' L U L F' L' F",                 "bar right (U preAUF, bar goes left)"},
+            {"R' U R U2 R2 F R F' R",               "front bar (bar goes back)"},
+            {"x2 R' F R U' R U R' U R' x' y",       "up bar (put bar DL, DBL corner stays, FU bar goes LF)"},
             //L CLL
-            "R' U R' U2 R U' R' U R U' R2",// pure (U' preAUF, FL goes FR)
-            "R U2 R2 F R F' R U2 R'",// diag (U2 preAUF, FR goes RB)
-            "F R' F' R U R U' R'",// UB matching RF (U2 preAUF, FR stays)
-            "F' R U R' U' R' F R",// UL matching FR (U' preAUF, FL stays)
-            "R U' R' U R U' R' F R' F' R2 U R'",// matching up opposite RF (U preAUF, FL stays)
-            "R' F R U' R' F R F' R U R2 F' R",// matching up opposite FR (FR stays)
+            {"R' U R' U2 R U' R' U R U' R2",        "pure (U' preAUF, FL goes FR)"},
+            {"R U2 R2 F R F' R U2 R'",              "diag (U2 preAUF, FR goes RB)"},
+            {"F R' F' R U R U' R'",                 "UB matching RF (U2 preAUF, FR stays)"},
+            {"F' R U R' U' R' F R",                 "UL matching FR (U' preAUF, FL stays)"},
+            {"R U' R' U R U' R' F R' F' R2 U R'",   "matching up opposite RF (U preAUF, FL stays)"},
+            {"R' F R U' R' F R F' R U R2 F' R",     "matching up opposite FR (FR stays)"},
             //Pi CLL
-            "R U' R2 U R2 U R2 U' R",// pure (U' preAUF, bar goes left)
-            "R' U' R' F R F' R U' R' U2 R",// diag (U2 preAUF, bar goes back)
-            "R U2 R' U' R U R' U2 R' F R F'",// RF-LB slash (U' preAUF, slash goes back)
-            "F R' F' R U2 R U' R' U R U2 R'",// LF-RB slash (slash goes left)
-            "R' F R F' R U' R' U' R U' R'",// bars (U preAUF, bars stay)
-            "F R2 U' R2 U R2 U R2 F'",// slashes (bar goes back)
+            {"R U' R2 U R2 U R2 U' R",              "pure (U' preAUF, bar goes left)"},
+            {"R' U' R' F R F' R U' R' U2 R",        "diag (U2 preAUF, bar goes back)"},
+            {"R U2 R' U' R U R' U2 R' F R F'",      "RF-LB slash (U' preAUF, slash goes back)"},
+            {"F R' F' R U2 R U' R' U R U2 R'",      "LF-RB slash (slash goes left)"},
+            {"R' F R F' R U' R' U' R U' R'",        "bars (U preAUF, bars stay)"},
+            {"F R2 U' R2 U R2 U R2 F'",             "slashes (bar goes back)"},
             //S CLL
-            "R U R' U R U2 R'",// pure (LF goes RB)
-            "R U R' U R' F R F' R U2 R'",// diag (U2 preAUF, RB goes LB)
-            "R U' R' F R' F' R",// Niklas (LF goes RB)
-            "F R' F' R U2 R U2 R'",// anti Niklas (LF goes RF)
-            "L' U2 L U2 L F' L' F",// slashes (LF goes RF)
-            "U2 R U' R2 F' R2 U R' U2",// bars (U preAUF, rotate up, FLU goes FRU)
+            {"R U R' U R U2 R'",                    "pure (LF goes RB)"},
+            {"R U R' U R' F R F' R U2 R'",          "diag (U2 preAUF, RB goes LB)"},
+            {"R U' R' F R' F' R",                   "Niklas (LF goes RB)"},
+            {"F R' F' R U2 R U2 R'",                "anti Niklas (LF goes RF)"},
+            {"L' U2 L U2 L F' L' F",                "slashes (LF goes RF)"},
+            {"x' U2 R U' R2 F' R2 U R' U2 x",       "bars (U preAUF, rotate up, FLU goes FRU)"},
             //AS CLL
-            "R' F' R U' R' F2 R",// pure (RF goes LB)
-            "R' U R U' R2 F R F' R U R' U' R",// diag (RF goes FF)
-            "R' F R F' R U R'",// Niklas (RF goes LF)
-            "F' R U R' U2 R' F2 R",// anti Niklas (RF goes LF)
-            "R U2 R' U2 R' F R F'",// slashes (RF goes LF)
-            "R U R2 F' R U R U' R2 F R",// bars (U' preAUF, rotate up, FLD goes FRD)
+            {"R' F' R U' R' F2 R",                  "pure (RF goes LB)"},
+            {"R' U R U' R2 F R F' R U R' U' R",     "diag (RF goes FF)"},
+            {"R' F R F' R U R'",                    "Niklas (RF goes LF)"},
+            {"F' R U R' U2 R' F2 R",                "anti Niklas (RF goes LF)"},
+            {"R U2 R' U2 R' F R F'",                "slashes (RF goes LF)"},
+            {"x' R U R2 F' R U R U' R2 F R x",      "bars (U' preAUF, rotate up, FLD goes FRD)"},
     };
     private int alg;
     // Constructor to initialize the components, layout and arrays
@@ -105,7 +106,7 @@ public class Main2x2 extends JFrame implements KeyListener {
 
         if(System.getProperty("os.name").startsWith("Windows")) runningWindows = true;
         if(includeCLL){
-            String[] temp = new String[algs.length+CLLs.length];
+            String[][] temp = new String[algs.length+CLLs.length][];
             System.arraycopy(algs, 0, temp, 0, algs.length);
             System.arraycopy(CLLs, 0, temp, algs.length, CLLs.length);
             algs = temp;
@@ -116,14 +117,18 @@ public class Main2x2 extends JFrame implements KeyListener {
         JLabel questionLabel = new JLabel("Solution:");
         JLabel answerLabel = new JLabel("Scramble:");
         questionText = new JLabel();
+        descriptionText = new JLabel();
         answerText = new JLabel();
         questionText.setHorizontalAlignment(SwingConstants.LEFT);
+        descriptionText.setHorizontalAlignment(SwingConstants.LEFT);
         answerText.setHorizontalAlignment(SwingConstants.LEFT);
 
 
         // Set the font and color of the text labels
         questionText.setFont(new Font("Arial", Font.PLAIN, 16));
         questionText.setForeground(Color.black);
+        descriptionText.setFont(new Font("Arial", Font.PLAIN, 16));
+        descriptionText.setForeground(Color.black);
         answerText.setFont(new Font("Arial", Font.PLAIN, 16));
         answerText.setForeground(Color.black);
 
@@ -140,6 +145,8 @@ public class Main2x2 extends JFrame implements KeyListener {
         panel.add(questionLabel);
         panel.add(Box.createHorizontalStrut(10));
         panel.add(questionText);
+        panel.add(Box.createHorizontalStrut(10));
+        panel.add(descriptionText);
         panel.add(Box.createVerticalStrut(10));
         panel.add(answerLabel);
         panel.add(Box.createHorizontalStrut(10));
@@ -152,7 +159,7 @@ public class Main2x2 extends JFrame implements KeyListener {
         getContentPane().add(panel);
 
         // Set the size and location of the window
-        setSize(630, 140);
+        setSize(630, 160);
         setLocation(10, 10);
 
         // Set the default close operation of the window
@@ -167,9 +174,10 @@ public class Main2x2 extends JFrame implements KeyListener {
         String temp = "";
         while(temp.isEmpty()){
             alg = prng.generate();
-            temp = algs[alg];
+            temp = algs[alg][0];
         }
         questionText.setText("");
+        descriptionText.setText("");
         answerText.setText(generateScramble(alg));
 
         // Add an action listener to this window to handle keyboard events
@@ -188,11 +196,12 @@ public class Main2x2 extends JFrame implements KeyListener {
 
     // Method to handle keyboard events when any button is typed
     public void keyTyped(KeyEvent e) {
-        questionText.setText(algs[alg]);
+        questionText.setText(algs[alg][0]);
+        descriptionText.setText(algs[alg][1]);
         String temp = "";
         while(temp.isEmpty()){
             alg = prng.generate();
-            temp = algs[alg];
+            temp = algs[alg][0];
         }
         answerText.setText(generateScramble(alg));
 
@@ -205,9 +214,9 @@ public class Main2x2 extends JFrame implements KeyListener {
 
     }
 
-    private String generateScramble (int ZBLL){
+    private String generateScramble (int alg){
         int rotation = ThreadLocalRandom.current().nextInt(rotationSalt.length);
-        return cancel(rotatedSalt[rotation],cancel(trim(nissy("solve","corners","R' U' F "+inserts[ThreadLocalRandom.current().nextInt(inserts.length)]+AUFs[ThreadLocalRandom.current().nextInt(AUFs.length)]+ algs[ZBLL]+AUFs[ThreadLocalRandom.current().nextInt(AUFs.length)]+" "+rotationSalt[rotation])),"R' U' F"));
+        return cancel(rotatedSalt[rotation],cancel(trim(nissy("solve","corners","R' U' F "+inserts[ThreadLocalRandom.current().nextInt(inserts.length)]+AUFs[ThreadLocalRandom.current().nextInt(AUFs.length)]+ algs[alg][0]+AUFs[ThreadLocalRandom.current().nextInt(AUFs.length)]+" "+rotationSalt[rotation])),"R' U' F"));
     }
 
     private String cancel(String left, String right){
