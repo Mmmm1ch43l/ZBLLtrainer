@@ -90,11 +90,11 @@ public class Main2x2 extends JFrame implements KeyListener {
             {"x' U2 R U' R2 F' R2 U R' U2 x",       "bars (U preAUF, rotate up, FLU goes FRU)"},
             //AS CLL
             {"R' F' R U' R' F2 R",                  "pure (RF goes LB)"},
-            {"R' U R U' R2 F R F' R U R' U' R",     "diag (RF goes FF)"},
+            {"R' U R U' R2 F R F' R U R' U' R",     "diag (RF goes RB)"},
             {"R' F R F' R U R'",                    "Niklas (RF goes LF)"},
             {"F' R U R' U2 R' F2 R",                "anti Niklas (RF goes LF)"},
             {"R U2 R' U2 R' F R F'",                "slashes (RF goes LF)"},
-            {"x' R U R2 F' R U R U' R2 F R x",      "bars (U' preAUF, rotate up, FLD goes FRD)"},
+            {"x' R U R2 F' R U R U' R2 F R x",      "bars (U preAUF, rotate up, FLD goes FRD)"},
     };
     private int alg;
     // Constructor to initialize the components, layout and arrays
