@@ -159,7 +159,7 @@ public class Main2x2 extends JFrame implements KeyListener {
         getContentPane().add(panel);
 
         // Set the size and location of the window
-        setSize(350, 155);
+        setSize(360, 155);
         setLocation(10, 10);
 
         // Set the default close operation of the window
