@@ -51,7 +51,7 @@ public class Main2x2 extends JFrame implements KeyListener {
             //H CLL
             {"R2 U2 R' U2 R2",                      "pure (vertically, right bar goes front)"},
             {"x' U2 R U2 R2 F2 R U2 x",             "diag (vertically, rotate up, bars swap)"},
-            {"R U R' U R U L' U R' U' L",           "vertical bar (bar on right, stays)"},
+            {"R U R' U R U R' F R' F' R",           "vertical bar (bar on right, stays)"},
             {"F R2 U' R2 U' R2 U R2 F'",            "horizontal bar (bar on front, goes back)"},
             //U CLL
             {"R2 F2 R U R' F R2 U2 R' U' R",        "pure (U' preAUF, bar goes front)"},
@@ -59,23 +59,23 @@ public class Main2x2 extends JFrame implements KeyListener {
             {"F R U R' U2 F' R U' R' F",            "bars (U2 preAUF, bars swap)"},
             {"F R' F' R U' R U' R' U2 R U' R'",     "slashes (U' preAUF, FR corner goes FL)"},
             {"R U' R2 F R F' R U R' U' R U R'",     "RF-LB slash (slash goes right)"},
-            {"R' U R' F R F' R U2 R' U R",          "LF-RB slash (slash goes right)"},
+            {"R' U R' F R F' R U2 R' U R",          "LF-RB slash (slash goes right)"},                          //*
             //T CLL
-            {"F2 R U R' F R2 U2 R' U' R U'",        "pure (U preAUF, put up on left, bars swap)"},
-            {"z' F R F' R U R' U R' F' R U2 z",     "diag (U2 preAUF, put up on left, front bars stay)"},
+            {"z' F2 R U R' F R2 U2 R' U' R U' z",        "pure (U preAUF, put up on left, bars swap)"},
+            {"z' F R F' R U R' U R' F' R U2 z",     "diag (U2 preAUF, put up on left, front bars stay)"},       //
             {"R U R' U' R' F R F'",                 "bar left (U' preAUF, bar goes right)"},
-            {"L' U' L U L F' L' F",                 "bar right (U preAUF, bar goes left)"},
+            {"R' F' R U R U' R' F",                 "bar right (U preAUF, bar goes left)"},
             {"R' U R U2 R2 F R F' R",               "front bar (bar goes back)"},
             {"x2 R' F R U' R U R' U R' x' y",       "up bar (put bar DL, DBL corner stays, FU bar goes LF)"},
             //L CLL
-            {"R' U R' U2 R U' R' U R U' R2",        "pure (U' preAUF, FL goes FR)"},
-            {"R U2 R2 F R F' R U2 R'",              "diag (U2 preAUF, FR goes RB)"},
+            {"R' U R' U2 R U' R' U R U' R2",        "pure (U' preAUF, FL goes FR)"},                            //*
+            {"R U2 R2 F R F' R U2 R'",              "diag (U2 preAUF, FR goes RB)"},                            //
             {"F R' F' R U R U' R'",                 "UB matching RF (U2 preAUF, FR stays)"},
             {"F' R U R' U' R' F R",                 "UL matching FR (U' preAUF, FL stays)"},
-            {"R U' R' U R U' R' F R' F' R2 U R'",   "matching up opposite RF (U preAUF, FL stays)"},
-            {"R' F R U' R' F R F' R U R2 F' R",     "matching up opposite FR (FR stays)"},
+            {"R U' R' U R U' R' F R' F' R2 U R'",   "matching up opposite RF (U preAUF, FL stays)"},            //
+            {"R' F R U' R' F R F' R U R2 F' R",     "matching up opposite FR (FR stays)"},                      //
             //Pi CLL
-            {"R U' R2 U R2 U R2 U' R",              "pure (U' preAUF, bar goes left)"},
+            {"R U' R2 U R2 U R2 U' R",              "pure (U' preAUF, bar goes left)"},                         //
             {"R' U' R' F R F' R U' R' U2 R",        "diag (U2 preAUF, bar goes back)"},
             {"R U2 R' U' R U R' U2 R' F R F'",      "RF-LB slash (U' preAUF, slash goes back)"},
             {"F R' F' R U2 R U' R' U R U2 R'",      "LF-RB slash (slash goes left)"},
@@ -83,18 +83,18 @@ public class Main2x2 extends JFrame implements KeyListener {
             {"F R2 U' R2 U R2 U R2 F'",             "slashes (bar goes back)"},
             //S CLL
             {"R U R' U R U2 R'",                    "pure (LF goes RB)"},
-            {"R U R' U R' F R F' R U2 R'",          "diag (U2 preAUF, RB goes LB)"},
-            {"R U' R' F R' F' R",                   "Niklas (LF goes RB)"},
+            {"R U R' U R' F R F' R U2 R'",          "diag (U2 preAUF, RB goes LB)"},                            //
+            {"R U' R' F R' F' R",                   "Niklas (LF goes RF)"},
             {"F R' F' R U2 R U2 R'",                "anti Niklas (LF goes RF)"},
-            {"L' U2 L U2 L F' L' F",                "slashes (LF goes RF)"},
-            {"x' U2 R U' R2 F' R2 U R' U2 x",       "bars (U preAUF, rotate up, FLU goes FRU)"},
+            {"R' F2 R U2 R U' R' F",                "slashes (LF goes RF)"},
+            {"x' U2 R U' R2 F' R2 U R' U2 x",       "bars (U preAUF, rotate up, FLU goes FRU)"},                //*
             //AS CLL
             {"R' F' R U' R' F2 R",                  "pure (RF goes LB)"},
-            {"R' U R U' R2 F R F' R U R' U' R",     "diag (RF goes RB)"},
+            {"R' U R U' R2 F R F' R U R' U' R",     "diag (RF goes RB)"},                                       //*
             {"R' F R F' R U R'",                    "Niklas (RF goes LF)"},
             {"F' R U R' U2 R' F2 R",                "anti Niklas (RF goes LF)"},
             {"R U2 R' U2 R' F R F'",                "slashes (RF goes LF)"},
-            {"x' R U R2 F' R U R U' R2 F R x",      "bars (U preAUF, rotate up, FLD goes FRD)"},
+            {"x' R U R2 F' R U R U' R2 F R x",      "bars (U preAUF, rotate up, FLD goes FRD)"},                //*
     };
     private int alg;
     // Constructor to initialize the components, layout and arrays
@@ -159,7 +159,7 @@ public class Main2x2 extends JFrame implements KeyListener {
         getContentPane().add(panel);
 
         // Set the size and location of the window
-        setSize(630, 160);
+        setSize(350, 155);
         setLocation(10, 10);
 
         // Set the default close operation of the window
