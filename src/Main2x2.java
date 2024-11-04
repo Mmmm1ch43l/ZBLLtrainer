@@ -12,7 +12,9 @@ import java.util.concurrent.TimeUnit;
 public class Main2x2 extends JFrame implements KeyListener {
     private static boolean runningWindows = false;
 
-    private final boolean includeCLL = true;
+    private final boolean includeCLL = false;
+    private final boolean includeEG1 = true;
+    private final boolean includeEG2 = false;
     private final double pseudoRandomNumberGeneratorDecay = 0.95;
 
     private final PseudoRandomNumberGenerator prng;
@@ -54,7 +56,7 @@ public class Main2x2 extends JFrame implements KeyListener {
             {"R U R' U R U R' F R' F' R",           "vertical bar (bar on right, stays)"},
             {"F R2 U' R2 U' R2 U R2 F'",            "horizontal bar (bar on front, goes back)"},
             //U CLL
-            {"R2 F2 R U R' F R2 U2 R' U' R",        "pure (U' preAUF, bar goes front)"},
+            {"R2 F2 R U R' F R2 U2 R' U' R",        "pure (U' preAUF, bar goes front)"},                                    //check out inverse and R' U F' R U' R' F2 U2 R U
             {"F U R U' R' F'",                      "diag (U preAUF, bar goes left)"},
             {"F R U R' U2 F' R U' R' F",            "bars (U2 preAUF, bars swap)"},
             {"F R' F' R U' R U' R' U2 R U' R'",     "slashes (U' preAUF, FR corner goes FL)"},
@@ -96,6 +98,111 @@ public class Main2x2 extends JFrame implements KeyListener {
             {"R U2 R' U2 R' F R F'",                "slashes (RF goes LF)"},
             {"x' R U R2 F' R U R U' R2 F R x",      "bars (U preAUF, rotate up, FLD goes FRD)"},                //*
     };
+
+    private final String[][] EG1s = {
+            //PBLs
+            {"z' U2 R U2 R2 F2 R U2 z",             "adj-adj (bar on back, put up on left, bar stays)"},
+            {"z2 R' U R' F2 R F' R z2",             "adj-opp (put up on bottom, now DBR stays)"},
+            //H EG1
+            {"R' F R2 U' R' F R U R' F'",           "pure (vertically, bars swap)"},                                        //try U R U' R' U' R U R2 F' R
+            {"F' U R U' R2 F2 R U' F",              "diag (vertically, bars swap)"},
+            {"R U R' F' R U R' U' R U R'",          "horizontal bar (bar right, goes front)"},
+            {"R' F R F' U2 F R U2 R' F",            "vertical bar (bar front, stays)"},
+            //U EG1
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            //T EG1
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            //L EG1
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            //Pi EG1
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            //S EG1
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            //AS EG1
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+    };
+
+    private final String[][] EG2s = {
+            //PBLs
+            {"R2 F2 R2",                            "opp-opp (columns stay)"},
+            //H EG2
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            //U EG2
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            //T EG2
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            //L EG2
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            //Pi EG2
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            //S EG2
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            //AS EG2
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+            {"",                                    ""},
+    };
     private int alg;
     // Constructor to initialize the components, layout and arrays
     public Main2x2() {
@@ -109,6 +216,18 @@ public class Main2x2 extends JFrame implements KeyListener {
             String[][] temp = new String[algs.length+CLLs.length][];
             System.arraycopy(algs, 0, temp, 0, algs.length);
             System.arraycopy(CLLs, 0, temp, algs.length, CLLs.length);
+            algs = temp;
+        }
+        if(includeEG1){
+            String[][] temp = new String[algs.length+EG1s.length][];
+            System.arraycopy(algs, 0, temp, 0, algs.length);
+            System.arraycopy(EG1s, 0, temp, algs.length, EG1s.length);
+            algs = temp;
+        }
+        if(includeEG2){
+            String[][] temp = new String[algs.length+EG2s.length][];
+            System.arraycopy(algs, 0, temp, 0, algs.length);
+            System.arraycopy(EG2s, 0, temp, algs.length, EG2s.length);
             algs = temp;
         }
 
@@ -159,7 +278,7 @@ public class Main2x2 extends JFrame implements KeyListener {
         getContentPane().add(panel);
 
         // Set the size and location of the window
-        setSize(360, 155);
+        setSize(390, 155);
         setLocation(10, 10);
 
         // Set the default close operation of the window
