@@ -64,7 +64,7 @@ public class Main2x2 extends JFrame implements KeyListener {
             {"R' U R' F R F' R U2 R' U R",          "LF-RB slash (slash goes right)"},                          //*
             //T CLL
             {"z' F2 R U R' F R2 U2 R' U' R U' z y2","pure (U preAUF, put up on left, bars swap)"},
-            {"z' F R F' R U R' U R' F' R U2 z",     "diag (U2 preAUF, put up on left, front bars stay)"},       //
+            {"z' F R F' R U R' U R' F' R U2 z y",     "diag (U2 preAUF, put up on left, front bars stay)"},       //
             {"R U R' U' R' F R F'",                 "bar left (U' preAUF, bar goes right)"},
             {"R' F' R U R U' R' F",                 "bar right (U preAUF, bar goes left)"},
             {"R' U R U2 R2 F R F' R",               "front bar (bar goes back)"},
@@ -102,7 +102,7 @@ public class Main2x2 extends JFrame implements KeyListener {
     private final String[][] EG1s = {
             //PBLs
             {"z' U2 R U2 R2 F2 R U2 z",             "adj-adj (bar on back, put up on left, bar stays)"},
-            {"z2 R' U R' F2 R F' R z2",             "adj-opp (put up on bottom, now DBR stays)"},
+            {"z2 R' U R' F2 R F' R x2",             "adj-opp (put up on bottom, now DBR stays)"},
             //H EG1
             {"y2 x' U R U' R' U' R U R2 F' R x y2", "pure (horizontal, bars swap)"},
             {"F' U R U' R2 F2 R U' F",              "diag (vertically, bars swap)"},
