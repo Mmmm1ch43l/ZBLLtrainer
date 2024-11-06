@@ -109,12 +109,12 @@ public class Main2x2 extends JFrame implements KeyListener {
             {"R U R' F' R U R' U' R U R'",          "horizontal bar (bar right, goes front)"},
             {"R' F R F' U2 F R U2 R' F",            "vertical bar (bar front, stays)"},
             //U EG1
-            {"",                                    ""},
-            {"",                                    ""},
-            {"",                                    ""},
-            {"",                                    ""},
-            {"",                                    ""},
-            {"",                                    ""},
+            {"x z R2 F' R U' R U R' U R' U2 x'",    "pure (U' preAUF, xz , bars go down)"},
+            {"R U R' U R U' R2 F' R2 U R'",         "diag (U' preAUF, bar stays)"},
+            {"F' U2 R U2 R' U2 F",                  "bars (bars stays)"},
+            {"R' F R F' R' F R2 U' R'",             "slashes (U preAUF, UBL goes UFL)"},
+            {"R U' R' U R U' R' U' F R U' R'",      "RF-LB slash (U2 preAUF, slash goes front)"},                           //maybe R U R' U' R' F R F' R U R' U'
+            {"R' F R U' R' F R U' R U R' F'",       "LF-RB slash (slash goes right)"},                                      //maybe R' F' R U R U' R' F R' F' R U
             //T EG1
             {"",                                    ""},
             {"",                                    ""},
