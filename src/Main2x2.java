@@ -12,8 +12,8 @@ import java.util.concurrent.TimeUnit;
 public class Main2x2 extends JFrame implements KeyListener {
     private static boolean runningWindows = false;
 
-    private final boolean includeCLL = true;
-    private final boolean includeEG1 = false;
+    private final boolean includeCLL = false;
+    private final boolean includeEG1 = true;
     private final boolean includeEG2 = false;
     private final double pseudoRandomNumberGeneratorDecay = 0.95;
 
@@ -113,8 +113,8 @@ public class Main2x2 extends JFrame implements KeyListener {
             {"R U R' U R U' R2 F' R2 U R'",         "diag (U' preAUF, bar stays)"},
             {"F' U2 R U2 R' U2 F",                  "bars (bars stays)"},
             {"R' F R F' R' F R2 U' R'",             "slashes (U preAUF, UBL goes UFL)"},
-            {"R U' R' U R U' R' U' F R U' R'",      "RF-LB slash (U2 preAUF, slash goes front)"},                           //maybe R U R' U' R' F R F' R U R' U'
-            {"R' F R U' R' F R U' R U R' F'",       "LF-RB slash (slash goes right)"},                                      //maybe R' F' R U R U' R' F R' F' R U
+            {"x y U R' U' R' F R F' R U R' U' y' x'","RF-LB slash (U' preAUF, xy, slash goes down)"},
+            {"x y' F' R U R U' R' F R' F' R U y x'","LF-RB slash (U preAUF, xy, slash goes down)"},
             //T EG1
             {"",                                    ""},
             {"",                                    ""},
