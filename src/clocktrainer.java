@@ -82,7 +82,7 @@ public class clocktrainer extends JFrame implements KeyListener {
     ul: (m3 on UL, m4 on UR)
     /:  (m5 on UL, m6 on UR)
     DL: (C to U on DL, UL to U on UR)
-    L:  (C to R on UL, UR on R on UR)
+    L:  (C to R on UL, UR to R on UR)
     dr: (auf)
     Urgently needs verification!!!!
     */
@@ -138,6 +138,7 @@ public class clocktrainer extends JFrame implements KeyListener {
 
     private void drawClock(Graphics g, int[] seed){
         Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.BLACK);
         g2d.fillRect(300, 0, 300, 300);
         g2d.setColor(Color.GRAY);
         g2d.setStroke(new BasicStroke(3));
