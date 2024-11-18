@@ -69,33 +69,40 @@ public class clocktrainer extends JFrame implements KeyListener {
     }
 
     /*
-    Here's where the logic for the memorisation part actually goes.
-    Haven't done this yet.
-    This is what it's probably supposed to be: (Maybe switching m5 and m6)
+    Memorisation:
     m1: (r-ur) + (L-D)
     m2: u-c
     m3: C-D
     m4: (DL-L) + (u-r)
-    m5: ul-u+c-d+R-UR+L [position of L relative to 12]
-    m6: (U-C+D) [position of D relative to 12] + (dl-l) + (ur-r)
-     */
+    m5: (dl-l) + (ur-r) + (U-C+D) [position of D relative to 12]
+    m6: (R-UR+L) [position of L relative to 12] + (ul-u) + (c-d)
+    then do y2 before starting and Execution looks like:
+    UR: (m1 on UL, m2 on UR)
+    R:  (DL to L on UL, C to L on UR)
+    ul: (m3 on UL, m4 on UR)
+    /:  (m5 on UL, m6 on UR)
+    DL: (C to U on DL, UL to U on UR)
+    L:  (C to R on UL, UR on R on UR)
+    dr: (auf)
+    Urgently needs verification!!!!
+    */
     private String generateSolution(int[] scramble) {
-        String output = "   ";
+        String s = "   ";
         //m1
-        output += encode(scramble[0]);
+        s += encode(scramble[5]-scramble[2] + scramble[14]-scramble[10]);
         //m2
-        output += encode(scramble[1]);
-        output += " ";
+        s += encode(scramble[1]-scramble[4]);
+        s += " ";
         //m3
-        output += encode(scramble[2]);
+        s += encode(scramble[13]-scramble[10]);
         //m4
-        output += encode(scramble[3]);
-        output += " ";
+        s += encode(scramble[11]-scramble[14] + scramble[1]-scramble[5]);
+        s += " ";
         //m5
-        output += encode(scramble[4]);
+        s += encode(scramble[6]-scramble[3] + scramble[2]-scramble[5] + scramble[16]-scramble[13] + scramble[10]);
         //m6
-        output += encode(scramble[5]);
-        return output;
+        s += encode(scramble[12]-scramble[15] + scramble[14] + scramble[0]-scramble[1] + scramble[4]-scramble[7]);
+        return s;
     }
 
     private int[] generateScramble() {
