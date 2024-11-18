@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
-public class Main2x2 extends JFrame implements KeyListener {
+public class _2x2trainer extends JFrame implements KeyListener {
     private static boolean runningWindows = false;
 
     private final boolean includeCLL = false;
@@ -205,7 +205,7 @@ public class Main2x2 extends JFrame implements KeyListener {
     };
     private int alg;
     // Constructor to initialize the components, layout and arrays
-    public Main2x2() {
+    public _2x2trainer() {
 
         // Set the title of the window
         super("ZBLL trainer");
@@ -329,7 +329,7 @@ public class Main2x2 extends JFrame implements KeyListener {
     // Main method to create an instance of the window with some sample questions and answers
     public static void main(String[] args) {
         // Create an instance of the window with these arrays as parameters
-        new Main2x2();
+        new _2x2trainer();
 
     }
 

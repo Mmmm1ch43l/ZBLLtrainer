@@ -9,11 +9,11 @@ import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
-public class Main extends JFrame implements KeyListener {
+public class ZBLLtrainer extends JFrame implements KeyListener {
     private static boolean runningWindows = false;
 
-    private final boolean include2GLL = false;
-    private final boolean includeU = true;
+    private final boolean include2GLL = true;
+    private final boolean includeU = false;
     private final boolean includeH = false;
     private final double pseudoRandomNumberGeneratorDecay = 0.95;
 
@@ -221,7 +221,7 @@ public class Main extends JFrame implements KeyListener {
     };
     private int ZBLL;
     // Constructor to initialize the components, layout and arrays
-    public Main() {
+    public ZBLLtrainer() {
 
         // Set the title of the window
         super("ZBLL trainer");
@@ -337,7 +337,7 @@ public class Main extends JFrame implements KeyListener {
     // Main method to create an instance of the window with some sample questions and answers
     public static void main(String[] args) {
         // Create an instance of the window with these arrays as parameters
-        new Main();
+        new ZBLLtrainer();
 
     }
 
