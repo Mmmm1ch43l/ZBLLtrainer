@@ -8,6 +8,7 @@ public class clocktrainer extends JFrame implements KeyListener {
     private final JLabel answerText;
     private int[] currentSeed;
     private boolean solutionShown;
+    private final String[] encoding = {"A","F","G","I","L","M","O","N","R","U","S","T"};
 
     public clocktrainer() {
         super("clock trainer");
@@ -118,22 +119,7 @@ public class clocktrainer extends JFrame implements KeyListener {
     }
 
     private String encode(int value){
-        value = (value + 120) % 12;
-        return switch (value) {
-            case 0 -> "L";
-            case 1 -> "A";
-            case 2 -> "B";
-            case 3 -> "S";
-            case 4 -> "D";
-            case 5 -> "E";
-            case 6 -> "F";
-            case 7 -> "G";
-            case 8 -> "Ch";
-            case 9 -> "I";
-            case 10 -> "Sch";
-            case 11 -> "K";
-            default -> "X";
-        };
+        return encoding[(value + 120) % 12];
     }
 
     private void drawClock(Graphics g, int[] seed){
