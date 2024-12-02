@@ -71,13 +71,14 @@ public class clocktrainer extends JFrame implements KeyListener {
 
     /*
     Memorisation:
-    m1: (r-ur) + (L-D)
+    (here capital letters are front, lowercase back, will switch before execution)
+    m1: (L-D) + (r-ur)
     m2: u-c
     m3: C-D
     m4: (DL-L) + (u-r)
     m5: (dl-l) + (ur-r) + (U-C+D) [position of D relative to 12]
     m6: (R-UR+L) [position of L relative to 12] + (ul-u) + (c-d)
-    then do y2 before starting and Execution looks like:
+    then do y2 (which is effectively z2 since you're already on the back) before starting and Execution looks like:
     UR: (m1 on UL, m2 on UR)
     R:  (DL to L on UL, C to L on UR)
     ul: (m3 on UL, m4 on UR)
@@ -85,7 +86,6 @@ public class clocktrainer extends JFrame implements KeyListener {
     DL: (C to U on DL, UL to U on UR)
     L:  (C to R on UL, UR to R on UR)
     dr: (auf)
-    Urgently needs verification!!!!
     */
     private String generateSolution(int[] scramble) {
         String s = "   ";
