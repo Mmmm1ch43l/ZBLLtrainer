@@ -71,15 +71,15 @@ public class clocktrainer extends JFrame implements KeyListener {
 
     /*
     Memorisation:
-    (here capital letters are front, lowercase back, will switch before execution)
-    m1: (L-D) [x2] + (r-ur)
-    m2: u-c [x2]
-    m3: C-D
-    m4: (DL-L) [x2] + (u-r)
+    (lowercase letters are front, uppercase back)
+    m1: d-c
+    m2: (l-dl) [x2] + (R-U)
+    m3: C-U
+    m4: (UR-R) [x2] + (d-l)
     m5: (dl-l) + (ur-r) [x2] + (U-C+D) [position of D relative to 12]
-    m6: (R-UR+L) [position of L relative to 12] [now do y2 instead of x2] + (dr-d) + (c-u)
-    start from here and Execution looks like:
-    UR: (m1 on UL, m2 on UR)
+    m6: (L-DL+R) [position of L relative to 12] [x2] + (dr-d) + (c-u)
+    Execution looks like:
+    UR: (m1 on UR, m2 on UL)
     R:  (DL to L on UL, C to L on UR)
     ul: (m3 on UL, m4 on UR)
     /:  (m5 on UL, m6 on UR)
