@@ -12,9 +12,9 @@ import java.util.concurrent.TimeUnit;
 public class ZBLLtrainer extends JFrame implements KeyListener {
     private static boolean runningWindows = false;
 
-    private final boolean include2GLL = true;
-    private final boolean includeU = true;
-    private final boolean includeH = false;
+    private final boolean include2GLL = false;
+    private final boolean includeU = false;
+    private final boolean includeH = true;
     private final double pseudoRandomNumberGeneratorDecay = 0.95;
 
     private final PseudoRandomNumberGenerator prng;
@@ -145,6 +145,7 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "R' U' R U' R' U R U' R' U2 R",
             "R U R' U R U' R' U R U' R' U R' U' R2 U' R' U R' U R",
             "R U R' U R U2 R' U' R' U2 R U R' U R",
+            /*
             //H diag
             "U F U R U' R' U R U' R' U R U' R' F'",// opposites
             "x' U' R U' R' U R' F2 R U' R U R' U x",// bars
@@ -180,6 +181,7 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "R' U2 R U R' U R2 R D R' U R D' R' U' R'",// back matching left + bar front
             "U R U2 R' U' R U R' U' F' R U R' U' R' F R2 U' R'",// back matching right + pair front right (Fr)
             "R' U2 R2 U R2 U R U2 R' F R U R U' R' F'",// back matching left + pair front left (Fl)
+             */
     };
     private final String[] _2GLLs = {
             "U' R U R' U R U2 R' L' U' L U' L' U2 L",// T 2GLL
