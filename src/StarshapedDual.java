@@ -10,8 +10,10 @@ public class StarshapedDual extends JPanel implements KeyListener {
     private boolean drawRays;
 
     private static final int MARGIN = 20;
-    private static final int WIDTH = 1270;
-    private static final int HEIGHT = 640;
+    //private static final int WIDTH = 1270;
+    //private static final int HEIGHT = 640;
+    private static final int WIDTH = 2200;
+    private static final int HEIGHT = 1100;
     private static final int SYSTEM_WIDTH = (WIDTH - 3 * MARGIN) / 2;
     private static final int SYSTEM_HEIGHT = HEIGHT - 2 * MARGIN;
 
