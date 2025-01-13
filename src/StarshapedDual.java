@@ -10,10 +10,10 @@ public class StarshapedDual extends JPanel implements KeyListener {
     private boolean drawRays;
 
     private static final int MARGIN = 20;
-    //private static final int WIDTH = 1270;
-    //private static final int HEIGHT = 640;
-    private static final int WIDTH = 2200;
-    private static final int HEIGHT = 1100;
+    private static final int WIDTH = 1270;
+    private static final int HEIGHT = 640;
+    //private static final int WIDTH = 2200;
+    //private static final int HEIGHT = 1100;
     private static final int SYSTEM_WIDTH = (WIDTH - 3 * MARGIN) / 2;
     private static final int SYSTEM_HEIGHT = HEIGHT - 2 * MARGIN;
 
@@ -161,7 +161,7 @@ public class StarshapedDual extends JPanel implements KeyListener {
             currentPolygonIndex = (currentPolygonIndex + 1) % tableOfVertices.length;
             repaint();
         }
-        drawRays = (currentPolygonIndex > 10);
+        drawRays = (currentPolygonIndex > 11);
     }
 
     @Override
@@ -225,75 +225,81 @@ public class StarshapedDual extends JPanel implements KeyListener {
                         {0, -1}
                 },
                 {
-                        {1, 1},
-                        {0.5, -0.5},
-                        {-1, -1},
-                        {-0.5, 0.5}
-                },
-                {
-                        {1, 1},
-                        {0.5, -0.5},
-                        {-1, -1},
-                        {-0.5, 0.5},
-                        {0, 0.5}
-                },
-                {
-                        {1, 1},
-                        {0.5, -0.5},
-                        {-1, -1},
-                        {-0.5, 0.5},
-                        {0, 0.5}
-                },
-                {
-                        {1, 1},
-                        {0.5, 0},
-                        {0.5, -0.5},
-                        {0, -0.5},
-                        {-1, -1},
-                        {-0.5, 0},
-                        {-0.5, 0.5},
-                        {0, 0.5}
-                },
-                {
-                        {1, 1},
-                        {0.5, -0.5},
-                        {-1, -1},
-                        {-0.5, 0.5}
-                },
-                {
-                        {1, 1.41421356},
-                        {0.41421356, -0.58578643},
-                        {-1, -1.41421356},
-                        {-0.41421356, 0.58578643}
-                },
-                {
-                        {1, 1.41421356},
-                        {0.41421356, 0.242640687},
-                        {0.41421356, -0.58578643},
-                        {-0.17157287, -0.58578643},
-                        {-1, -1.41421356},
-                        {-0.41421356, -0.242640687},
-                        {-0.41421356, 0.58578643},
-                        {0.17157287, 0.58578643}
-                },
-                {
-                        {1, 1},
+                        {1, 0},
+                        {0, -1},
                         {-1, 0},
-                        {0, -1}
+                        {0, 1}
                 },
                 {
-                        {1.25, 1},
-                        {-1./3, -4./3},
+                        {1, 0},
+                        {0.5, -1},
+                        {-1, 0},
+                        {-0.5, 1}
+                },
+                {
+                        {1, 0},
+                        {0.5, -1},
+                        {-1, 0},
+                        {-0.5, 1},
+                        {0, 0.5}
+                },
+                {
+                        {1, 0},
+                        {0.5, -1},
+                        {-1, 0},
+                        {-0.5, 1},
+                        {0, 0.5}
+                },
+                {
+                        {1, 0},
+                        {0.5, -0.5},
+                        {0.5, -1},
+                        {0, -0.5},
+                        {-1, 0},
+                        {-0.5, 0.5},
+                        {-0.5, 1},
+                        {0, 0.5}
+                },
+                {
+                        {1, 0},
+                        {0.5, -1},
+                        {-1, 0},
+                        {-0.5, 1}
+                },
+                {
+                        {1, 1./3},
+                        {1./3, -1},
+                        {-1, -1./3},
+                        {-1./3, 1}
+                },
+                {
+                        {1, 1./3},
+                        {1./3, -1./3},
+                        {1./3, -1},
+                        {-1./3, -1./3},
+                        {-1, -1./3},
+                        {-1./3, 1./3},
+                        {-1./3, 1},
+                        {1./3, 1./3}
+                },
+                {
+                        {1, 1},
+                        {0, -1},
                         {-1, 0}
                 },
                 {
-                        {1.25, 1},
-                        {0.5, 0.25},
-                        {1./3, 0},
-                        {-1./3, -4./3},
-                        {-1./3, -2./3},
-                        {-1, 0},
-                        {-0.25, 0.25}
+                        {4./3, 1},
+                        {0, -1},
+                        {-1, 0.25}
+                },
+                {
+                        {4./3, 1},
+                        {2./3, 1./3},
+                        {0, -1},
+                        {-0.25, -0.5},
+                        {-1, 0.25},
+                        {-0.25, 0.25},
+                        {0, 1./3}
                 }
         };
 
