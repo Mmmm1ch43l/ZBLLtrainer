@@ -365,6 +365,9 @@ public class StarshapedDual2 extends JPanel implements KeyListener {
             scalingFactor = 1/(temp[0] * leftVertex[0] + temp[1] * leftVertex[1]);
             temp = new double[]{scalingFactor*temp[0],scalingFactor*temp[1]};
             list.add(temp);
+            System.out.println("Left Vertex: (" + leftVertex[0] + ", " + leftVertex[1] + ")");
+            System.out.println("Right Vertex: (" + rightVertex[0] + ", " + rightVertex[1] + ")");
+            System.out.println("Resulting Vertex: (" + temp[0] + ", " + temp[1] + ")");
         }
         return list.toArray(new double[0][]);
     }
