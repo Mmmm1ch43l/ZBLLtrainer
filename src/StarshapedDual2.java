@@ -14,7 +14,8 @@ public class StarshapedDual2 extends JPanel implements KeyListener {
 
     private static final int MARGIN = 20;
     //private static final int HEIGHT = 640;
-    private static final int HEIGHT = 1150;
+    //private static final int HEIGHT = 1150;
+    private static final int HEIGHT = 1000;
     private static final int WIDTH = HEIGHT;
     private static final int SYSTEM_WIDTH = (WIDTH - 3 * MARGIN) / 2;
     private static final int SYSTEM_HEIGHT = (HEIGHT - 3 * MARGIN) / 2;
@@ -27,6 +28,7 @@ public class StarshapedDual2 extends JPanel implements KeyListener {
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
 
+        /*
         Random random = new Random();
         double[][] randomTriangle = new double[3][];
         for (int i = 0; i < randomTriangle.length; i++) {
@@ -38,6 +40,8 @@ public class StarshapedDual2 extends JPanel implements KeyListener {
             }
         }
         tableOfVertices[tableOfVertices.length - 1] = randomTriangle;
+        */
+        //System.out.println(Arrays.toString(integerPointOnLine(new double[]{-1., -2.})));
     }
 
     @Override
@@ -203,6 +207,11 @@ public class StarshapedDual2 extends JPanel implements KeyListener {
     public static void main(String[] args) {
         double[][][] tableOfVertices = {
                 {
+                        {2.3, 1.1},
+                        {2.3, -1.1},
+                        {-1, 0}
+                },
+                {
                         {Math.sqrt(2)*3/5, Math.sqrt(2)*4/5},
                         {Math.sqrt(2)*4/5, -Math.sqrt(2)*3/5},
                         {-Math.sqrt(2)*3/5, -Math.sqrt(2)*4/5},
@@ -247,8 +256,7 @@ public class StarshapedDual2 extends JPanel implements KeyListener {
                         {4./3, 1},
                         {0, -1},
                         {-1, 0.25}
-                },
-                {}
+                }
         };
 
         JFrame frame = new JFrame("Polygon Drawer");
@@ -398,6 +406,8 @@ public class StarshapedDual2 extends JPanel implements KeyListener {
         for (int i = 0; i < convexHull.length; i++) {
             int j = (i + 1) % convexHull.length;
             list.add(convexHull[i]);
+            System.out.println(Arrays.toString(convexDual[i]));
+            System.out.println(Arrays.toString(integerPointOnLine(convexDual[i])));
             if (integerPointOnLine(convexDual[i]) == null){
                 double[] temp = new double[]{convexHull[i][1],-convexHull[i][0]};
                 temp = new double[]{temp[0] - smallAngleTan*temp[1],smallAngleTan*temp[0] + temp[1]};
