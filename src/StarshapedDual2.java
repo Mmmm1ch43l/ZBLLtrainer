@@ -2,7 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class StarshapedDual2 extends JPanel implements KeyListener {
 
@@ -10,8 +12,8 @@ public class StarshapedDual2 extends JPanel implements KeyListener {
     private int currentPolygonIndex;
 
     private static final int MARGIN = 20;
-    private static final int HEIGHT = 640;
-    //private static final int HEIGHT = 1100;
+    //private static final int HEIGHT = 640;
+    private static final int HEIGHT = 1150;
     private static final int WIDTH = HEIGHT;
     private static final int SYSTEM_WIDTH = (WIDTH - 3 * MARGIN) / 2;
     private static final int SYSTEM_HEIGHT = (HEIGHT - 3 * MARGIN) / 2;
@@ -23,8 +25,6 @@ public class StarshapedDual2 extends JPanel implements KeyListener {
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
-
-        //System.out.println(contains(tableOfVertices[1], new double[]{0,0}));
     }
 
     @Override
@@ -48,8 +48,11 @@ public class StarshapedDual2 extends JPanel implements KeyListener {
         drawPolygonLeftUp(g2d, tableOfVertices[currentPolygonIndex]);
         drawPolygonRightUp(g2d, dualize(tableOfVertices[currentPolygonIndex]));
         double[][] reduced = reduce(tableOfVertices[currentPolygonIndex]);
-        drawPolygonLeftDown(g2d, reduced);
-        drawPolygonRightDown(g2d, dualize(reduced));
+        boolean valid = (reduced != null);
+        if (valid) {
+            drawPolygonLeftDown(g2d, reduced);
+            drawPolygonRightDown(g2d, dualize(reduced));
+        }
 
         // Display the current polygon index in the bottom right corner
         String labelText = (currentPolygonIndex + 1) + "/" + tableOfVertices.length;
@@ -57,7 +60,13 @@ public class StarshapedDual2 extends JPanel implements KeyListener {
         g2d.setColor(Color.BLACK); // Set text color to black
         g2d.drawString(labelText, WIDTH - MARGIN - 50, 50); // Adjust position for larger text
         g2d.drawString("Area: "+computeArea(tableOfVertices[currentPolygonIndex]), 50, 50);
-        g2d.drawString("Area: "+computeArea(reduced), 50, SYSTEM_HEIGHT + MARGIN + 50);
+        if (valid) {
+            g2d.drawString("Area: "+computeArea(reduced), 50, SYSTEM_HEIGHT + MARGIN + 50);
+        } else {
+            g2d.setFont(new Font("Arial", Font.PLAIN, 40));
+            g2d.setColor(Color.RED);
+            g2d.drawString("Dual of convex already contains "+(containedIntegerPointsStrict(dualize(tableOfVertices[currentPolygonIndex])).length - 1)+" integer points!", 150, SYSTEM_HEIGHT + MARGIN + 150);
+        }
     }
 
     private void drawCoordinateSystem(Graphics2D g2d, int xOffset, int yOffset, int width, int height, double minRange, double maxRange) {
@@ -187,6 +196,12 @@ public class StarshapedDual2 extends JPanel implements KeyListener {
                         {-Math.sqrt(2)*4/5, Math.sqrt(2)*3/5}
                 },
                 {
+                        {3./5, 4./5},
+                        {4./5, -3./5},
+                        {-3./5, -4./5},
+                        {-4./5, 3./5}
+                },
+                {
                         {1, 1},
                         {0, -1},
                         {-1, 0}
@@ -196,6 +211,12 @@ public class StarshapedDual2 extends JPanel implements KeyListener {
                         {0, -1},
                         {-1, 0},
                         {0, 1}
+                },
+                {
+                        {1.1, 0},
+                        {0, -1.1},
+                        {-1.1, 0},
+                        {0, 1.1}
                 },
                 {
                         {1, 0},
@@ -254,6 +275,14 @@ public class StarshapedDual2 extends JPanel implements KeyListener {
     public boolean contains(double[][] polygon, double[] point){
         for (int i = 0; i < polygon.length; i++) {
             int j = (i + 1) % polygon.length;
+            if ((polygon[j][0]-polygon[i][0])*(point[1]-polygon[i][1]) > (polygon[j][1]-polygon[i][1])*(point[0]-polygon[i][0])) return false;
+        }
+        return true;
+    }
+
+    public boolean containsStrict(double[][] polygon, double[] point){
+        for (int i = 0; i < polygon.length; i++) {
+            int j = (i + 1) % polygon.length;
             if ((polygon[j][0]-polygon[i][0])*(point[1]-polygon[i][1]) >= (polygon[j][1]-polygon[i][1])*(point[0]-polygon[i][0])) return false;
         }
         return true;
@@ -268,6 +297,22 @@ public class StarshapedDual2 extends JPanel implements KeyListener {
         for (int i = -n; i < n+1; i++) {
             for (int j = -n; j < n+1; j++) {
                 if (contains(polygon, new double[]{i,j})){
+                    list.add(new double[]{i,j});
+                }
+            }
+        }
+        return list.toArray(new double[0][]);
+    }
+
+    public double[][] containedIntegerPointsStrict(double[][] polygon){
+        ArrayList<double[]> list = new ArrayList<>();
+        int n = 0;
+        for (double[] doubles : polygon) {
+            n = Math.max(n, (int) Math.floor(Math.max(Math.abs(doubles[0]), Math.abs(doubles[1]))));
+        }
+        for (int i = -n; i < n+1; i++) {
+            for (int j = -n; j < n+1; j++) {
+                if (containsStrict(polygon, new double[]{i,j})){
                     list.add(new double[]{i,j});
                 }
             }
@@ -311,63 +356,99 @@ public class StarshapedDual2 extends JPanel implements KeyListener {
         return null;
     }
 
-    public double[][] reduce(double[][] convexHull){
+    public double[] integerPointOnLine(double[] direction){
+        double[] output = containedInnerIntegerPoint(new double[][]{direction,new double[]{0,0}});
+        if (output == null) {
+            return null;
+        } else {
+            double sign = Math.signum(direction[0]*output[0]+direction[1]*output[1]);
+            return new double[]{sign*output[0],sign*output[1]};
+        }
+    }
+
+    public double[][] reduce(double[][] input){
+        double[][] convexHull = new double[input.length][];
+        for (int i = 0; i < input.length; i++) {
+            double[] integerPoint = integerPointOnLine(input[i]);
+            if (integerPoint == null){
+                convexHull[i] = input[i].clone();
+            } else {
+                convexHull[i] = integerPoint.clone();
+            }
+        }
         double[][] convexDual = dualize(convexHull);
-        if (containedIntegerPoints(convexDual).length > 1){
-            System.out.println("Dual already contains " + (containedIntegerPoints(convexDual).length-1) + " integer points");
+        if (containedIntegerPointsStrict(convexDual).length > 1){
             return null;
         }
         ArrayList<double[]> list = new ArrayList<>();
         for (int i = 0; i < convexHull.length; i++) {
             int j = (i + 1) % convexHull.length;
             list.add(convexHull[i]);
-            double[] temp = new double[]{convexHull[i][1],-convexHull[i][0]};
-            temp = new double[]{temp[0] + smallAngleTan*temp[1],-smallAngleTan*temp[0] + temp[1]};
-            double scalingFactor = (convexHull[i][0]*convexDual[i][0] + convexHull[i][1]*convexDual[i][1]) / (convexHull[i][0]*temp[0] + convexHull[i][1]*temp[1]);
-            temp = new double[]{scalingFactor*temp[0],scalingFactor*temp[1]};
-            double[] rightVertex = containedInnerIntegerPoint(new double[][]{convexDual[i],temp,new double[]{0,0}});
-            if (rightVertex == null){
-                rightVertex = temp.clone();
-            } else {
-                scalingFactor = (convexHull[i][0]*convexDual[i][0] + convexHull[i][1]*convexDual[i][1]) / (convexHull[i][0]*rightVertex[0] + convexHull[i][1]*rightVertex[1]);
-                rightVertex = new double[]{scalingFactor*rightVertex[0],scalingFactor*rightVertex[1]};
-                double[][] integerPoints = containedIntegerPoints(new double[][]{convexDual[i],rightVertex,new double[]{0,0}});
-                for (double[] integerPoint : integerPoints) {
-                    if (rightVertex[0]*integerPoint[1] > rightVertex[1]*integerPoint[0]) {
-                        rightVertex = integerPoint.clone();
+            if (integerPointOnLine(convexDual[i]) == null){
+                double[] temp = new double[]{convexHull[i][1],-convexHull[i][0]};
+                temp = new double[]{temp[0] - smallAngleTan*temp[1],smallAngleTan*temp[0] + temp[1]};
+                double scalingFactor = (convexHull[i][0]*convexDual[i][0] + convexHull[i][1]*convexDual[i][1]) / (convexHull[i][0]*temp[0] + convexHull[i][1]*temp[1]);
+                temp = new double[]{scalingFactor*temp[0],scalingFactor*temp[1]};
+                double[] rightVertex = containedInnerIntegerPoint(new double[][]{convexDual[i],temp,new double[]{0,0}});
+                if (rightVertex == null){
+                    rightVertex = temp.clone();
+                } else {
+                    scalingFactor = (convexHull[i][0]*convexDual[i][0] + convexHull[i][1]*convexDual[i][1]) / (convexHull[i][0]*rightVertex[0] + convexHull[i][1]*rightVertex[1]);
+                    rightVertex = new double[]{scalingFactor*rightVertex[0],scalingFactor*rightVertex[1]};
+                    double[][] integerPoints = containedIntegerPoints(new double[][]{convexDual[i],rightVertex,new double[]{0,0}});
+                    for (double[] integerPoint : integerPoints) {
+                        if (rightVertex[0]*integerPoint[1] > rightVertex[1]*integerPoint[0]) {
+                            rightVertex = integerPoint.clone();
+                        }
+                    }
+                    scalingFactor = (convexHull[i][0]*convexDual[i][0] + convexHull[i][1]*convexDual[i][1]) / (convexHull[i][0]*rightVertex[0] + convexHull[i][1]*rightVertex[1]);
+                    rightVertex = new double[]{scalingFactor*rightVertex[0],scalingFactor*rightVertex[1]};
+                }
+                temp = new double[]{-convexHull[j][1],convexHull[j][0]};
+                temp = new double[]{temp[0] + smallAngleTan*temp[1],-smallAngleTan*temp[0] + temp[1]};
+                scalingFactor = (convexHull[j][0]*convexDual[i][0] + convexHull[j][1]*convexDual[i][1]) / (convexHull[j][0]*temp[0] + convexHull[j][1]*temp[1]);
+                temp = new double[]{scalingFactor*temp[0],scalingFactor*temp[1]};
+                double[] leftVertex = containedInnerIntegerPoint(new double[][]{temp,convexDual[i],new double[]{0,0}});
+                if (leftVertex == null){
+                    leftVertex = temp.clone();
+                } else {
+                    scalingFactor = (convexHull[j][0]*convexDual[i][0] + convexHull[j][1]*convexDual[i][1]) / (convexHull[j][0]*leftVertex[0] + convexHull[j][1]*leftVertex[1]);
+                    leftVertex = new double[]{scalingFactor*leftVertex[0],scalingFactor*leftVertex[1]};
+                    double[][] integerPoints = containedIntegerPoints(new double[][]{leftVertex,convexDual[i],new double[]{0,0}});
+                    for (double[] integerPoint : integerPoints) {
+                        if (leftVertex[0]*integerPoint[1] < leftVertex[1]*integerPoint[0]) {
+                            leftVertex = integerPoint.clone();
+                        }
+                    }
+                    scalingFactor = (convexHull[j][0]*convexDual[i][0] + convexHull[j][1]*convexDual[i][1]) / (convexHull[j][0]*leftVertex[0] + convexHull[j][1]*leftVertex[1]);
+                    leftVertex = new double[]{scalingFactor*leftVertex[0],scalingFactor*leftVertex[1]};
+                }
+                double[][] integerPoints = containedIntegerPointsStrict(new double[][]{leftVertex,rightVertex,convexDual[i]});
+                if (integerPoints.length > 0){
+                    List<double[][]> pairs = new ArrayList<>();
+                    for (double[] integerPoint : integerPoints) {
+                        pairs.add(new double[][]{integerPoint, new double[]{-(integerPoint[0]*rightVertex[0]+integerPoint[1]*rightVertex[1])/norm(integerPoint)}});
+                    }
+                    pairs.sort((a, b) -> Double.compare(a[1][0], b[1][0]));
+                    for (double[][] pair : pairs) {
+                        if (containsStrict(new double[][]{leftVertex,rightVertex,convexDual[i]}, pair[0])){
+                            temp = new double[]{pair[0][1] - rightVertex[1],rightVertex[0] - pair[0][0]};
+                            scalingFactor = 1 / norm(temp);
+                            temp = new double[]{scalingFactor*temp[0],scalingFactor*temp[1]};
+                            scalingFactor = 1/(temp[0] * rightVertex[0] + temp[1] * rightVertex[1]);
+                            temp = new double[]{scalingFactor*temp[0],scalingFactor*temp[1]};
+                            list.add(temp);
+                            rightVertex = pair[0].clone();
+                        }
                     }
                 }
-                scalingFactor = (convexHull[i][0]*convexDual[i][0] + convexHull[i][1]*convexDual[i][1]) / (convexHull[i][0]*rightVertex[0] + convexHull[i][1]*rightVertex[1]);
-                rightVertex = new double[]{scalingFactor*rightVertex[0],scalingFactor*rightVertex[1]};
+                temp = new double[]{leftVertex[1] - rightVertex[1],rightVertex[0] - leftVertex[0]};
+                scalingFactor = 1 / norm(temp);
+                temp = new double[]{scalingFactor*temp[0],scalingFactor*temp[1]};
+                scalingFactor = 1/(temp[0] * leftVertex[0] + temp[1] * leftVertex[1]);
+                temp = new double[]{scalingFactor*temp[0],scalingFactor*temp[1]};
+                list.add(temp);
             }
-            temp = new double[]{-convexHull[j][1],convexHull[j][0]};
-            temp = new double[]{temp[0] - smallAngleTan*temp[1],smallAngleTan*temp[0] + temp[1]};
-            scalingFactor = (convexHull[i][0]*convexDual[i][0] + convexHull[i][1]*convexDual[i][1]) / (convexHull[i][0]*temp[0] + convexHull[i][1]*temp[1]);
-            temp = new double[]{scalingFactor*temp[0],scalingFactor*temp[1]};
-            double[] leftVertex = containedInnerIntegerPoint(new double[][]{temp,convexDual[i],new double[]{0,0}});
-            if (leftVertex == null){
-                leftVertex = temp.clone();
-            } else {
-                scalingFactor = (convexHull[i][0]*convexDual[i][0] + convexHull[i][1]*convexDual[i][1]) / (convexHull[i][0]*leftVertex[0] + convexHull[i][1]*leftVertex[1]);
-                leftVertex = new double[]{scalingFactor*leftVertex[0],scalingFactor*leftVertex[1]};
-                double[][] integerPoints = containedIntegerPoints(new double[][]{leftVertex,convexDual[i],new double[]{0,0}});
-                for (double[] integerPoint : integerPoints) {
-                    if (leftVertex[0]*integerPoint[1] < leftVertex[1]*integerPoint[0]) {
-                        leftVertex = integerPoint.clone();
-                    }
-                }
-                scalingFactor = (convexHull[i][0]*convexDual[i][0] + convexHull[i][1]*convexDual[i][1]) / (convexHull[i][0]*leftVertex[0] + convexHull[i][1]*leftVertex[1]);
-                leftVertex = new double[]{scalingFactor*leftVertex[0],scalingFactor*leftVertex[1]};
-            }
-            temp = new double[]{leftVertex[1] - rightVertex[1],rightVertex[0] - leftVertex[0]};
-            scalingFactor = 1 / norm(temp);
-            temp = new double[]{scalingFactor*temp[0],scalingFactor*temp[1]};
-            scalingFactor = 1/(temp[0] * leftVertex[0] + temp[1] * leftVertex[1]);
-            temp = new double[]{scalingFactor*temp[0],scalingFactor*temp[1]};
-            list.add(temp);
-            System.out.println("Left Vertex: (" + leftVertex[0] + ", " + leftVertex[1] + ")");
-            System.out.println("Right Vertex: (" + rightVertex[0] + ", " + rightVertex[1] + ")");
-            System.out.println("Resulting Vertex: (" + temp[0] + ", " + temp[1] + ")");
         }
         return list.toArray(new double[0][]);
     }
