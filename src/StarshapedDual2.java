@@ -5,6 +5,7 @@ import java.awt.event.KeyListener;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 public class StarshapedDual2 extends JPanel implements KeyListener {
 
@@ -17,7 +18,7 @@ public class StarshapedDual2 extends JPanel implements KeyListener {
     private static final int WIDTH = HEIGHT;
     private static final int SYSTEM_WIDTH = (WIDTH - 3 * MARGIN) / 2;
     private static final int SYSTEM_HEIGHT = (HEIGHT - 3 * MARGIN) / 2;
-    private static final double smallAngleTan = Math.tan(1e-3);
+    private static final double smallAngleTan = Math.tan(0.1);
 
     public StarshapedDual2(double[][][] tableOfVertices) {
         this.tableOfVertices = tableOfVertices;
@@ -25,6 +26,18 @@ public class StarshapedDual2 extends JPanel implements KeyListener {
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
+
+        Random random = new Random();
+        double[][] randomTriangle = new double[3][];
+        for (int i = 0; i < randomTriangle.length; i++) {
+            randomTriangle[i] = new double[] {-1.5 + (3.0 * random.nextDouble()), -1.5 + (3.0 * random.nextDouble())};
+        }
+        while (!contains(randomTriangle,new double[]{0,0}) || containedIntegerPointsStrict(dualize(randomTriangle)).length > 1){
+            for (int i = 0; i < randomTriangle.length; i++) {
+                randomTriangle[i] = new double[] {-1.5 + (3.0 * random.nextDouble()), -1.5 + (3.0 * random.nextDouble())};
+            }
+        }
+        tableOfVertices[tableOfVertices.length - 1] = randomTriangle;
     }
 
     @Override
@@ -234,7 +247,8 @@ public class StarshapedDual2 extends JPanel implements KeyListener {
                         {4./3, 1},
                         {0, -1},
                         {-1, 0.25}
-                }
+                },
+                {}
         };
 
         JFrame frame = new JFrame("Polygon Drawer");
@@ -430,24 +444,50 @@ public class StarshapedDual2 extends JPanel implements KeyListener {
                         pairs.add(new double[][]{integerPoint, new double[]{-(integerPoint[0]*rightVertex[0]+integerPoint[1]*rightVertex[1])/norm(integerPoint)}});
                     }
                     pairs.sort((a, b) -> Double.compare(a[1][0], b[1][0]));
+                    List<double[]> toAdds = new ArrayList<>();
+                    double[] rightVertexNew = rightVertex.clone();
                     for (double[][] pair : pairs) {
-                        if (containsStrict(new double[][]{leftVertex,rightVertex,convexDual[i]}, pair[0])){
-                            temp = new double[]{pair[0][1] - rightVertex[1],rightVertex[0] - pair[0][0]};
-                            scalingFactor = 1 / norm(temp);
-                            temp = new double[]{scalingFactor*temp[0],scalingFactor*temp[1]};
-                            scalingFactor = 1/(temp[0] * rightVertex[0] + temp[1] * rightVertex[1]);
-                            temp = new double[]{scalingFactor*temp[0],scalingFactor*temp[1]};
-                            list.add(temp);
-                            rightVertex = pair[0].clone();
+                        if (containsStrict(new double[][]{leftVertex,rightVertexNew,convexDual[i]}, pair[0])){
+                            List<double[]> tempAdds = new ArrayList<>();
+                            for (double[] toAdd : toAdds) {
+                                if (containsStrict(new double[][]{pair[0],rightVertex,convexDual[i]}, toAdd)){
+                                    tempAdds.add(toAdd);
+                                }
+                            }
+                            toAdds = tempAdds;
+                            toAdds.add(pair[0]);
+                            rightVertexNew = pair[0].clone();
                         }
                     }
+                    double[][] toAddss = toAdds.toArray(new double[0][]);
+                    temp = new double[]{toAddss[0][1] - rightVertex[1],rightVertex[0] - toAddss[0][0]};
+                    scalingFactor = 1 / norm(temp);
+                    temp = new double[]{scalingFactor*temp[0],scalingFactor*temp[1]};
+                    scalingFactor = 1/(temp[0] * rightVertex[0] + temp[1] * rightVertex[1]);
+                    temp = new double[]{scalingFactor*temp[0],scalingFactor*temp[1]};
+                    list.add(temp);
+                    for (int k = 1; k < toAddss.length; k++) {
+                        temp = new double[]{toAddss[k][1] - toAddss[k-1][1],toAddss[k-1][0] - toAddss[k][0]};
+                        scalingFactor = 1 / norm(temp);
+                        temp = new double[]{scalingFactor*temp[0],scalingFactor*temp[1]};
+                        scalingFactor = 1/(temp[0] * toAddss[k-1][0] + temp[1] * toAddss[k-1][1]);
+                        temp = new double[]{scalingFactor*temp[0],scalingFactor*temp[1]};
+                        list.add(temp);
+                    }
+                    temp = new double[]{leftVertex[1] - toAddss[toAddss.length-1][1],toAddss[toAddss.length-1][0] - leftVertex[0]};
+                    scalingFactor = 1 / norm(temp);
+                    temp = new double[]{scalingFactor*temp[0],scalingFactor*temp[1]};
+                    scalingFactor = 1/(temp[0] * toAddss[toAddss.length-1][0] + temp[1] * toAddss[toAddss.length-1][1]);
+                    temp = new double[]{scalingFactor*temp[0],scalingFactor*temp[1]};
+                    list.add(temp);
+                } else {
+                    temp = new double[]{leftVertex[1] - rightVertex[1],rightVertex[0] - leftVertex[0]};
+                    scalingFactor = 1 / norm(temp);
+                    temp = new double[]{scalingFactor*temp[0],scalingFactor*temp[1]};
+                    scalingFactor = 1/(temp[0] * leftVertex[0] + temp[1] * leftVertex[1]);
+                    temp = new double[]{scalingFactor*temp[0],scalingFactor*temp[1]};
+                    list.add(temp);
                 }
-                temp = new double[]{leftVertex[1] - rightVertex[1],rightVertex[0] - leftVertex[0]};
-                scalingFactor = 1 / norm(temp);
-                temp = new double[]{scalingFactor*temp[0],scalingFactor*temp[1]};
-                scalingFactor = 1/(temp[0] * leftVertex[0] + temp[1] * leftVertex[1]);
-                temp = new double[]{scalingFactor*temp[0],scalingFactor*temp[1]};
-                list.add(temp);
             }
         }
         return list.toArray(new double[0][]);
