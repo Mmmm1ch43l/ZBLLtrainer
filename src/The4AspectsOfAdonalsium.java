@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class The4AspectsOfAdonalsium {
     public static final String[] SHARDS = {     "Ambition", "Autonomy", "Cultivation", "Devotion",
                                                 "Dominion", "Endowment", "Honor", "Invention",
@@ -9,22 +7,22 @@ public class The4AspectsOfAdonalsium {
     public static final int x = 0;
 
     public static int[][] COMPATIBILITY = {
-            {x,0,0,0,               0,0,0,0,                0,0,0,0,                0,0,0,0},               // Ambition
-            {0,x,0,0,               0,0,0,0,                0,0,0,0,                0,0,0,0},               // Autonomy
-            {0,0,x,0,               0,0,0,0,                0,0,0,0,                0,0,0,0},               // Cultivation
-            {0,0,0,x,               0,0,0,0,                0,0,0,0,                0,0,0,0},               // Devotion
-            {0,0,0,0,               x,0,0,0,                0,0,0,0,                0,0,0,0},               // Dominion
-            {0,0,0,0,               0,x,0,0,                0,0,0,0,                0,0,0,0},               // Endowment
-            {0,0,0,0,               0,0,x,0,                0,0,0,0,                0,0,0,0},               // Honor
-            {0,0,0,0,               0,0,0,x,                0,0,0,0,                0,0,0,0},               // Invention
-            {0,0,0,0,               0,0,0,0,                x,0,0,0,                0,0,0,0},               // Mercy
-            {0,0,0,0,               0,0,0,0,                0,x,0,0,                0,0,0,0},               // Odium
-            {0,0,0,0,               0,0,0,0,                0,0,x,0,                0,0,0,0},               // Preservation
-            {0,0,0,0,               0,0,0,0,                0,0,0,x,                0,0,0,0},               // Reason
-            {0,0,0,0,               0,0,0,0,                0,0,0,0,                x,0,0,0},               // Ruin
-            {0,0,0,0,               0,0,0,0,                0,0,0,0,                0,x,0,0},               // Valor
-            {0,0,0,0,               0,0,0,0,                0,0,0,0,                0,0,x,0},               // Virtuosity
-            {0,0,0,0,               0,0,0,0,                0,0,0,0,                0,0,0,x},               // Whimsy
+            {x,30,40,-25,           50,25,-15,60,           -40,15,-30,5,           20,10,45,-35},          // Ambition
+            {x,x,15,-80,            25,-5,3,25,             5,20,-20,10,            40,15,18,60},           // Autonomy
+            {x,x,x,22,              3,35,-20,70,            8,-5,1,-10,             16,-2,20,15},           // Cultivation
+            {x,x,x,x,               28,13,65,5,             12,38,30,-23,           -20,3,55,-5},           // Devotion
+            {x,x,x,x,               x,20,11,-7,             15,4,18,-6,             32,-3,-15,-23},         // Dominion
+            {x,x,x,x,               x,x,-10,36,             13,-18,21,11,           2,7,80,27},             // Endowment
+            {x,x,x,x,               x,x,x,-25,              25,15,13,18,            -12,85,8,-13},          // Honor
+            {x,x,x,x,               x,x,x,x,                10,-19,-16,51,          35,3,26,29},            // Invention
+            {x,x,x,x,               x,x,x,x,                x,-53,21,16,            -8,9,1,5},              // Mercy
+            {x,x,x,x,               x,x,x,x,                x,x,-30,-5,             16,25,-11,-7},          // Odium
+            {x,x,x,x,               x,x,x,x,                x,x,x,3,                -13,-26,-25,-30},       // Preservation
+            {x,x,x,x,               x,x,x,x,                x,x,x,x,                -3,-2,3,7},             // Reason
+            {x,x,x,x,               x,x,x,x,                x,x,x,x,                x,-30,-25,3},           // Ruin
+            {x,x,x,x,               x,x,x,x,                x,x,x,x,                x,x,42,-3},             // Valor
+            {x,x,x,x,               x,x,x,x,                x,x,x,x,                x,x,x,11},              // Virtuosity
+            {x,x,x,x,               x,x,x,x,                x,x,x,x,                x,x,x,x},               // Whimsy
     };
 
     public static void main(String[] args) {
@@ -34,27 +32,39 @@ public class The4AspectsOfAdonalsium {
             }
         }
         int[][] partition = {{0,1,2},{0,1,2},{0,1,2}};
-        int bestScore = -10000;
-        int[][] bestPartition = null;
+        int cutoffScore = -10000;
+        int[] bestScores = new int[]{-10000,-10000,-10000,-10000,-10000};
+        int[][][] bestPartitions = new int[][][]{{{0,1,2},{0,1,2},{0,1,2}},{{0,1,2},{0,1,2},{0,1,2}},{{0,1,2},{0,1,2},{0,1,2}},{{0,1,2},{0,1,2},{0,1,2}},{{0,1,2},{0,1,2},{0,1,2}}};
         int counter = 0;
         while (partition != null) {
-            if (counter++ % 10000 == 0) System.out.println(counter);
+            if (counter++ % 10000 == 0) System.out.println(counter - 1);
             int[][] expandedPartition = expandPartition(partition);
             int score = 0;
             for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < ; j++) {
-
-                }
+                score += COMPATIBILITY[expandedPartition[i][0]][expandedPartition[i][1]] + COMPATIBILITY[expandedPartition[i][0]][expandedPartition[i][2]] +
+                        COMPATIBILITY[expandedPartition[i][0]][expandedPartition[i][3]] + COMPATIBILITY[expandedPartition[i][1]][expandedPartition[i][2]] +
+                        COMPATIBILITY[expandedPartition[i][1]][expandedPartition[i][3]] + COMPATIBILITY[expandedPartition[i][2]][expandedPartition[i][3]];
             }
-            if (score > bestScore){
-                bestScore = score;
-                bestPartition = new int[][]{partition[0].clone(),partition[1].clone(),partition[2].clone()};
+            if (score > cutoffScore){
+                cutoffScore = score;
+                bestScores[0] = score;
+                bestPartitions[0] = new int[][]{partition[0].clone(),partition[1].clone(),partition[2].clone()};
+                for (int i = 1; i < 5; i++) {
+                    if (score > bestScores[i]){
+                        bestScores[i-1] = bestScores[i];
+                        bestPartitions[i-1] = new int[][]{bestPartitions[i][0].clone(),bestPartitions[i][1].clone(),bestPartitions[i][2].clone()};
+                        bestScores[i] = score;
+                        bestPartitions[i] = new int[][]{partition[0].clone(),partition[1].clone(),partition[2].clone()};
+                    }
+                }
             }
             partition = nextPartition(partition);
         }
-        System.out.println("Best partition is:");
-        printPartition(expandPartition(bestPartition));
-        System.out.println("With a score of " + bestScore);
+        System.out.println("\nBest partitions are:");
+        for (int i = 0; i < 5; i++) {
+            System.out.println((5-i) + ": With a score of " + bestScores[i]);
+            printPartition(expandPartition(bestPartitions[i]));
+        }
     }
 
     public static int[] nextSubset(int[] input, int size){
