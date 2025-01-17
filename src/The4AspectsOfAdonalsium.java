@@ -1,28 +1,30 @@
 import java.util.Arrays;
 
 public class The4AspectsOfAdonalsium {
-    public static final String[] SHARDS = {    "Ambition", "Autonomy", "Cultivation", "Devotion",
-                                        "Dominion", "Endowment", "Honor", "Invention",
-                                        "Mercy", "Odium", "Preservation", "Reason",
-                                        "Ruin", "Valor", "Virtuosity", "Whimsy"};
+    public static final String[] SHARDS = {     "Ambition", "Autonomy", "Cultivation", "Devotion",
+                                                "Dominion", "Endowment", "Honor", "Invention",
+                                                "Mercy", "Odium", "Preservation", "Reason",
+                                                "Ruin", "Valor", "Virtuosity", "Whimsy"};
+
+    public static final int x = 0;
 
     public static int[][] COMPATIBILITY = {
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // Ambition
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // Autonomy
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // Cultivation
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // Devotion
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // Dominion
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // Endowment
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // Honor
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // Invention
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // Mercy
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // Odium
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // Preservation
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // Reason
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // Ruin
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // Valor
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // Virtuosity
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}  // Whimsy
+            {x,0,0,0,               0,0,0,0,                0,0,0,0,                0,0,0,0},               // Ambition
+            {0,x,0,0,               0,0,0,0,                0,0,0,0,                0,0,0,0},               // Autonomy
+            {0,0,x,0,               0,0,0,0,                0,0,0,0,                0,0,0,0},               // Cultivation
+            {0,0,0,x,               0,0,0,0,                0,0,0,0,                0,0,0,0},               // Devotion
+            {0,0,0,0,               x,0,0,0,                0,0,0,0,                0,0,0,0},               // Dominion
+            {0,0,0,0,               0,x,0,0,                0,0,0,0,                0,0,0,0},               // Endowment
+            {0,0,0,0,               0,0,x,0,                0,0,0,0,                0,0,0,0},               // Honor
+            {0,0,0,0,               0,0,0,x,                0,0,0,0,                0,0,0,0},               // Invention
+            {0,0,0,0,               0,0,0,0,                x,0,0,0,                0,0,0,0},               // Mercy
+            {0,0,0,0,               0,0,0,0,                0,x,0,0,                0,0,0,0},               // Odium
+            {0,0,0,0,               0,0,0,0,                0,0,x,0,                0,0,0,0},               // Preservation
+            {0,0,0,0,               0,0,0,0,                0,0,0,x,                0,0,0,0},               // Reason
+            {0,0,0,0,               0,0,0,0,                0,0,0,0,                x,0,0,0},               // Ruin
+            {0,0,0,0,               0,0,0,0,                0,0,0,0,                0,x,0,0},               // Valor
+            {0,0,0,0,               0,0,0,0,                0,0,0,0,                0,0,x,0},               // Virtuosity
+            {0,0,0,0,               0,0,0,0,                0,0,0,0,                0,0,0,x},               // Whimsy
     };
 
     public static void main(String[] args) {
@@ -41,7 +43,7 @@ public class The4AspectsOfAdonalsium {
             int score = 0;
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < ; j++) {
-                    
+
                 }
             }
             if (score > bestScore){
