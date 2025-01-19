@@ -89,4 +89,8 @@ public class BR {
     public int signum() {
         return enumerator.signum();
     }
+
+    public int floorAbs() {
+        return enumerator.divide(denominator).intValue();
+    }
 }
