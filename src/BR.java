@@ -93,4 +93,8 @@ public class BR {
     public int floorAbs() {
         return enumerator.abs().divide(denominator).intValue();
     }
+
+    public BR clone() {
+        return new BR(enumerator, denominator);
+    }
 }
