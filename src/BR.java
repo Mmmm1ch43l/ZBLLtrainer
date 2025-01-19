@@ -91,6 +91,6 @@ public class BR {
     }
 
     public int floorAbs() {
-        return enumerator.divide(denominator).intValue();
+        return enumerator.abs().divide(denominator).intValue();
     }
 }
