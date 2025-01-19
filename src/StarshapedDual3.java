@@ -210,11 +210,6 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
     public static void main(String[] args) {
         VR[][] tableOfVertices = {
                 {
-                        new VR(23,10,11,10),
-                        new VR(23,10,-11,10),
-                        new VR(-1,0)
-                },
-                {
                         new VR(3,5,4,5),
                         new VR(4,5,-3,5),
                         new VR(-3,5,-4,5),
@@ -236,6 +231,11 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
                         new VR(0,1,-11,10),
                         new VR(-11,10,0,1),
                         new VR(0,1,11,10)
+                },
+                {
+                        new VR(5,2,1,1),
+                        new VR(5,2,-1,1),
+                        new VR(-1,0)
                 },
                 {
                         new VR(1, 0),
