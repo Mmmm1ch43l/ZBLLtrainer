@@ -12,13 +12,14 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
     private int currentPolygonIndex;
 
     private static final int MARGIN = 20;
-    //private static final int HEIGHT = 640;
+    private static final int HEIGHT = 640;
     //private static final int HEIGHT = 1150;
-    private static final int HEIGHT = 1000;
+    //private static final int HEIGHT = 1000;
     private static final int WIDTH = HEIGHT;
     private static final int SYSTEM_WIDTH = (WIDTH - 3 * MARGIN) / 2;
     private static final int SYSTEM_HEIGHT = (HEIGHT - 3 * MARGIN) / 2;
-    private static final boolean RANDOMIZED = false;
+    private static final boolean RANDOMIZED = true;
+    private static final boolean SYMMETRIC = true;
     private static final int RANDOMNESS_PRECISION = 1000;
 
 
@@ -30,7 +31,11 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         setFocusTraversalKeysEnabled(false);
 
         if(RANDOMIZED) {
-            this.tableOfVertices[0] = generateRandomPolygon();
+            if(SYMMETRIC) {
+                this.tableOfVertices[0] = generateRandomSymmetricPolygon();
+            } else {
+                this.tableOfVertices[0] = generateRandomPolygon();
+            }
         }
         //integerPointOnLine(new VR(-1, -1)).print();
         //System.out.println((new VR(-1, -1)).isInt());
@@ -184,11 +189,16 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (RANDOMIZED) {
-            double area = 2;
+            if(SYMMETRIC) {
+                this.tableOfVertices[0] = generateRandomSymmetricPolygon();
+            } else {
+                this.tableOfVertices[0] = generateRandomPolygon();
+            }
+            /*double area = 2;
             while (area >= 1.13 || area < 0) {
                 tableOfVertices[0] = generateRandomPolygon();
                 area = computeArea(reduce(tableOfVertices[0]));
-            }
+            }*/
             repaint();
         } else {
             if (e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -505,6 +515,9 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         VR[] randomPolygon = new VR[n];
         for (int i = 0; i < n; i++) {
             randomPolygon[i] = new VR(random.nextInt(-3*RANDOMNESS_PRECISION, 3*RANDOMNESS_PRECISION+1), 2*RANDOMNESS_PRECISION, random.nextInt(-3*RANDOMNESS_PRECISION, 3*RANDOMNESS_PRECISION+1), 2*RANDOMNESS_PRECISION);
+            while (randomPolygon[i].normSquared().signum() == 0) {
+                randomPolygon[i] = new VR(random.nextInt(-3*RANDOMNESS_PRECISION, 3*RANDOMNESS_PRECISION+1), 2*RANDOMNESS_PRECISION, random.nextInt(-3*RANDOMNESS_PRECISION, 3*RANDOMNESS_PRECISION+1), 2*RANDOMNESS_PRECISION);
+            }
         }
         while (!containsStrict(randomPolygon,new VR(0,0))) {
             for (int i = 0; i < n; i++) {
@@ -538,6 +551,66 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
                 }
                 randomPolygon[rightIndex] = randomPolygon[rightIndex].scale(scale);
             }
+        }
+        System.out.println("Current random polygon:");
+        for (VR vertex : randomPolygon) {
+            vertex.print();
+        }
+        System.out.println();
+        return randomPolygon;
+    }
+
+    public VR[] generateRandomSymmetricPolygon() {
+        Random random = new Random();
+        int n = 2;
+        VR[] randomPolygon = new VR[2*n];
+        for (int i = 0; i < n; i++) {
+            randomPolygon[i] = new VR(random.nextInt(-3*RANDOMNESS_PRECISION, 3*RANDOMNESS_PRECISION+1), 2*RANDOMNESS_PRECISION, random.nextInt(-3*RANDOMNESS_PRECISION, 3*RANDOMNESS_PRECISION+1), 2*RANDOMNESS_PRECISION);
+            while (randomPolygon[i].normSquared().signum() == 0) {
+                randomPolygon[i] = new VR(random.nextInt(-3*RANDOMNESS_PRECISION, 3*RANDOMNESS_PRECISION+1), 2*RANDOMNESS_PRECISION, random.nextInt(-3*RANDOMNESS_PRECISION, 3*RANDOMNESS_PRECISION+1), 2*RANDOMNESS_PRECISION);
+            }
+        }
+        if (randomPolygon[1].toTheRightOf(randomPolygon[0]) <= 0) {
+            if (randomPolygon[1].toTheRightOf(randomPolygon[0]) == 0) {
+                randomPolygon[1] = randomPolygon[1].rotateRight();
+                if (randomPolygon[1].toTheRightOf(randomPolygon[0]) <= 0) {
+                    randomPolygon[1] = randomPolygon[1].negate();
+                }
+            } else {
+                randomPolygon[1] = randomPolygon[1].negate();
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            randomPolygon[n+i] = randomPolygon[i].negate();
+        }
+        while (containedIntegerPointsStrict(dualize(randomPolygon)).length > 1) {
+            for (int i = 0; i < 2*n; i++) {
+                randomPolygon[i] = randomPolygon[i].scale(new BR(2));
+            }
+        }
+        int[] permutation = randomPermutation(n);
+        for (int i = 0; i < n; i++) {
+            int rightIndex = permutation[i];
+            int leftIndex = (rightIndex + 2*n - 1) % (2*n);
+            VR[] dual = dualize(randomPolygon);
+            while (containedInnerIntegerPoint(new VR[]{dual[leftIndex], dual[rightIndex], new VR(0,0)}) == null) {
+                randomPolygon[rightIndex] = randomPolygon[rightIndex].scale(new BR(1,2));
+                dual = dualize(randomPolygon);
+            }
+            VR[] integerPoints = containedIntegerPointsStrict(dual);
+            if (integerPoints.length > 1) {
+                BR scale = new BR(1);
+                for (VR integerPoint : integerPoints) {
+                    if (integerPoint.normSquared().signum() > 0) {
+                        BR scaleNew = randomPolygon[rightIndex].scalarProduct(dual[rightIndex]).divide(randomPolygon[rightIndex].scalarProduct(integerPoint));
+                        if (scaleNew.compareTo(scale) > 0) {
+                            scale = scaleNew.clone();
+                        }
+                    }
+                }
+                randomPolygon[rightIndex] = randomPolygon[rightIndex].scale(scale);
+            }
+            randomPolygon[n+rightIndex] = randomPolygon[rightIndex].negate();
         }
         System.out.println("Current random polygon:");
         for (VR vertex : randomPolygon) {
