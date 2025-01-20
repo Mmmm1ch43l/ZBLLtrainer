@@ -21,6 +21,7 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
     private static final boolean RANDOMIZED = true;
     private static final boolean SYMMETRIC = true;
     private static final int RANDOMNESS_PRECISION = 1000;
+    private static final int MAX_PRECISION = 5;
 
 
     public StarshapedDual3(VR[][] tableOfVertices) {
@@ -423,10 +424,17 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
             //convexDual[i].print();
             //integerPointOnLine(convexDual[i]).print();
             if (!convexDual[i].isInt()){
-                VR temp = convexHull[i].rotateRight().rotateSlightlyLeft();
+                int precision = 2;
+                VR temp = convexHull[i].rotateRight().rotateSlightlyLeft(precision);
                 temp = temp.scale(convexHull[i].scalarProduct(convexDual[i]).divide(convexHull[i].scalarProduct(temp)));
                 VR rightVertex = containedInnerIntegerPoint(new VR[]{convexDual[i],temp,new VR(0,0)});
+                while (precision++ < MAX_PRECISION && rightVertex == null) {
+                    temp = convexHull[i].rotateRight().rotateSlightlyLeft(precision);
+                    temp = temp.scale(convexHull[i].scalarProduct(convexDual[i]).divide(convexHull[i].scalarProduct(temp)));
+                    rightVertex = containedInnerIntegerPoint(new VR[]{convexDual[i],temp,new VR(0,0)});
+                }
                 if (rightVertex == null){
+                    System.out.println("Right Vertex not found!");
                     rightVertex = temp.clone();
                 } else {
                     rightVertex = rightVertex.scale(convexHull[i].scalarProduct(convexDual[i]).divide(convexHull[i].scalarProduct(rightVertex)));
@@ -438,10 +446,17 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
                     }
                     rightVertex = rightVertex.scale(convexHull[i].scalarProduct(convexDual[i]).divide(convexHull[i].scalarProduct(rightVertex)));
                 }
-                temp = convexHull[j].rotateLeft().rotateSlightlyRight();
+                precision = 2;
+                temp = convexHull[j].rotateLeft().rotateSlightlyRight(precision);
                 temp = temp.scale(convexHull[j].scalarProduct(convexDual[i]).divide(convexHull[j].scalarProduct(temp)));
                 VR leftVertex = containedInnerIntegerPoint(new VR[]{temp,convexDual[i],new VR(0,0)});
+                while (precision++ < MAX_PRECISION && leftVertex == null) {
+                    temp = convexHull[j].rotateLeft().rotateSlightlyRight(precision);
+                    temp = temp.scale(convexHull[j].scalarProduct(convexDual[i]).divide(convexHull[j].scalarProduct(temp)));
+                    leftVertex = containedInnerIntegerPoint(new VR[]{temp,convexDual[i],new VR(0,0)});
+                }
                 if (leftVertex == null){
+                    System.out.println("Left Vertex not found!");
                     leftVertex = temp.clone();
                 } else {
                     leftVertex = leftVertex.scale(convexHull[j].scalarProduct(convexDual[i]).divide(convexHull[j].scalarProduct(leftVertex)));
@@ -556,7 +571,6 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         for (VR vertex : randomPolygon) {
             vertex.print();
         }
-        System.out.println();
         return randomPolygon;
     }
 
@@ -616,7 +630,6 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         for (VR vertex : randomPolygon) {
             vertex.print();
         }
-        System.out.println();
         return randomPolygon;
     }
 }

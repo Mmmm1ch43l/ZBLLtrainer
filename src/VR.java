@@ -82,13 +82,13 @@ public class VR {
         return new VR(y.negate(), x);
     }
 
-    public VR rotateSlightlyRight() {
-        BR smallNumber = (new BR(1, 10)).pow(2);
+    public VR rotateSlightlyRight(int precision) {
+        BR smallNumber = (new BR(1, 100)).pow(precision);
         return new VR(x.add(y.multiply(smallNumber)), y.subtract(x.multiply(smallNumber)));
     }
 
-    public VR rotateSlightlyLeft() {
-        BR smallNumber = (new BR(1, 10)).pow(2);
+    public VR rotateSlightlyLeft(int precision) {
+        BR smallNumber = (new BR(1, 100)).pow(precision);
         return new VR(x.subtract(y.multiply(smallNumber)), y.add(x.multiply(smallNumber)));
     }
 
