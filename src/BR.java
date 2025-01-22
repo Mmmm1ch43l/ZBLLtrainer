@@ -1,4 +1,5 @@
 import java.math.BigInteger;
+import java.util.ArrayList;
 
 public class BR {
 
@@ -14,6 +15,11 @@ public class BR {
         this.enumerator = BigInteger.valueOf(enumerator);
         this.denominator = BigInteger.valueOf(denominator);
         this.reduce();
+    }
+
+    public BR(BigInteger enumerator){
+        this.enumerator = enumerator;
+        this.denominator = BigInteger.ONE;
     }
 
     public BR(BigInteger enumerator, BigInteger denominator){
@@ -47,7 +53,26 @@ public class BR {
 
     public double doubleValue() {
         if (denominator.equals(BigInteger.ZERO)) return 0;
-        return enumerator.doubleValue()/denominator.doubleValue();
+        ArrayList<BigInteger> list = new ArrayList<>();
+        BigInteger[] divisionAndRemainder = enumerator.divideAndRemainder(denominator);
+        BigInteger q = denominator;
+        if (divisionAndRemainder[1].signum() < 0) {
+            divisionAndRemainder[0] = divisionAndRemainder[0].subtract(BigInteger.ONE);
+            divisionAndRemainder[1] = divisionAndRemainder[1].add(denominator);
+        }
+        list.add(divisionAndRemainder[0]);
+        BigInteger p = divisionAndRemainder[1];
+        while (!p.equals(BigInteger.ZERO)) {
+            divisionAndRemainder = q.divideAndRemainder(p);
+            list.add(divisionAndRemainder[0]);
+            q = p;
+            p = divisionAndRemainder[1];
+        }
+        double output = list.get(list.size()-1).doubleValue();
+        for (int i = 1; i < list.size(); i++) {
+            output = list.get(list.size()-1-i).doubleValue() + 1/output;
+        }
+        return output;
     }
 
     public BR negate() {
@@ -96,5 +121,9 @@ public class BR {
 
     public BR clone() {
         return new BR(enumerator, denominator);
+    }
+
+    public boolean equals (BR input) {
+        return (enumerator.equals(input.getEnumerator()) && denominator.equals(input.getDenominator()));
     }
 }

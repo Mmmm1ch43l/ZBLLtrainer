@@ -12,16 +12,16 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
     private int currentPolygonIndex;
 
     private static final int MARGIN = 20;
-    private static final int HEIGHT = 640;
-    //private static final int HEIGHT = 1150;
+    //private static final int HEIGHT = 640;
+    private static final int HEIGHT = 1150;
     //private static final int HEIGHT = 1000;
     private static final int WIDTH = HEIGHT;
     private static final int SYSTEM_WIDTH = (WIDTH - 3 * MARGIN) / 2;
     private static final int SYSTEM_HEIGHT = (HEIGHT - 3 * MARGIN) / 2;
-    private static final boolean RANDOMIZED = true;
-    private static final boolean SYMMETRIC = true;
+    private static final boolean RANDOMIZED = false;
+    private static final boolean SYMMETRIC = false;
     private static final int RANDOMNESS_PRECISION = 1000;
-    private static final int MAX_PRECISION = 5;
+    private static final int MAX_PRECISION = 15;
 
 
     public StarshapedDual3(VR[][] tableOfVertices) {
@@ -193,13 +193,13 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
             if(SYMMETRIC) {
                 this.tableOfVertices[0] = generateRandomSymmetricPolygon();
             } else {
-                this.tableOfVertices[0] = generateRandomPolygon();
+                double area = 2;
+                while (area >= 1.18) {
+                    tableOfVertices[0] = generateRandomPolygon();
+                    area = computeArea(reduce(tableOfVertices[0]));
+                    System.out.println("Area: " + area);
+                }
             }
-            /*double area = 2;
-            while (area >= 1.13 || area < 0) {
-                tableOfVertices[0] = generateRandomPolygon();
-                area = computeArea(reduce(tableOfVertices[0]));
-            }*/
             repaint();
         } else {
             if (e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -220,6 +220,12 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
 
     public static void main(String[] args) {
         VR[][] tableOfVertices = {
+                {
+                        new VR(-1,101,0,1),
+                        new VR(3435,101,10204,101),
+                        new VR(1,101,0,1),
+                        new VR(-3435,101,-10204,101)
+                },
                 {
                         new VR(3,5,4,5),
                         new VR(4,5,-3,5),
@@ -301,12 +307,12 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
     }
 
     public double computeArea(VR[] vertices) {
-        double output = 0;
+        BR area = new BR(0);
         for (int i = 0; i < vertices.length; i++) {
             int j = (i + 1) % vertices.length;
-            output += vertices[j].crossProduct(vertices[i]).doubleValue();
+            area = area.add(vertices[j].crossProduct(vertices[i]));
         }
-        return output/2;
+        return area.divide(new BR(2)).doubleValue();
     }
 
     public boolean contains(VR[] polygon, VR point){
@@ -403,7 +409,98 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         }
     }
 
+    public void intermediatePoints(ArrayList<VR> list, VR left, VR right, VR dual) {
+        VR rightVertex;
+        VR temp;
+        VR parrent;
+        try {
+            long n = left.lcm().longValueExact();
+            parrent = left.parrentPoint();
+            BigInteger invers = parrent.getX().getEnumerator().modInverse(parrent.getY().getEnumerator());
+            rightVertex = new VR(new BR(invers), new BR(BigInteger.ONE.subtract(parrent.getX().getEnumerator().multiply(invers)).divide(parrent.getY().getEnumerator())));
+            temp = null;
+            for (long i = 1; i < n; i++) {
+                continue;
+            }
+        } catch (ArithmeticException e) {
+            System.out.println("Right Vertex not found!");
+            rightVertex = right.rotateLeft().rotateSlightlyRight(MAX_PRECISION);
+            rightVertex = rightVertex.scale(right.scalarProduct(dual).divide(right.scalarProduct(rightVertex)));
+        }
+
+        int precision = 5;
+        temp = right.rotateLeft().rotateSlightlyRight(precision);
+        temp = temp.scale(right.scalarProduct(dual).divide(right.scalarProduct(temp)));
+        VR leftVertex = containedInnerIntegerPoint(new VR[]{temp,dual,new VR(0,0)});
+        while (precision++ < MAX_PRECISION && leftVertex == null) {
+            System.out.print("Precision went to " + precision);
+            temp = right.rotateLeft().rotateSlightlyRight(precision);
+            temp = temp.scale(right.scalarProduct(dual).divide(right.scalarProduct(temp)));
+            leftVertex = containedInnerIntegerPoint(new VR[]{temp,dual,new VR(0,0)});
+            System.out.println(".");
+        }
+        if (leftVertex == null){
+            System.out.println("Left Vertex not found!");
+            leftVertex = temp.clone();
+        } else {
+            leftVertex = leftVertex.scale(right.scalarProduct(dual).divide(right.scalarProduct(leftVertex)));
+            VR[] integerPoints = containedIntegerPoints(new VR[]{leftVertex,dual,new VR(0,0)});
+            for (VR integerPoint : integerPoints) {
+                if (integerPoint.toTheRightOf(leftVertex) > 0) {
+                    leftVertex = integerPoint.clone();
+                }
+            }
+            leftVertex = leftVertex.scale(right.scalarProduct(dual).divide(right.scalarProduct(leftVertex)));
+        }
+        VR[] integerPoints = containedIntegerPointsStrict(new VR[]{leftVertex,rightVertex,dual});
+        if (integerPoints.length > 0){
+            List<VR[]> pairs = new ArrayList<>();
+            for (VR integerPoint : integerPoints) {
+                if(integerPoint.isCoprimeInt()) {
+                    BR angle = integerPoint.scalarProduct(rightVertex).pow(2).divide(integerPoint.normSquared()).negate();
+                    angle = angle.multiply(new BR(integerPoint.scalarProduct(rightVertex).signum()));
+                    pairs.add(new VR[]{integerPoint, new VR(angle, new BR(0))});
+                }
+            }
+            //System.out.println(pairs.size());
+            pairs.sort((a, b) -> Double.compare(a[1].doubleValueX(), b[1].doubleValueX()));
+            List<VR> toAdds = new ArrayList<>();
+            VR rightVertexNew = rightVertex.clone();
+            for (VR[] pair : pairs) {
+                if (containsStrict(new VR[]{leftVertex,rightVertexNew,dual}, pair[0])){
+                    rightVertexNew = rightVertex.clone();
+                    List<VR> tempAdds = new ArrayList<>();
+                    for (VR toAdd : toAdds) {
+                        if (containsStrict(new VR[]{pair[0],rightVertexNew,dual}, toAdd)){
+                            rightVertexNew = toAdd.clone();
+                            tempAdds.add(toAdd);
+                        }
+                    }
+                    toAdds = tempAdds;
+                    toAdds.add(pair[0]);
+                    rightVertexNew = pair[0].clone();
+                }
+            }
+            VR[] toAddss = toAdds.toArray(new VR[0]);
+            list.add(dualOfLine(toAddss[0],rightVertex));
+            for (int k = 1; k < toAddss.length; k++) {
+                list.add(dualOfLine(toAddss[k], toAddss[k-1]));
+            }
+            list.add(dualOfLine(leftVertex, toAddss[toAddss.length-1]));
+        } else {
+            list.add(dualOfLine(leftVertex, rightVertex));
+        }
+    }
+
     public VR[] reduce(VR[] input){
+        if (isSymmetric(input)) {
+            return reduceSymmetric(input);
+        } else {
+            return reduceAsymmetric(input);
+        }
+    }
+
+    public VR[] reduceAsymmetric(VR[] input){
         VR[] convexHull = new VR[input.length];
         for (int i = 0; i < input.length; i++) {
             VR integerPoint = integerPointOnLine(input[i]);
@@ -421,95 +518,42 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         for (int i = 0; i < convexHull.length; i++) {
             int j = (i + 1) % convexHull.length;
             list.add(convexHull[i]);
-            //convexDual[i].print();
-            //integerPointOnLine(convexDual[i]).print();
             if (!convexDual[i].isInt()){
-                int precision = 2;
-                VR temp = convexHull[i].rotateRight().rotateSlightlyLeft(precision);
-                temp = temp.scale(convexHull[i].scalarProduct(convexDual[i]).divide(convexHull[i].scalarProduct(temp)));
-                VR rightVertex = containedInnerIntegerPoint(new VR[]{convexDual[i],temp,new VR(0,0)});
-                while (precision++ < MAX_PRECISION && rightVertex == null) {
-                    temp = convexHull[i].rotateRight().rotateSlightlyLeft(precision);
-                    temp = temp.scale(convexHull[i].scalarProduct(convexDual[i]).divide(convexHull[i].scalarProduct(temp)));
-                    rightVertex = containedInnerIntegerPoint(new VR[]{convexDual[i],temp,new VR(0,0)});
-                }
-                if (rightVertex == null){
-                    System.out.println("Right Vertex not found!");
-                    rightVertex = temp.clone();
-                } else {
-                    rightVertex = rightVertex.scale(convexHull[i].scalarProduct(convexDual[i]).divide(convexHull[i].scalarProduct(rightVertex)));
-                    VR[] integerPoints = containedIntegerPoints(new VR[]{convexDual[i],rightVertex,new VR(0,0)});
-                    for (VR integerPoint : integerPoints) {
-                        if (integerPoint.toTheRightOf(rightVertex) < 0) {
-                            rightVertex = integerPoint.clone();
-                        }
-                    }
-                    rightVertex = rightVertex.scale(convexHull[i].scalarProduct(convexDual[i]).divide(convexHull[i].scalarProduct(rightVertex)));
-                }
-                precision = 2;
-                temp = convexHull[j].rotateLeft().rotateSlightlyRight(precision);
-                temp = temp.scale(convexHull[j].scalarProduct(convexDual[i]).divide(convexHull[j].scalarProduct(temp)));
-                VR leftVertex = containedInnerIntegerPoint(new VR[]{temp,convexDual[i],new VR(0,0)});
-                while (precision++ < MAX_PRECISION && leftVertex == null) {
-                    temp = convexHull[j].rotateLeft().rotateSlightlyRight(precision);
-                    temp = temp.scale(convexHull[j].scalarProduct(convexDual[i]).divide(convexHull[j].scalarProduct(temp)));
-                    leftVertex = containedInnerIntegerPoint(new VR[]{temp,convexDual[i],new VR(0,0)});
-                }
-                if (leftVertex == null){
-                    System.out.println("Left Vertex not found!");
-                    leftVertex = temp.clone();
-                } else {
-                    leftVertex = leftVertex.scale(convexHull[j].scalarProduct(convexDual[i]).divide(convexHull[j].scalarProduct(leftVertex)));
-                    VR[] integerPoints = containedIntegerPoints(new VR[]{leftVertex,convexDual[i],new VR(0,0)});
-                    for (VR integerPoint : integerPoints) {
-                        if (integerPoint.toTheRightOf(leftVertex) > 0) {
-                            leftVertex = integerPoint.clone();
-                        }
-                    }
-                    leftVertex = leftVertex.scale(convexHull[j].scalarProduct(convexDual[i]).divide(convexHull[j].scalarProduct(leftVertex)));
-                }
-                VR[] integerPoints = containedIntegerPointsStrict(new VR[]{leftVertex,rightVertex,convexDual[i]});
-                //System.out.println(integerPoints.length);
-                if (integerPoints.length > 0){
-                    List<VR[]> pairs = new ArrayList<>();
-                    for (VR integerPoint : integerPoints) {
-                        if(integerPoint.isCoprimeInt()) {
-                            BR angle = integerPoint.scalarProduct(rightVertex).pow(2).divide(integerPoint.normSquared()).negate();
-                            angle = angle.multiply(new BR(integerPoint.scalarProduct(rightVertex).signum()));
-                            pairs.add(new VR[]{integerPoint, new VR(angle, new BR(0))});
-                        }
-                    }
-                    //System.out.println(pairs.size());
-                    pairs.sort((a, b) -> Double.compare(a[1].doubleValueX(), b[1].doubleValueX()));
-                    List<VR> toAdds = new ArrayList<>();
-                    VR rightVertexNew = rightVertex.clone();
-                    for (VR[] pair : pairs) {
-                        if (containsStrict(new VR[]{leftVertex,rightVertexNew,convexDual[i]}, pair[0])){
-                            rightVertexNew = rightVertex.clone();
-                            List<VR> tempAdds = new ArrayList<>();
-                            for (VR toAdd : toAdds) {
-                                if (containsStrict(new VR[]{pair[0],rightVertexNew,convexDual[i]}, toAdd)){
-                                    rightVertexNew = toAdd.clone();
-                                    tempAdds.add(toAdd);
-                                }
-                            }
-                            toAdds = tempAdds;
-                            toAdds.add(pair[0]);
-                            rightVertexNew = pair[0].clone();
-                        }
-                    }
-                    VR[] toAddss = toAdds.toArray(new VR[0]);
-                    list.add(dualOfLine(toAddss[0],rightVertex));
-                    for (int k = 1; k < toAddss.length; k++) {
-                        list.add(dualOfLine(toAddss[k], toAddss[k-1]));
-                    }
-                    list.add(dualOfLine(leftVertex, toAddss[toAddss.length-1]));
-                } else {
-                    list.add(dualOfLine(leftVertex, rightVertex));
-                }
+                intermediatePoints(list, convexHull[i], convexHull[j], convexDual[i]);
             }
         }
         return list.toArray(new VR[0]);
+    }
+
+    public VR[] reduceSymmetric(VR[] input){
+        VR[] convexHull = new VR[input.length];
+        for (int i = 0; i < input.length/2; i++) {
+            VR integerPoint = integerPointOnLine(input[i]);
+            if (integerPoint == null){
+                convexHull[i] = input[i].clone();
+            } else {
+                convexHull[i] = integerPoint.clone();
+            }
+            convexHull[i+input.length/2] = convexHull[i].negate();
+        }
+        VR[] convexDual = dualize(convexHull);
+        if (containedIntegerPointsStrict(convexDual).length > 1){
+            return null;
+        }
+        ArrayList<VR> list = new ArrayList<>();
+        for (int i = 0; i < convexHull.length/2; i++) {
+            int j = (i + 1) % convexHull.length;
+            list.add(convexHull[i]);
+            if (!convexDual[i].isInt()){
+                intermediatePoints(list, convexHull[i], convexHull[j], convexDual[i]);
+            }
+        }
+        VR[] output = new VR[2*list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            output[i] = list.get(i);
+            output[i+list.size()] = output[i].negate();
+        }
+        return output;
     }
     public int[] randomPermutation(int n) {
         List<Integer> numbers = new ArrayList<>();
@@ -631,5 +675,13 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
             vertex.print();
         }
         return randomPolygon;
+    }
+
+    public static boolean isSymmetric(VR[] polygon) {
+        if (polygon.length % 2 != 0) return false;
+        for (int i = 0; i < polygon.length/2; i++) {
+            if (!polygon[i].equals(polygon[i+polygon.length/2].negate())) return false;
+        }
+        return true;
     }
 }

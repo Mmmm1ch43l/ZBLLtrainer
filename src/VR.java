@@ -83,12 +83,12 @@ public class VR {
     }
 
     public VR rotateSlightlyRight(int precision) {
-        BR smallNumber = (new BR(1, 100)).pow(precision);
+        BR smallNumber = (new BR(1, 2)).pow(precision);
         return new VR(x.add(y.multiply(smallNumber)), y.subtract(x.multiply(smallNumber)));
     }
 
     public VR rotateSlightlyLeft(int precision) {
-        BR smallNumber = (new BR(1, 100)).pow(precision);
+        BR smallNumber = (new BR(1, 2)).pow(precision);
         return new VR(x.subtract(y.multiply(smallNumber)), y.add(x.multiply(smallNumber)));
     }
 
@@ -106,5 +106,27 @@ public class VR {
 
     public void print() {
         System.out.println("(" + doubleValueX() + ", " + doubleValueY() + ")");
+    }
+
+    public boolean equals (VR input){
+        return x.equals(input.getX()) && y.equals(input.getY());
+    }
+
+    public BigInteger lcm () {
+        return x.getDenominator().multiply(y.getDenominator()).divide(x.getDenominator().gcd(y.getDenominator()));
+    }
+
+    public VR parrentPoint () {
+        return this.scale(new BR(this.lcm()));
+    }
+
+    public BR divide (VR input) {
+        if (input.normSquared().signum() == 0 && this.crossProduct(input).signum() != 0) {
+            return new BR(0);
+        }
+        if (input.getX().signum() != 0) {
+            return x.divide(input.getX());
+        }
+        return y.divide(input.getY());
     }
 }
