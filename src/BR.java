@@ -119,6 +119,13 @@ public class BR {
         return enumerator.abs().divide(denominator).intValue();
     }
 
+    public BigInteger floor() {
+        if (enumerator.signum() < 0) {
+            return enumerator.divide(denominator);
+        }
+        return enumerator.abs().divide(denominator);
+    }
+
     public BR clone() {
         return new BR(enumerator, denominator);
     }

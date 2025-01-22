@@ -112,16 +112,15 @@ public class VR {
         return x.equals(input.getX()) && y.equals(input.getY());
     }
 
-    public BigInteger lcm () {
-        return x.getDenominator().multiply(y.getDenominator()).divide(x.getDenominator().gcd(y.getDenominator()));
-    }
-
-    public VR parrentPoint () {
-        return this.scale(new BR(this.lcm()));
+    public VR parentPoint() {
+        VR output = this.scale(new BR(x.getDenominator().multiply(y.getDenominator()).divide(x.getDenominator().gcd(y.getDenominator()))));
+        BigInteger gcd = output.getX().getEnumerator().gcd(output.getY().getEnumerator());
+        return output.scale(new BR(BigInteger.ONE,gcd));
     }
 
     public BR divide (VR input) {
-        if (input.normSquared().signum() == 0 && this.crossProduct(input).signum() != 0) {
+        if (input.normSquared().signum() == 0 || this.crossProduct(input).signum() != 0) {
+            System.out.println("not divisible!");
             return new BR(0);
         }
         if (input.getX().signum() != 0) {

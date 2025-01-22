@@ -13,8 +13,8 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
 
     private static final int MARGIN = 20;
     //private static final int HEIGHT = 640;
-    private static final int HEIGHT = 1150;
-    //private static final int HEIGHT = 1000;
+    //private static final int HEIGHT = 1150;
+    private static final int HEIGHT = 1000;
     private static final int WIDTH = HEIGHT;
     private static final int SYSTEM_WIDTH = (WIDTH - 3 * MARGIN) / 2;
     private static final int SYSTEM_HEIGHT = (HEIGHT - 3 * MARGIN) / 2;
@@ -410,23 +410,39 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
     }
 
     public void intermediatePoints(ArrayList<VR> list, VR left, VR right, VR dual) {
-        VR rightVertex;
+
+        VR[] integerPoints;
         VR temp;
-        VR parrent;
-        try {
-            long n = left.lcm().longValueExact();
-            parrent = left.parrentPoint();
-            BigInteger invers = parrent.getX().getEnumerator().modInverse(parrent.getY().getEnumerator());
-            rightVertex = new VR(new BR(invers), new BR(BigInteger.ONE.subtract(parrent.getX().getEnumerator().multiply(invers)).divide(parrent.getY().getEnumerator())));
-            temp = null;
-            for (long i = 1; i < n; i++) {
-                continue;
-            }
-        } catch (ArithmeticException e) {
-            System.out.println("Right Vertex not found!");
-            rightVertex = right.rotateLeft().rotateSlightlyRight(MAX_PRECISION);
-            rightVertex = rightVertex.scale(right.scalarProduct(dual).divide(right.scalarProduct(rightVertex)));
+        System.out.print("looking for Right Vertex");
+        VR parent = left.parentPoint();
+        int n = parent.divide(left).getEnumerator().intValue();
+        VR inverse;
+        if (parent.getY().signum() == 0) {
+            inverse = parent.clone();
+        } else {
+            BigInteger number = parent.getX().getEnumerator().modInverse(parent.getY().getEnumerator().abs());
+            inverse = new VR(new BR(number), new BR(BigInteger.ONE.subtract(parent.getX().getEnumerator().multiply(number)).divide(parent.getY().getEnumerator())));
         }
+        parent = parent.rotateLeft();
+        VR rightVertex = inverse.add(parent.scale(new BR(dual.scale(new BR(1,n)).subtract(inverse).divide(parent).floor())));
+        for (int i = 2; i < n+1; i++) {
+            inverse = inverse.scale(new BR(i,i-1));
+            temp = inverse.add(parent.scale(new BR(dual.scale(new BR(i,n)).subtract(inverse).divide(parent).floor())));
+            if (temp.toTheRightOf(rightVertex) < 0) {
+                rightVertex = temp;
+            }
+        }
+        System.out.print(".");
+        rightVertex = left.rotateRight().rotateSlightlyLeft(5);
+        rightVertex = rightVertex.scale(left.scalarProduct(dual).divide(left.scalarProduct(rightVertex)));
+        integerPoints = containedIntegerPoints(new VR[]{dual,rightVertex,new VR(0,0)});
+        for (VR integerPoint : integerPoints) {
+            if (integerPoint.toTheRightOf(rightVertex) < 0) {
+                rightVertex = integerPoint.clone();
+            }
+        }
+        rightVertex = rightVertex.scale(left.scalarProduct(dual).divide(left.scalarProduct(rightVertex)));
+        System.out.println(".");
 
         int precision = 5;
         temp = right.rotateLeft().rotateSlightlyRight(precision);
@@ -444,7 +460,7 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
             leftVertex = temp.clone();
         } else {
             leftVertex = leftVertex.scale(right.scalarProduct(dual).divide(right.scalarProduct(leftVertex)));
-            VR[] integerPoints = containedIntegerPoints(new VR[]{leftVertex,dual,new VR(0,0)});
+            integerPoints = containedIntegerPoints(new VR[]{leftVertex,dual,new VR(0,0)});
             for (VR integerPoint : integerPoints) {
                 if (integerPoint.toTheRightOf(leftVertex) > 0) {
                     leftVertex = integerPoint.clone();
@@ -452,7 +468,8 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
             }
             leftVertex = leftVertex.scale(right.scalarProduct(dual).divide(right.scalarProduct(leftVertex)));
         }
-        VR[] integerPoints = containedIntegerPointsStrict(new VR[]{leftVertex,rightVertex,dual});
+
+        integerPoints = containedIntegerPointsStrict(new VR[]{leftVertex,rightVertex,dual});
         if (integerPoints.length > 0){
             List<VR[]> pairs = new ArrayList<>();
             for (VR integerPoint : integerPoints) {
@@ -462,7 +479,6 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
                     pairs.add(new VR[]{integerPoint, new VR(angle, new BR(0))});
                 }
             }
-            //System.out.println(pairs.size());
             pairs.sort((a, b) -> Double.compare(a[1].doubleValueX(), b[1].doubleValueX()));
             List<VR> toAdds = new ArrayList<>();
             VR rightVertexNew = rightVertex.clone();
