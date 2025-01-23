@@ -120,10 +120,12 @@ public class BR {
     }
 
     public BigInteger floor() {
-        if (enumerator.signum() < 0) {
-            return enumerator.divide(denominator);
+        if (denominator.equals(BigInteger.ZERO)) return BigInteger.ZERO;
+        BigInteger[] divisionAndRemainder = enumerator.divideAndRemainder(denominator);
+        if (divisionAndRemainder[1].signum() < 0) {
+            return divisionAndRemainder[0].subtract(BigInteger.ONE);
         }
-        return enumerator.abs().divide(denominator);
+        return divisionAndRemainder[0];
     }
 
     public BR clone() {
