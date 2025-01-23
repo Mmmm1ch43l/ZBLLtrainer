@@ -21,7 +21,6 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
     private static final boolean RANDOMIZED = false;
     private static final boolean SYMMETRIC = false;
     private static final int RANDOMNESS_PRECISION = 1000;
-    private static final int MAX_PRECISION = 15;
 
 
     public StarshapedDual3(VR[][] tableOfVertices) {
@@ -261,6 +260,12 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
                         new VR(-1,3,1,1)
                 },
                 {
+                        new VR(1,1,-1,3),
+                        new VR(-1,3,-1,1),
+                        new VR(-1,1,1,3),
+                        new VR(1,3,1,1)
+                },
+                {
                         new VR(4,3,1,1),
                         new VR(0, -1),
                         new VR(-1,1,1,4)
@@ -363,6 +368,36 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         return list.toArray(new VR[0]);
     }
 
+    public VR[] containedIntegerPointsStrictFast(VR[] polygon){
+        ArrayList<VR> list = new ArrayList<>();
+        VR parent = polygon[2].subtract(polygon[1]).rotateLeft().parentPoint();
+        BigInteger index = parent.scalarProduct(polygon[0]).floor().add(BigInteger.ONE);
+        VR leftDirection = polygon[1].subtract(polygon[0]);
+        leftDirection = leftDirection.scale(parent.scalarProduct(leftDirection).invert());
+        VR left = polygon[0].add(leftDirection.scale((new BR(index)).subtract(parent.scalarProduct(polygon[0]))));
+        VR rightDirection = polygon[2].subtract(polygon[0]);
+        rightDirection = rightDirection.scale(parent.scalarProduct(rightDirection).invert());
+        VR right = polygon[0].add(rightDirection.scale((new BR(index)).subtract(parent.scalarProduct(polygon[0]))));
+        VR inverse;
+        if (parent.getY().signum() == 0) {
+            inverse = parent.clone();
+        } else {
+            BigInteger number = parent.getX().getEnumerator().modInverse(parent.getY().getEnumerator().abs());
+            inverse = new VR(new BR(number), new BR(BigInteger.ONE.subtract(parent.getX().getEnumerator().multiply(number)).divide(parent.getY().getEnumerator())));
+        }
+        VR point = inverse.scale(new BR(index));
+        parent = parent.rotateLeft();
+        for (BigInteger i = index; i.compareTo(parent.scalarProduct(polygon[1]).ceiling()) < 0; i = i.add(BigInteger.ONE)) {
+            for (BigInteger j = right.subtract(point).divide(parent).floor().add(BigInteger.ONE); j.compareTo(left.subtract(point).divide(parent).ceiling()) < 0; j = j.add(BigInteger.ONE)) {
+                list.add(point.add(parent.scale(new BR(j))));
+            }
+            point = point.add(inverse);
+            left = left.add(leftDirection);
+            right = right.add(rightDirection);
+        }
+        return list.toArray(new VR[0]);
+    }
+
     public VR containedInnerIntegerPoint(VR[] polygon){
         int n = 0;
         for (VR vertex : polygon) {
@@ -415,7 +450,7 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         VR temp;
         System.out.print("looking for Right Vertex");
         VR parent = left.parentPoint();
-        int n = parent.divide(left).getEnumerator().intValue();
+        BigInteger n = parent.divide(left).floor();
         VR inverse;
         if (parent.getY().signum() == 0) {
             inverse = parent.clone();
@@ -423,11 +458,12 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
             BigInteger number = parent.getX().getEnumerator().modInverse(parent.getY().getEnumerator().abs());
             inverse = new VR(new BR(number), new BR(BigInteger.ONE.subtract(parent.getX().getEnumerator().multiply(number)).divide(parent.getY().getEnumerator())));
         }
+        VR point = inverse.clone();
         parent = parent.rotateLeft();
-        VR rightVertex = inverse.add(parent.scale(new BR(dual.scale(new BR(1,n)).subtract(inverse).divide(parent).floor())));
-        for (int i = 2; i < n+1; i++) {
-            inverse = inverse.scale(new BR(i,i-1));
-            temp = inverse.add(parent.scale(new BR(dual.scale(new BR(i,n)).subtract(inverse).divide(parent).floor())));
+        VR rightVertex = point.add(parent.scale(new BR(dual.scale(new BR(BigInteger.ONE,n)).subtract(point).divide(parent).floor())));
+        for (BigInteger i = BigInteger.TWO; i.compareTo(n) <= 0; i = i.add(BigInteger.ONE)) {
+            point = point.add(inverse);
+            temp = inverse.add(parent.scale(new BR(dual.scale(new BR(i,n)).subtract(point).divide(parent).floor())));
             if (temp.toTheRightOf(rightVertex) < 0) {
                 rightVertex = temp.clone();
             }
@@ -438,18 +474,19 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
 
         System.out.print("looking for Left Vertex");
         parent = right.parentPoint();
-        n = parent.divide(right).getEnumerator().intValue();
+        n = parent.divide(right).floor();
         if (parent.getY().signum() == 0) {
             inverse = parent.clone();
         } else {
             BigInteger number = parent.getX().getEnumerator().modInverse(parent.getY().getEnumerator().abs());
             inverse = new VR(new BR(number), new BR(BigInteger.ONE.subtract(parent.getX().getEnumerator().multiply(number)).divide(parent.getY().getEnumerator())));
         }
+        point = inverse.clone();
         parent = parent.rotateRight();
-        VR leftVertex = inverse.add(parent.scale(new BR(dual.scale(new BR(1,n)).subtract(inverse).divide(parent).floor())));
-        for (int i = 2; i < n+1; i++) {
-            inverse = inverse.scale(new BR(i,i-1));
-            temp = inverse.add(parent.scale(new BR(dual.scale(new BR(i,n)).subtract(inverse).divide(parent).floor())));
+        VR leftVertex = point.add(parent.scale(new BR(dual.scale(new BR(BigInteger.ONE,n)).subtract(point).divide(parent).floor())));
+        for (BigInteger i = BigInteger.TWO; i.compareTo(n) <= 0; i = i.add(BigInteger.ONE)) {
+            point = point.add(inverse);
+            temp = point.add(parent.scale(new BR(dual.scale(new BR(i,n)).subtract(point).divide(parent).floor())));
             if (temp.toTheRightOf(leftVertex) > 0) {
                 leftVertex = temp.clone();
             }
@@ -457,33 +494,9 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         leftVertex = leftVertex.scale(right.scalarProduct(dual).divide(right.scalarProduct(leftVertex)));
         System.out.println(".");
         leftVertex.print();
-        /*int precision = 5;
-        temp = right.rotateLeft().rotateSlightlyRight(precision);
-        temp = temp.scale(right.scalarProduct(dual).divide(right.scalarProduct(temp)));
-        VR leftVertex = containedInnerIntegerPoint(new VR[]{temp,dual,new VR(0,0)});
-        while (precision++ < MAX_PRECISION && leftVertex == null) {
-            System.out.print("Precision went to " + precision);
-            temp = right.rotateLeft().rotateSlightlyRight(precision);
-            temp = temp.scale(right.scalarProduct(dual).divide(right.scalarProduct(temp)));
-            leftVertex = containedInnerIntegerPoint(new VR[]{temp,dual,new VR(0,0)});
-            System.out.println(".");
-        }
-        if (leftVertex == null){
-            System.out.println("Left Vertex not found!");
-            leftVertex = temp.clone();
-        } else {
-            leftVertex = leftVertex.scale(right.scalarProduct(dual).divide(right.scalarProduct(leftVertex)));
-            integerPoints = containedIntegerPoints(new VR[]{leftVertex,dual,new VR(0,0)});
-            for (VR integerPoint : integerPoints) {
-                if (integerPoint.toTheRightOf(leftVertex) > 0) {
-                    leftVertex = integerPoint.clone();
-                }
-            }
-            leftVertex = leftVertex.scale(right.scalarProduct(dual).divide(right.scalarProduct(leftVertex)));
-        }*/
 
         System.out.print("looking for Inner Points");
-        integerPoints = containedIntegerPointsStrict(new VR[]{leftVertex,rightVertex,dual});
+        integerPoints = containedIntegerPointsStrict(new VR[]{dual,leftVertex,rightVertex});
         System.out.println(".");
         System.out.println(integerPoints.length);
         if (integerPoints.length > 0){

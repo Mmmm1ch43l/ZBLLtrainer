@@ -128,6 +128,15 @@ public class BR {
         return divisionAndRemainder[0];
     }
 
+    public BigInteger ceiling() {
+        if (denominator.equals(BigInteger.ZERO)) return BigInteger.ZERO;
+        BigInteger[] divisionAndRemainder = enumerator.divideAndRemainder(denominator);
+        if (divisionAndRemainder[1].signum() > 0) {
+            return divisionAndRemainder[0].add(BigInteger.ONE);
+        }
+        return divisionAndRemainder[0];
+    }
+
     public BR clone() {
         return new BR(enumerator, denominator);
     }
