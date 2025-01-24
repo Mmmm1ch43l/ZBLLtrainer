@@ -260,12 +260,6 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
                         new VR(-1,3,1,1)
                 },
                 {
-                        new VR(1,1,-1,3),
-                        new VR(-1,3,-1,1),
-                        new VR(-1,1,1,3),
-                        new VR(1,3,1,1)
-                },
-                {
                         new VR(4,3,1,1),
                         new VR(0, -1),
                         new VR(-1,1,1,4)
@@ -368,7 +362,7 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         return list.toArray(new VR[0]);
     }
 
-    public VR[] containedIntegerPointsStrictFast(VR[] polygon){
+    public VR[] containedCoprimeIntegerPointsStrictFast(VR[] polygon){
         ArrayList<VR> list = new ArrayList<>();
         VR parent = polygon[2].subtract(polygon[1]).rotateLeft().parentPoint();
         BigInteger index = parent.scalarProduct(polygon[0]).floor().add(BigInteger.ONE);
@@ -387,9 +381,14 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         }
         VR point = inverse.scale(new BR(index));
         parent = parent.rotateLeft();
-        for (BigInteger i = index; i.compareTo(parent.scalarProduct(polygon[1]).ceiling()) < 0; i = i.add(BigInteger.ONE)) {
-            for (BigInteger j = right.subtract(point).divide(parent).floor().add(BigInteger.ONE); j.compareTo(left.subtract(point).divide(parent).ceiling()) < 0; j = j.add(BigInteger.ONE)) {
-                list.add(point.add(parent.scale(new BR(j))));
+        BigInteger outerBound = parent.scalarProduct(polygon[1]).ceiling();
+        BigInteger innerBound;
+        VR temp;
+        for (BigInteger i = index; i.compareTo(outerBound) < 0; i = i.add(BigInteger.ONE)) {
+            innerBound = left.subtract(point).divide(parent).ceiling();
+            for (BigInteger j = right.subtract(point).divide(parent).floor().add(BigInteger.ONE); j.compareTo(innerBound) < 0; j = j.add(BigInteger.ONE)) {
+                temp = point.add(parent.scale(new BR(j)));
+                if (temp.isCoprimeInt()) list.add(temp);
             }
             point = point.add(inverse);
             left = left.add(leftDirection);
@@ -463,7 +462,7 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         VR rightVertex = point.add(parent.scale(new BR(dual.scale(new BR(BigInteger.ONE,n)).subtract(point).divide(parent).floor())));
         for (BigInteger i = BigInteger.TWO; i.compareTo(n) <= 0; i = i.add(BigInteger.ONE)) {
             point = point.add(inverse);
-            temp = inverse.add(parent.scale(new BR(dual.scale(new BR(i,n)).subtract(point).divide(parent).floor())));
+            temp = point.add(parent.scale(new BR(dual.scale(new BR(i,n)).subtract(point).divide(parent).floor())));
             if (temp.toTheRightOf(rightVertex) < 0) {
                 rightVertex = temp.clone();
             }
@@ -496,7 +495,7 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         leftVertex.print();
 
         System.out.print("looking for Inner Points");
-        integerPoints = containedIntegerPointsStrict(new VR[]{dual,leftVertex,rightVertex});
+        integerPoints = containedCoprimeIntegerPointsStrictFast(new VR[]{dual,leftVertex,rightVertex});
         System.out.println(".");
         System.out.println(integerPoints.length);
         if (integerPoints.length > 0){

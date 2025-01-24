@@ -136,6 +136,7 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
     };
 
     private final String[] HZBLLs = {
+            /*
             // H 2GLL
             "U R' U2 R U R' U R U R U R' U R U2 R'",
             "U R U2 R' U' R U' R' U' R' U' R U' R' U2 R",
@@ -154,7 +155,7 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "R' U' F' U F R U' F U R U' R' U R U' R' F'",// back opposite, front matches left
             "Rw U2 R2 F R F' R U2 Rw2 F' Rw U' Rw' F2 Rw",// adjacents, front matches right
             "R U' R' U R U R' U' L U L' U' R U R' U2 L U L'",// adjacents, front matches left
-            /*
+            */
             //H vertical column (on right)
             "R' F' R U2 R U2 R' F U' R U' R'",// pair front right (Fr)
             "R U R' U R U L' U R' U' L",// pair back right (Br)
@@ -168,6 +169,7 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "U' R U2 R' U' R2 D R' U R D' R2 U' R U' R'",// pair back left (Bl) + bar right
             "U' R' U2 R U R' U' F' R U R' U' R' F R U2 R",// solved/checkerboard thingy front left (fl)
             "U2 R2 D' R U' R' D R2 U' R2 D' R U2 R' D R2",// solved/checkerboard thingy back left (bl)
+            /*
             //H horizontal column (on front)
             "F R U' R' U R U2 R' U' R U R' U' F'",// opposites front and back
             "U2 R U R' U R U' R2 F' R U2 R U2 R' F R U' R'",// bar front and back
