@@ -12,9 +12,9 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
     private int currentPolygonIndex;
 
     private static final int MARGIN = 20;
-    //private static final int HEIGHT = 640;
+    private static final int HEIGHT = 640;
     //private static final int HEIGHT = 1000;
-    private static final int HEIGHT = 1150;
+    //private static final int HEIGHT = 1150;
     private static final int WIDTH = HEIGHT;
     private static final int SYSTEM_WIDTH = (WIDTH - 3 * MARGIN) / 2;
     private static final int SYSTEM_HEIGHT = (HEIGHT - 3 * MARGIN) / 2;
@@ -380,8 +380,8 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
             inverse = new VR(new BR(number), new BR(BigInteger.ONE.subtract(parent.getX().getEnumerator().multiply(number)).divide(parent.getY().getEnumerator())));
         }
         VR point = inverse.scale(new BR(index));
-        parent = parent.rotateLeft();
         BigInteger outerBound = parent.scalarProduct(polygon[1]).ceiling();
+        parent = parent.rotateLeft();
         BigInteger innerBound;
         VR temp;
         for (BigInteger i = index; i.compareTo(outerBound) < 0; i = i.add(BigInteger.ONE)) {
