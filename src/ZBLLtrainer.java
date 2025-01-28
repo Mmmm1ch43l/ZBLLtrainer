@@ -12,9 +12,9 @@ import java.util.concurrent.TimeUnit;
 public class ZBLLtrainer extends JFrame implements KeyListener {
     private static boolean runningWindows = false;
 
-    private final boolean include2GLL = true;
-    private final boolean includeU = true;
-    private final boolean includeH = false;
+    private final boolean include2GLL = false;
+    private final boolean includeU = false;
+    private final boolean includeH = true;
     private final double pseudoRandomNumberGeneratorDecay = 0.95;
 
     private final PseudoRandomNumberGenerator prng;
