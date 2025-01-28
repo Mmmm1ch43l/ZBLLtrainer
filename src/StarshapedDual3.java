@@ -12,9 +12,9 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
     private int currentPolygonIndex;
 
     private static final int MARGIN = 20;
-    //private static final int HEIGHT = 640;
+    private static final int HEIGHT = 640;
     //private static final int HEIGHT = 1000;
-    private static final int HEIGHT = 1150;
+    //private static final int HEIGHT = 1150;
     private static final int WIDTH = HEIGHT;
     private static final int SYSTEM_WIDTH = (WIDTH - 3 * MARGIN) / 2;
     private static final int SYSTEM_HEIGHT = (HEIGHT - 3 * MARGIN) / 2;
@@ -348,22 +348,6 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         return true;
     }
 
-    public VR[] containedIntegerPoints(VR[] polygon){
-        ArrayList<VR> list = new ArrayList<>();
-        int n = 0;
-        for (VR vertex : polygon) {
-            n = Math.max(n, vertex.floorAbs());
-        }
-        for (int i = -n; i < n+1; i++) {
-            for (int j = -n; j < n+1; j++) {
-                if (contains(polygon, new VR(i,j))){
-                    list.add(new VR(i,j));
-                }
-            }
-        }
-        return list.toArray(new VR[0]);
-    }
-
     public VR[] containedIntegerPointsStrict(VR[] polygon){
         ArrayList<VR> list = new ArrayList<>();
         int n = 0;
@@ -380,7 +364,7 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         return list.toArray(new VR[0]);
     }
 
-    public VR[] containedIntegerPointsStrictFast(VR[] polygon){
+    public VR[] integerPointsInTriangle (VR[] polygon){
         ArrayList<VR> list = new ArrayList<>();
         VR parent = polygon[2].subtract(polygon[1]).rotateLeft().parentPoint();
         BigInteger index = parent.scalarProduct(polygon[0]).floor().add(BigInteger.ONE);
@@ -516,7 +500,7 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         //leftVertex.print();
 
         //System.out.print("looking for Inner Points");
-        integerPoints = containedIntegerPointsStrictFast(new VR[]{dual,leftVertex,rightVertex});
+        integerPoints = integerPointsInTriangle(new VR[]{dual,leftVertex,rightVertex});
         //System.out.println(".");
         //System.out.println(integerPoints.length);
         if (integerPoints.length > 0){
