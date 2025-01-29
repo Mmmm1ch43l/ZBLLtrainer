@@ -18,8 +18,8 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
     private static final int WIDTH = HEIGHT;
     private static final int SYSTEM_WIDTH = (WIDTH - 3 * MARGIN) / 2;
     private static final int SYSTEM_HEIGHT = (HEIGHT - 3 * MARGIN) / 2;
-    private static final boolean RANDOMIZED = false;
-    private static final boolean SYMMETRIC = true;
+    private static final boolean RANDOMIZED = true;
+    private static final boolean SYMMETRIC = false;
     private static final boolean LONG = true;
     private static final int RANDOMNESS_PRECISION = 1000;
 
@@ -52,16 +52,16 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         Graphics2D g2d = (Graphics2D) g;
 
         // Draw Cartesian Coordinate Systems
-        drawCoordinateSystem(g2d, MARGIN, MARGIN, SYSTEM_WIDTH, SYSTEM_HEIGHT, -1.5, 1.5);
-        drawCoordinateSystem(g2d, 2 * MARGIN + SYSTEM_WIDTH, MARGIN, SYSTEM_WIDTH, SYSTEM_HEIGHT, -4, 4);
-        drawCoordinateSystem(g2d, MARGIN, 2 * MARGIN + SYSTEM_HEIGHT, SYSTEM_WIDTH, SYSTEM_HEIGHT, -1.5, 1.5);
-        drawCoordinateSystem(g2d, 2 * MARGIN + SYSTEM_WIDTH, 2 * MARGIN + SYSTEM_HEIGHT, SYSTEM_WIDTH, SYSTEM_HEIGHT, -4, 4);
+        drawCoordinateSystem(g2d, MARGIN, MARGIN, -1.5, 1.5);
+        drawCoordinateSystem(g2d, 2 * MARGIN + SYSTEM_WIDTH, MARGIN, -4, 4);
+        drawCoordinateSystem(g2d, MARGIN, 2 * MARGIN + SYSTEM_HEIGHT, -1.5, 1.5);
+        drawCoordinateSystem(g2d, 2 * MARGIN + SYSTEM_WIDTH, 2 * MARGIN + SYSTEM_HEIGHT, -4, 4);
 
         // Draw integer points for both coordinate systems
-        drawIntegerPoints(g2d, MARGIN, MARGIN, SYSTEM_WIDTH, SYSTEM_HEIGHT, -1.5, 1.5);
-        drawIntegerPoints(g2d, 2 * MARGIN + SYSTEM_WIDTH, MARGIN, SYSTEM_WIDTH, SYSTEM_HEIGHT, -4, 4);
-        drawIntegerPoints(g2d, MARGIN, 2 * MARGIN + SYSTEM_HEIGHT, SYSTEM_WIDTH, SYSTEM_HEIGHT, -1.5, 1.5);
-        drawIntegerPoints(g2d, 2 * MARGIN + SYSTEM_WIDTH, 2 * MARGIN + SYSTEM_HEIGHT, SYSTEM_WIDTH, SYSTEM_HEIGHT, -4, 4);
+        drawIntegerPoints(g2d, MARGIN, MARGIN, -1.5, 1.5);
+        drawIntegerPoints(g2d, 2 * MARGIN + SYSTEM_WIDTH, MARGIN, -4, 4);
+        drawIntegerPoints(g2d, MARGIN, 2 * MARGIN + SYSTEM_HEIGHT, -1.5, 1.5);
+        drawIntegerPoints(g2d, 2 * MARGIN + SYSTEM_WIDTH, 2 * MARGIN + SYSTEM_HEIGHT, -4, 4);
 
         // Draw the current Polygon in both coordinate systems
         drawPolygonLeftUp(g2d, tableOfVertices[currentPolygonIndex]);
@@ -86,46 +86,46 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         } else {
             g2d.setFont(new Font("Arial", Font.PLAIN, 40));
             g2d.setColor(Color.RED);
-            g2d.drawString("Dual of convex already contains "+(containedIntegerPointsStrict(dualize(tableOfVertices[currentPolygonIndex])).length - 1)+" integer points!", 150, SYSTEM_HEIGHT + MARGIN + 150);
+            g2d.drawString("Dual of convex already contains "+(integerPointsInStarshapedStrict(dualize(tableOfVertices[currentPolygonIndex])).length)+" integer points!", 150, SYSTEM_HEIGHT + MARGIN + 150);
         }
     }
 
-    private void drawCoordinateSystem(Graphics2D g2d, int xOffset, int yOffset, int width, int height, double minRange, double maxRange) {
+    private void drawCoordinateSystem(Graphics2D g2d, int xOffset, int yOffset, double minRange, double maxRange) {
         // Draw Cartesian Coordinate System
         g2d.setColor(Color.BLACK);
-        g2d.drawLine(xOffset, yOffset + height / 2, xOffset + width, yOffset + height / 2); // X-axis
-        g2d.drawLine(xOffset + width / 2, yOffset, xOffset + width / 2, yOffset + height); // Y-axis
+        g2d.drawLine(xOffset, yOffset + SYSTEM_HEIGHT / 2, xOffset + SYSTEM_WIDTH, yOffset + SYSTEM_HEIGHT / 2); // X-axis
+        g2d.drawLine(xOffset + SYSTEM_WIDTH / 2, yOffset, xOffset + SYSTEM_WIDTH / 2, yOffset + SYSTEM_HEIGHT); // Y-axis
 
         // Calculate scaling factors based on range
-        double scaleX = width / (maxRange - minRange);
-        double scaleY = height / (maxRange - minRange);
+        double scaleX = SYSTEM_WIDTH / (maxRange - minRange);
+        double scaleY = SYSTEM_HEIGHT / (maxRange - minRange);
 
         // Draw labels and tick marks for the axes
         int distance = 20;
         int xDistance = -5;
         int yDistance = 5;
-        g2d.drawString("-1", xOffset + (int)((-1 - minRange) * scaleX) + xDistance, yOffset + height / 2 + distance); // X-axis negative label
-        g2d.drawString("1", xOffset + (int)((1 - minRange) * scaleX) + xDistance, yOffset + height / 2 + distance); // X-axis positive label
-        g2d.drawString("-1", xOffset + width / 2 - distance, yOffset + (int)((maxRange - -1) * scaleY) + yDistance); // Y-axis negative label
-        g2d.drawString("1", xOffset + width / 2 - distance, yOffset + (int)((maxRange - 1) * scaleY) + yDistance); // Y-axis positive label
+        g2d.drawString("-1", xOffset + (int)((-1 - minRange) * scaleX) + xDistance, yOffset + SYSTEM_HEIGHT / 2 + distance); // X-axis negative label
+        g2d.drawString("1", xOffset + (int)((1 - minRange) * scaleX) + xDistance, yOffset + SYSTEM_HEIGHT / 2 + distance); // X-axis positive label
+        g2d.drawString("-1", xOffset + SYSTEM_WIDTH / 2 - distance, yOffset + (int)((maxRange - -1) * scaleY) + yDistance); // Y-axis negative label
+        g2d.drawString("1", xOffset + SYSTEM_WIDTH / 2 - distance, yOffset + (int)((maxRange - 1) * scaleY) + yDistance); // Y-axis positive label
 
         // Draw tick marks
         int tickSize = 5;
-        g2d.drawLine(xOffset + width / 2 - tickSize, yOffset + (int)((maxRange - 1) * scaleY), xOffset + width / 2 + tickSize, yOffset + (int)((maxRange - 1) * scaleY)); // Y-axis positive tick
-        g2d.drawLine(xOffset + width / 2 - tickSize, yOffset + (int)((maxRange - -1) * scaleY), xOffset + width / 2 + tickSize, yOffset + (int)((maxRange - -1) * scaleY)); // Y-axis negative tick
-        g2d.drawLine(xOffset + (int)((-1 - minRange) * scaleX), yOffset + height / 2 - tickSize, xOffset + (int)((-1 - minRange) * scaleX), yOffset + height / 2 + tickSize); // X-axis negative tick
-        g2d.drawLine(xOffset + (int)((1 - minRange) * scaleX), yOffset + height / 2 - tickSize, xOffset + (int)((1 - minRange) * scaleX), yOffset + height / 2 + tickSize); // X-axis positive tick
+        g2d.drawLine(xOffset + SYSTEM_WIDTH / 2 - tickSize, yOffset + (int)((maxRange - 1) * scaleY), xOffset + SYSTEM_WIDTH / 2 + tickSize, yOffset + (int)((maxRange - 1) * scaleY)); // Y-axis positive tick
+        g2d.drawLine(xOffset + SYSTEM_WIDTH / 2 - tickSize, yOffset + (int)((maxRange - -1) * scaleY), xOffset + SYSTEM_WIDTH / 2 + tickSize, yOffset + (int)((maxRange - -1) * scaleY)); // Y-axis negative tick
+        g2d.drawLine(xOffset + (int)((-1 - minRange) * scaleX), yOffset + SYSTEM_HEIGHT / 2 - tickSize, xOffset + (int)((-1 - minRange) * scaleX), yOffset + SYSTEM_HEIGHT / 2 + tickSize); // X-axis negative tick
+        g2d.drawLine(xOffset + (int)((1 - minRange) * scaleX), yOffset + SYSTEM_HEIGHT / 2 - tickSize, xOffset + (int)((1 - minRange) * scaleX), yOffset + SYSTEM_HEIGHT / 2 + tickSize); // X-axis positive tick
 
-        g2d.drawLine(xOffset + width / 2 - 2 * tickSize, yOffset + 2 * tickSize, xOffset + width / 2, yOffset); // Y-axis left part arrow
-        g2d.drawLine(xOffset + width / 2, yOffset, xOffset + width / 2 + 2 * tickSize, yOffset + 2 * tickSize); // Y-axis right part arrow
-        g2d.drawLine(xOffset  + width - 2 * tickSize, yOffset + height / 2 - 2 * tickSize, xOffset+ width , yOffset + height / 2); // X-axis upper part arrow
-        g2d.drawLine(xOffset + width, yOffset + height / 2, xOffset + width - 2 * tickSize, yOffset + height / 2 + 2 * tickSize); // X-axis lower part arrow
+        g2d.drawLine(xOffset + SYSTEM_WIDTH / 2 - 2 * tickSize, yOffset + 2 * tickSize, xOffset + SYSTEM_WIDTH / 2, yOffset); // Y-axis left part arrow
+        g2d.drawLine(xOffset + SYSTEM_WIDTH / 2, yOffset, xOffset + SYSTEM_WIDTH / 2 + 2 * tickSize, yOffset + 2 * tickSize); // Y-axis right part arrow
+        g2d.drawLine(xOffset  + SYSTEM_WIDTH - 2 * tickSize, yOffset + SYSTEM_HEIGHT / 2 - 2 * tickSize, xOffset+ SYSTEM_WIDTH, yOffset + SYSTEM_HEIGHT / 2); // X-axis upper part arrow
+        g2d.drawLine(xOffset + SYSTEM_WIDTH, yOffset + SYSTEM_HEIGHT / 2, xOffset + SYSTEM_WIDTH - 2 * tickSize, yOffset + SYSTEM_HEIGHT / 2 + 2 * tickSize); // X-axis lower part arrow
     }
 
-    private void drawIntegerPoints(Graphics2D g2d, int xOffset, int yOffset, int width, int height, double minRange, double maxRange) {
+    private void drawIntegerPoints(Graphics2D g2d, int xOffset, int yOffset, double minRange, double maxRange) {
         // Calculate scaling factors based on range
-        double scaleX = width / (maxRange - minRange);
-        double scaleY = height / (maxRange - minRange);
+        double scaleX = SYSTEM_WIDTH / (maxRange - minRange);
+        double scaleY = SYSTEM_HEIGHT / (maxRange - minRange);
 
         // Draw integer points
         g2d.setColor(Color.BLUE);
@@ -133,22 +133,22 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         for (int x = (int) Math.ceil(minRange); x <= (int) Math.floor(maxRange); x++) {
             for (int y = (int) Math.ceil(minRange); y <= (int) Math.floor(maxRange); y++) {
                 int xPos = (int) (xOffset + (x - minRange) * scaleX - pointSize / 2);
-                int yPos = (int) (yOffset + height - (y - minRange) * scaleY - pointSize / 2);
+                int yPos = (int) (yOffset + SYSTEM_HEIGHT - (y - minRange) * scaleY - pointSize / 2);
                 g2d.fillOval(xPos, yPos, pointSize, pointSize);
             }
         }
     }
 
     private void drawPolygonLeftUp(Graphics2D g2d, VR[] vertices) {
-        drawPolygon(g2d, MARGIN, MARGIN, SYSTEM_WIDTH, SYSTEM_HEIGHT, vertices, -1.5, 1.5);
+        drawPolygon(g2d, MARGIN, MARGIN, vertices, -1.5, 1.5);
     }
 
     private void drawPolygonLeftDown(Graphics2D g2d, VR[] vertices) {
-        drawPolygon(g2d, MARGIN, 2 * MARGIN + SYSTEM_HEIGHT, SYSTEM_WIDTH, SYSTEM_HEIGHT, vertices, -1.5, 1.5);
+        drawPolygon(g2d, MARGIN, 2 * MARGIN + SYSTEM_HEIGHT, vertices, -1.5, 1.5);
     }
 
     private void drawPolygonRightUp(Graphics2D g2d, VR[] vertices) {
-        drawPolygon(g2d, 2 * MARGIN + SYSTEM_WIDTH, MARGIN, SYSTEM_WIDTH, SYSTEM_HEIGHT, vertices, -4, 4);
+        drawPolygon(g2d, 2 * MARGIN + SYSTEM_WIDTH, MARGIN, vertices, -4, 4);
     }
 
     private void drawPolygonRightDown(Graphics2D g2d, VR[] vertices) {
@@ -158,21 +158,21 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
             verticesSector[0] = vertices[i];
             verticesSector[1] = vertices[j];
             verticesSector[2] = new VR(0, 0);
-            drawPolygon(g2d, 2 * MARGIN + SYSTEM_WIDTH, 2 * MARGIN + SYSTEM_HEIGHT, SYSTEM_WIDTH, SYSTEM_HEIGHT, verticesSector, -4, 4);
+            drawPolygon(g2d, 2 * MARGIN + SYSTEM_WIDTH, 2 * MARGIN + SYSTEM_HEIGHT, verticesSector, -4, 4);
         }
     }
 
-    private void drawPolygon(Graphics2D g2d, int xOffset, int yOffset, int width, int height, VR[] vertices, double minRange, double maxRange) {
+    private void drawPolygon(Graphics2D g2d, int xOffset, int yOffset, VR[] vertices, double minRange, double maxRange) {
         // Scale vertices to fit within the specified range
-        double scaleX = width / (maxRange - minRange);
-        double scaleY = height / (maxRange - minRange);
+        double scaleX = SYSTEM_WIDTH / (maxRange - minRange);
+        double scaleY = SYSTEM_HEIGHT / (maxRange - minRange);
 
         // Convert vertices from double to int for drawing
         int[] xPoints = new int[vertices.length];
         int[] yPoints = new int[vertices.length];
         for (int i = 0; i < vertices.length; i++) {
             xPoints[i] = (int) (xOffset + (vertices[i].doubleValueX() - minRange) * scaleX);
-            yPoints[i] = (int) (yOffset + height - (vertices[i].doubleValueY() - minRange) * scaleY);
+            yPoints[i] = (int) (yOffset + SYSTEM_HEIGHT - (vertices[i].doubleValueY() - minRange) * scaleY);
         }
 
         // Set the transparency level
@@ -207,7 +207,7 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
                 }
             } else {
                 double area = 2;
-                while (area >= 1.18) {
+                while (area >= 1.5) {
                     tableOfVertices[0] = generateRandomPolygon();
                     area = computeArea(reduce(tableOfVertices[0]));
                     System.out.println("Area: " + area);
@@ -348,24 +348,22 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         return true;
     }
 
-    public VR[] containedIntegerPointsStrict(VR[] polygon){
+    public void integerPointsInStarshapedStrict(ArrayList<VR> list, VR[] polygon){
+        VR temp;
+        for (int i = 0; i < polygon.length; i++) {
+            temp = integerPointOnRayStrict(polygon[i]);
+            if (temp != null) list.add(temp);
+            integerPointsInTriangle(list, new VR[]{new VR(0,0), polygon[i], polygon[(i+1)%polygon.length]});
+        }
+    }
+
+    public VR[] integerPointsInStarshapedStrict(VR[] polygon){
         ArrayList<VR> list = new ArrayList<>();
-        int n = 0;
-        for (VR vertex : polygon) {
-            n = Math.max(n, vertex.floorAbs());
-        }
-        for (int i = -n; i < n+1; i++) {
-            for (int j = -n; j < n+1; j++) {
-                if (containsStrict(polygon, new VR(i,j))){
-                    list.add(new VR(i,j));
-                }
-            }
-        }
+        integerPointsInStarshapedStrict(list, polygon);
         return list.toArray(new VR[0]);
     }
 
-    public VR[] integerPointsInTriangle (VR[] polygon){
-        ArrayList<VR> list = new ArrayList<>();
+    public void integerPointsInTriangle (ArrayList<VR> list, VR[] polygon){
         VR parent = polygon[2].subtract(polygon[1]).rotateLeft().parentPoint();
         BigInteger index = parent.scalarProduct(polygon[0]).floor().add(BigInteger.ONE);
         VR leftDirection = polygon[1].subtract(polygon[0]);
@@ -396,7 +394,6 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
             left = left.add(leftDirection);
             right = right.add(rightDirection);
         }
-        return list.toArray(new VR[0]);
     }
 
     public VR containedInnerIntegerPoint(VR[] polygon){
@@ -449,8 +446,6 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
     }
 
     public void intermediatePoints(ArrayList<VR> list, VR left, VR right, VR dual) {
-
-        VR[] integerPoints;
         VR temp;
         //System.out.print("looking for Right Vertex");
         VR parent = left.parentPoint();
@@ -475,7 +470,6 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         rightVertex = rightVertex.scale(left.scalarProduct(dual).divide(left.scalarProduct(rightVertex)));
         //System.out.println(".");
         //rightVertex.print();
-
         //System.out.print("looking for Left Vertex");
         parent = right.parentPoint();
         n = parent.divide(right).floor();
@@ -498,45 +492,42 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         leftVertex = leftVertex.scale(right.scalarProduct(dual).divide(right.scalarProduct(leftVertex)));
         //System.out.println(".");
         //leftVertex.print();
-
         //System.out.print("looking for Inner Points");
-        integerPoints = integerPointsInTriangle(new VR[]{dual,leftVertex,rightVertex});
+        ArrayList<VR> integerPoints = new ArrayList<>();
+        integerPointsInTriangle(integerPoints, new VR[]{dual,leftVertex,rightVertex});
         //System.out.println(".");
         //System.out.println(integerPoints.length);
-        if (integerPoints.length > 0){
+        if (integerPoints.size() > 0){
             //System.out.print("dealing with Inner Points");
             List<VR[]> pairs = new ArrayList<>();
             for (VR integerPoint : integerPoints) {
-                if(integerPoint.isCoprimeInt()) {
-                    BR angle = integerPoint.scalarProduct(rightVertex).pow(2).divide(integerPoint.normSquared()).negate();
-                    angle = angle.multiply(new BR(integerPoint.scalarProduct(rightVertex).signum()));
-                    pairs.add(new VR[]{integerPoint, new VR(angle, new BR(0))});
-                }
+                BR angle = integerPoint.scalarProduct(rightVertex).pow(2).divide(integerPoint.normSquared()).negate();
+                angle = angle.multiply(new BR(integerPoint.scalarProduct(rightVertex).signum()));
+                pairs.add(new VR[]{integerPoint, new VR(angle, new BR(0))});
             }
             pairs.sort((a, b) -> Double.compare(a[1].doubleValueX(), b[1].doubleValueX()));
-            List<VR> toAdds = new ArrayList<>();
+            integerPoints = new ArrayList<>();
             VR rightVertexNew = rightVertex.clone();
             for (VR[] pair : pairs) {
                 if (containsStrict(new VR[]{leftVertex,rightVertexNew,dual}, pair[0])){
                     rightVertexNew = rightVertex.clone();
-                    List<VR> tempAdds = new ArrayList<>();
-                    for (VR toAdd : toAdds) {
-                        if (containsStrict(new VR[]{pair[0],rightVertexNew,dual}, toAdd)){
-                            rightVertexNew = toAdd.clone();
-                            tempAdds.add(toAdd);
+                    ArrayList<VR> toAdds = new ArrayList<>();
+                    for (VR integerPoint : integerPoints) {
+                        if (containsStrict(new VR[]{pair[0],rightVertexNew,dual}, integerPoint)){
+                            rightVertexNew = integerPoint.clone();
+                            toAdds.add(integerPoint);
                         }
                     }
-                    toAdds = tempAdds;
-                    toAdds.add(pair[0]);
+                    integerPoints = toAdds;
+                    integerPoints.add(pair[0]);
                     rightVertexNew = pair[0].clone();
                 }
             }
-            VR[] toAddss = toAdds.toArray(new VR[0]);
-            list.add(dualOfLine(toAddss[0],rightVertex));
-            for (int k = 1; k < toAddss.length; k++) {
-                list.add(dualOfLine(toAddss[k], toAddss[k-1]));
+            list.add(dualOfLine(integerPoints.get(0),rightVertex));
+            for (int k = 1; k < integerPoints.size(); k++) {
+                list.add(dualOfLine(integerPoints.get(k), integerPoints.get(k-1)));
             }
-            list.add(dualOfLine(leftVertex, toAddss[toAddss.length-1]));
+            list.add(dualOfLine(leftVertex, integerPoints.get(integerPoints.size()-1)));
             //System.out.println(".");
         } else {
             list.add(dualOfLine(leftVertex, rightVertex));
@@ -562,7 +553,7 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
             }
         }
         VR[] convexDual = dualize(convexHull);
-        if (containedIntegerPointsStrict(convexDual).length > 1){
+        if (integerPointsInStarshapedStrict(convexDual).length > 0){
             return null;
         }
         ArrayList<VR> list = new ArrayList<>();
@@ -588,7 +579,7 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
             convexHull[i+input.length/2] = convexHull[i].negate();
         }
         VR[] convexDual = dualize(convexHull);
-        if (containedIntegerPointsStrict(convexDual).length > 1){
+        if (integerPointsInStarshapedStrict(convexDual).length > 0){
             return null;
         }
         ArrayList<VR> list = new ArrayList<>();
@@ -634,7 +625,7 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
                 randomPolygon[i] = new VR(random.nextInt(-3*RANDOMNESS_PRECISION, 3*RANDOMNESS_PRECISION+1), 2*RANDOMNESS_PRECISION, random.nextInt(-3*RANDOMNESS_PRECISION, 3*RANDOMNESS_PRECISION+1), 2*RANDOMNESS_PRECISION);
             }
         }
-        while (containedIntegerPointsStrict(dualize(randomPolygon)).length > 1) {
+        while (integerPointsInStarshapedStrict(dualize(randomPolygon)).length > 0) {
             for (int i = 0; i < n; i++) {
                 randomPolygon[i] = randomPolygon[i].scale(new BR(2));
             }
@@ -648,15 +639,13 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
                 randomPolygon[rightIndex] = randomPolygon[rightIndex].scale(new BR(1,2));
                 dual = dualize(randomPolygon);
             }
-            VR[] integerPoints = containedIntegerPointsStrict(dual);
-            if (integerPoints.length > 1) {
+            VR[] integerPoints = integerPointsInStarshapedStrict(dual);
+            if (integerPoints.length > 0) {
                 BR scale = new BR(1);
                 for (VR integerPoint : integerPoints) {
-                    if (integerPoint.normSquared().signum() > 0) {
-                        BR scaleNew = randomPolygon[rightIndex].scalarProduct(dual[rightIndex]).divide(randomPolygon[rightIndex].scalarProduct(integerPoint));
-                        if (scaleNew.compareTo(scale) > 0) {
-                            scale = scaleNew.clone();
-                        }
+                    BR scaleNew = randomPolygon[rightIndex].scalarProduct(dual[rightIndex]).divide(randomPolygon[rightIndex].scalarProduct(integerPoint));
+                    if (scaleNew.compareTo(scale) > 0) {
+                        scale = scaleNew.clone();
                     }
                 }
                 randomPolygon[rightIndex] = randomPolygon[rightIndex].scale(scale);
@@ -688,7 +677,7 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         for (int i = 0; i < n; i++) {
             randomPolygon[n+i] = randomPolygon[i].negate();
         }
-        while (containedIntegerPointsStrict(dualize(randomPolygon)).length > 1) {
+        while (integerPointsInStarshapedStrict(dualize(randomPolygon)).length > 0) {
             for (int i = 0; i < 2*n; i++) {
                 randomPolygon[i] = randomPolygon[i].scale(new BR(2));
             }
@@ -702,7 +691,7 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
                 randomPolygon[rightIndex] = randomPolygon[rightIndex].scale(new BR(1,2));
                 dual = dualize(randomPolygon);
             }
-            VR[] integerPoints = containedIntegerPointsStrict(dual);
+            VR[] integerPoints = integerPointsInStarshapedStrict(dual);
             if (integerPoints.length > 1) {
                 BR scale = new BR(1);
                 for (VR integerPoint : integerPoints) {
