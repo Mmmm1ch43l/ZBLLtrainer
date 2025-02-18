@@ -15,6 +15,7 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
     private final boolean include2GLL = true;
     private final boolean includeU = true;
     private final boolean includeH = true;
+    private final boolean includeT = false;
     private final double pseudoRandomNumberGeneratorDecay = 0.95;
 
     private final PseudoRandomNumberGenerator prng;
@@ -54,6 +55,44 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
     };
 
     private String[] ZBLLs = new String[0];
+    private final String[] _2GLLs = {
+            "U' R U R' U R U2 R' L' U' L U' L' U2 L",// T 2GLL
+            "U2 R U' R' U2 R U R' U2 R U R' U R U' R'",
+            "U' R U R' U R U2 R' U' R U2 R' U' R U' R'",
+            "R U2 R' U' R U' R' U R U R' U R U2 R'",
+            "U2 R' U2 R U R' U R U' R' U' R U' R' U2 R",
+            "U' R U R' U R U' R' U R' U' R2 U' R2 U2 R",
+            "R' U R2 U R' U R' U' R U' R' U' R U R U' R'",
+            "R U2 R' U' R U' R2 U2 R U R' U R",
+            "U2 R' U2 R U R' U R2 U2 R' U' R U' R'",
+            "U2 R U' R' U2 R U R' U R' U' R U R U R' U' R' U R",
+            "U' R' U' R2 U R2 U R2 U2 R' U R' U R",
+            "U' R U R2 U' R2 U' R2 U2 R U' R U' R'",
+            "R U2 R' U2 R' U' R U R U' R' U2 R' U2 R",// L 2GLL
+            "U2 R U R' U R U2 R' U2 R U2 R' U' R U' R'",
+            "U2 R U2 R' U' R U' R' U R' U2 R U R' U R",
+            "U R' U2 R U R' U R U' R U2 R' U' R U' R'",
+            "U2 R U R' U R U2 R' U R' U' R U' R' U2 R",
+            "U R' U' R U' R' U2 R U' R U R' U R U2 R'",
+            "R2 U R' U R' U' R U' R' U' R U R U' R2",
+            "U2 R2 U' R U R U' R' U' R U' R' U R' U R2",
+            "U' R2 U' R U' R U R' U R U R' U' R' U R2",
+            "U R2 U R' U' R' U R U R' U R U' R U' R2",
+            "R U R' U R U' R' U R U' R' U R U2 R'",
+            "U2 R U2 R' U' R U' R' U2 R U R' U R U2 R'",
+            "R U R' U R U2 R' R' U2 R U R' U R",// Pi 2GLL
+            "R U2 R' U' R U' R' R' U' R U' R' U2 R",
+            "R U2 R' U' R U' R' U R U2 R' U' R U' R'",
+            "U' R' U' R U' R' U2 R U R' U' R U' R' U2 R",
+            "U2 R U2 R' U2 R U' R' U2 R U' R' U2 R U R'",
+            "R' U2 R U2 R' U R U2 R' U R U2 R' U' R",
+            "U R U' R' U2 R U R' U2 R U R' U2 R U2 R'",
+            "U R' U R U2 R' U' R U2 R' U' R U2 R' U2 R",
+            "U' R U2 R2 U' R2 U' R2 U2 R",
+            "U' R' U2 R2 U R2 U R2 U2 R'",
+            "U' R U2 R' U' R U' R' U' R U2 R' U' R U' R'",
+            "U' F R U R' U' R U R' U' F' R U R' U' M' U R U' Rw'",
+    };
     private final String[] UZBLLs = {
             // U 2GLL
             "U' L' U2 L U L' U L R U2 R' U' R U' R'",
@@ -181,43 +220,26 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "U R U2 R' U' R U R' U' F' R U R' U' R' F R2 U' R'",// back matching right + pair front right (Fr)
             "R' U2 R2 U R2 U R U2 R' F R U R U' R' F'",// back matching left + pair front left (Fl)
     };
-    private final String[] _2GLLs = {
-            "U' R U R' U R U2 R' L' U' L U' L' U2 L",// T 2GLL
-            "U2 R U' R' U2 R U R' U2 R U R' U R U' R'",
-            "U' R U R' U R U2 R' U' R U2 R' U' R U' R'",
-            "R U2 R' U' R U' R' U R U R' U R U2 R'",
-            "U2 R' U2 R U R' U R U' R' U' R U' R' U2 R",
-            "U' R U R' U R U' R' U R' U' R2 U' R2 U2 R",
-            "R' U R2 U R' U R' U' R U' R' U' R U R U' R'",
-            "R U2 R' U' R U' R2 U2 R U R' U R",
-            "U2 R' U2 R U R' U R2 U2 R' U' R U' R'",
-            "U2 R U' R' U2 R U R' U R' U' R U R U R' U' R' U R",
-            "U' R' U' R2 U R2 U R2 U2 R' U R' U R",
-            "U' R U R2 U' R2 U' R2 U2 R U' R U' R'",
-            "R U2 R' U2 R' U' R U R U' R' U2 R' U2 R",// L 2GLL
-            "U2 R U R' U R U2 R' U2 R U2 R' U' R U' R'",
-            "U2 R U2 R' U' R U' R' U R' U2 R U R' U R",
-            "U R' U2 R U R' U R U' R U2 R' U' R U' R'",
-            "U2 R U R' U R U2 R' U R' U' R U' R' U2 R",
-            "U R' U' R U' R' U2 R U' R U R' U R U2 R'",
-            "R2 U R' U R' U' R U' R' U' R U R U' R2",
-            "U2 R2 U' R U R U' R' U' R U' R' U R' U R2",
-            "U' R2 U' R U' R U R' U R U R' U' R' U R2",
-            "U R2 U R' U' R' U R U R' U R U' R U' R2",
-            "R U R' U R U' R' U R U' R' U R U2 R'",
-            "U2 R U2 R' U' R U' R' U2 R U R' U R U2 R'",
-            "R U R' U R U2 R' R' U2 R U R' U R",// Pi 2GLL
-            "R U2 R' U' R U' R' R' U' R U' R' U2 R",
-            "R U2 R' U' R U' R' U R U2 R' U' R U' R'",
-            "U' R' U' R U' R' U2 R U R' U' R U' R' U2 R",
-            "U2 R U2 R' U2 R U' R' U2 R U' R' U2 R U R'",
-            "R' U2 R U2 R' U R U2 R' U R U2 R' U' R",
-            "U R U' R' U2 R U R' U2 R U R' U2 R U2 R'",
-            "U R' U R U2 R' U' R U2 R' U' R U2 R' U2 R",
-            "U' R U2 R2 U' R2 U' R2 U2 R",
-            "U' R' U2 R2 U R2 U R2 U2 R'",
-            "U' R U2 R' U' R U' R' U' R U2 R' U' R U' R'",
-            "U' F R U R' U' R U R' U' F' R U R' U' M' U R U' Rw'",
+
+    private final String[] TZBLLs = {
+            //T diag
+            "R' U R2 D Rw' U2 Rw D' R2 U' R",     // N-perm right
+            "U2 R U' R2 D' Rw U2 Rw' D R2 U R'",     // N-perm left
+            "U' R U R' U' R U R2 D' R U' R' D R U2 R U' R'",     // pair front right (Fr)
+            // U' R2' U' R U F' U2 R' U2 R F U' R
+            "U R' U' R U R' U' R2 D R' U R D' R' U2 R' U R",     // pair front left (Fl)
+            // R' U' R U R2 D' R U2 R' D R2 U2 R' U2 R
+            "U2 R U R' U2 R' D' R U R' D R2 U' R' U R U' R'",     // pair left front (fL)
+            // R2 U R' D' R U R' D R' U' R2 U' R2'
+            "R' U' R U2 R D R' U' R D' R2 U R U' R' U R",     // pair right front (fR)
+            "U R U' R2 D' Rw U2 Rw' D R2 U' R' U' R U' R'",     // square left (fl)
+            // U2 R U2 R' U2 R U R2' D' R U' R' D R U2 R U' R'
+            "U2 R U R' F' R U R' U' R' F R U' R' F R U R U' R' F'",     // square right (fr)
+            // U R U R' U R U R2 D' Rw U2 Rw' D R2 U R'
+            "",     // checkerboard left (fl)
+            "",     // checkerboard right (fr)
+            "",     // E-perm horizontal
+            "",     // E-perm vertical
     };
     private int ZBLL;
     // Constructor to initialize the components, layout and arrays
@@ -244,6 +266,12 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             String[] temp = new String[ZBLLs.length+HZBLLs.length];
             System.arraycopy(ZBLLs, 0, temp, 0, ZBLLs.length);
             System.arraycopy(HZBLLs, 0, temp, ZBLLs.length, HZBLLs.length);
+            ZBLLs = temp;
+        }
+        if(includeT){
+            String[] temp = new String[ZBLLs.length+TZBLLs.length];
+            System.arraycopy(ZBLLs, 0, temp, 0, ZBLLs.length);
+            System.arraycopy(TZBLLs, 0, temp, ZBLLs.length, TZBLLs.length);
             ZBLLs = temp;
         }
 
