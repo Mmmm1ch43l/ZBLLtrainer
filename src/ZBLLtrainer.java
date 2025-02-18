@@ -226,16 +226,11 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "R' U R2 D Rw' U2 Rw D' R2 U' R",     // N-perm right
             "U2 R U' R2 D' Rw U2 Rw' D R2 U R'",     // N-perm left
             "U' R U R' U' R U R2 D' R U' R' D R U2 R U' R'",     // pair front right (Fr)
-            // U' R2' U' R U F' U2 R' U2 R F U' R
-            "U R' U' R U R' U' R2 D R' U R D' R' U2 R' U R",     // pair front left (Fl)
-            // R' U' R U R2 D' R U2 R' D R2 U2 R' U2 R
+            "R' U' R U R2 D' R U2 R' D R2 U2 R' U2 R",     // pair front left (Fl)
             "U2 R U R' U2 R' D' R U R' D R2 U' R' U R U' R'",     // pair left front (fL)
-            // R2 U R' D' R U R' D R' U' R2 U' R2'
             "R' U' R U2 R D R' U' R D' R2 U R U' R' U R",     // pair right front (fR)
             "U R U' R2 D' Rw U2 Rw' D R2 U' R' U' R U' R'",     // square left (fl)
-            // U2 R U2 R' U2 R U R2' D' R U' R' D R U2 R U' R'
             "U2 R U R' F' R U R' U' R' F R U' R' F R U R U' R' F'",     // square right (fr)
-            // U R U R' U R U R2 D' Rw U2 Rw' D R2 U R'
             "",     // checkerboard left (fl)
             "",     // checkerboard right (fr)
             "",     // E-perm horizontal
