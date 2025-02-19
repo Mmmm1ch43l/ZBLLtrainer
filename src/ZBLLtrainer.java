@@ -227,14 +227,14 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "U2 R U' R2 D' Rw U2 Rw' D R2 U R'",     // N-perm left
             "U' R U R' U' R U R2 D' R U' R' D R U2 R U' R'",     // pair front right (Fr)
             "R' U' R U R2 D' R U2 R' D R2 U2 R' U2 R",     // pair front left (Fl)
-            "U2 R U R' U2 R' D' R U R' D R2 U' R' U R U' R'",     // pair left front (fL)
             "R' U' R U2 R D R' U' R D' R2 U R U' R' U R",     // pair right front (fR)
-            "U R U' R2 D' Rw U2 Rw' D R2 U' R' U' R U' R'",     // square left (fl)
+            "U2 R U R' U2 R' D' R U R' D R2 U' R' U R U' R'",     // pair left front (fL)
             "U2 R U R' F' R U R' U' R' F R U' R' F R U R U' R' F'",     // square right (fr)
+            "U R U' R2 D' Rw U2 Rw' D R2 U' R' U' R U' R'",     // square left (fl)
+            "U2 R U' D R' U2 R D' R U R' U2 R U R2'",     // checkerboard right (fr)
             "R' U D' R U2 R' D R' U' R U2 R' U' R2",     // checkerboard left (fl)
-            "",     // checkerboard right (fr)
-            "",     // E-perm horizontal
-            "",     // E-perm vertical
+            "U2 z D' R2 D R' U' R D' R' U2 R' D R U' z'",     // E-perm horizontal (bar in back)
+            "U Rw U Rw' R U R' U' R U R' U' Rw U' Rw' F R U R' U' F'",     // E-perm vertical (opposite in back)
     };
     private int ZBLL;
     // Constructor to initialize the components, layout and arrays
