@@ -223,18 +223,31 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
 
     private final String[] TZBLLs = {
             //T diag
-            "R' U R2 D Rw' U2 Rw D' R2 U' R",     // N-perm right
-            "U2 R U' R2 D' Rw U2 Rw' D R2 U R'",     // N-perm left
-            "U R U R' U' R U R2 D' R U' R' D R U2 R U' R'",     // pair front right (Fr)
-            "R' U' R U R2 D' R U2 R' D R2 U2 R' U2 R",     // pair front left (Fl)
-            "R' U' R U2 R D R' U' R D' R2 U R U' R' U R",     // pair right front (fR)
-            "U2 R U R' U2 R' D' R U R' D R2 U' R' U R U' R'",     // pair left front (fL)
+            "R' U R2 D Rw' U2 Rw D' R2 U' R",                           // N-perm right
+            "U2 R U' R2 D' Rw U2 Rw' D R2 U R'",                        // N-perm left
+            "U R U R' U' R U R2 D' R U' R' D R U2 R U' R'",             // pair front right (Fr)
+            "R' U' R U R2 D' R U2 R' D R2 U2 R' U2 R",                  // pair front left (Fl)
+            "R' U' R U2 R D R' U' R D' R2 U R U' R' U R",               // pair right front (fR)
+            "U2 R U R' U2 R' D' R U R' D R2 U' R' U R U' R'",           // pair left front (fL)
             "U2 R U R' F' R U R' U' R' F R U' R' F R U R U' R' F'",     // square right (fr)
-            "U R U' R2 D' Rw U2 Rw' D R2 U' R' U' R U' R'",     // square left (fl)
-            "U2 R U' D R' U2 R D' R U R' U2 R U R2",     // checkerboard right (fr)
-            "R' U D' R U2 R' D R' U' R U2 R' U' R2",     // checkerboard left (fl)
-            "U2 z D' R2 D R' U' R D' R' U2 R' D R U' z'",     // E-perm horizontal (bar in back)
-            "U Rw U Rw' R U R' U' R U R' U' Rw U' Rw' F R U R' U' F'",     // E-perm vertical (opposite in back)
+            "U R U' R2 D' Rw U2 Rw' D R2 U' R' U' R U' R'",             // square left (fl)
+            "U2 R U' D R' U2 R D' R U R' U2 R U R2",                    // checkerboard right (fr)
+            "R' U D' R U2 R' D R' U' R U2 R' U' R2",                    // checkerboard left (fl)
+            "U2 z D' R2 D R' U' R D' R' U2 R' D R U' z'",               // E-perm horizontal (bar in back)
+            "U Rw U Rw' R U R' U' R U R' U' Rw U' Rw' F R U R' U' F'",  // E-perm vertical (opposite in back)
+            //T front headlights
+            "R' U R U2 L' R' U R U' L", // block right
+            "U2 R U' R' U2 L R U' R' U L' ", // block left
+            "", //
+            "", //
+            "", //
+            "", //
+            "", //
+            "", //
+            "", //
+            "", //
+            "", //
+            "", //
     };
     private int ZBLL;
     // Constructor to initialize the components, layout and arrays
