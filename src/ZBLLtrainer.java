@@ -56,7 +56,8 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
 
     private String[] ZBLLs = new String[0];
     private final String[] _2GLLs = {
-            "U' R U R' U R U2 R' L' U' L U' L' U2 L",// T 2GLL
+            // T 2GLL
+            "U' R U R' U R U2 R' L' U' L U' L' U2 L",
             "U2 R U' R' U2 R U R' U2 R U R' U R U' R'",
             "U' R U R' U R U2 R' U' R U2 R' U' R U' R'",
             "R U2 R' U' R U' R' U R U R' U R U2 R'",
@@ -68,7 +69,8 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "U2 R U' R' U2 R U R' U R' U' R U R U R' U' R' U R",
             "U' R' U' R2 U R2 U R2 U2 R' U R' U R",
             "U' R U R2 U' R2 U' R2 U2 R U' R U' R'",
-            "R U2 R' U2 R' U' R U R U' R' U2 R' U2 R",// L 2GLL
+            // L 2GLL
+            "R U2 R' U2 R' U' R U R U' R' U2 R' U2 R",
             "U2 R U R' U R U2 R' U2 R U2 R' U' R U' R'",
             "U2 R U2 R' U' R U' R' U R' U2 R U R' U R",
             "U R' U2 R U R' U R U' R U2 R' U' R U' R'",
@@ -80,7 +82,8 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "U R2 U R' U' R' U R U R' U R U' R U' R2",
             "R U R' U R U' R' U R U' R' U R U2 R'",
             "U2 R U2 R' U' R U' R' U2 R U R' U R U2 R'",
-            "R U R' U R U2 R' R' U2 R U R' U R",// Pi 2GLL
+            // Pi 2GLL
+            "R U R' U R U2 R' R' U2 R U R' U R",
             "R U2 R' U' R U' R' R' U' R U' R' U2 R",
             "R U2 R' U' R U' R' U R U2 R' U' R U' R'",
             "U' R' U' R U' R' U2 R U R' U' R U' R' U2 R",
@@ -108,70 +111,70 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "U2 R U R' U R' U2 R2 U R2 U R2 U' R'",
             "R' U' R U' R U2 R2 U' R2 U' R2 U R",
             // U diag
-            "R U R' L' U2 R U' R' U' R U' M' x'",// block left (fl)
-            "U2 L' R U R' U R U R' U2 L R U' R'",// block right (fr)
-            "R2 D' R U R' D R U R U' R' U' R",// pair left front (fL)
-            "U' R' D' R U' R' D R2 U2 R' U R U R'",// pair right front (fR)
-            "R U' R' U' R U2 R2 D' R U R' D R",// pair front left (Fl)
-            "U' F U' R' U R U F' R' U2 R",// pair front right (Fr)
-            "U' Rw U2 R2 F R F' U2 Rw' R U R U' R'",// two pairs left like N-perm (fL+Fr)
-            "U' R' U2 R F U' R' U R U R' U R U' F'",// two pairs right like N-perm (Fl+fR)
-            "U F U R U' R' F' R U R' U' M' U R U' Rw'",// two pairs in the back (bL+bR)
-            "F U R U2 R' U R U R' U R U2 R' U R U R' F'",// no pairs
-            "F U R U2 R2 U2 R U R' U R U2 R U R' F'",// pair right back (bR)
-            "U' R U2 R2 D' R U' R' D R U' R' F R U R U' R' F'",// pair left back (bL)
+            "R U R' L' U2 R U' R' U' R U' M' x'",                       // block left (fl)
+            "U2 L' R U R' U R U R' U2 L R U' R'",                       // block right (fr)
+            "R2 D' R U R' D R U R U' R' U' R",                          // pair left front (fL)
+            "U' R' D' R U' R' D R2 U2 R' U R U R'",                     // pair right front (fR)
+            "R U' R' U' R U2 R2 D' R U R' D R",                         // pair front left (Fl)
+            "U' F U' R' U R U F' R' U2 R",                              // pair front right (Fr)
+            "U' Rw U2 R2 F R F' U2 Rw' R U R U' R'",                    // two pairs left like N-perm (fL+Fr)
+            "U' R' U2 R F U' R' U R U R' U R U' F'",                    // two pairs right like N-perm (Fl+fR)
+            "U F U R U' R' F' R U R' U' M' U R U' Rw'",                 // two pairs in the back (bL+bR)
+            "F U R U2 R' U R U R' U R U2 R' U R U R' F'",               // no pairs
+            "F U R U2 R2 U2 R U R' U R U2 R U R' F'",                   // pair right back (bR)
+            "U' R U2 R2 D' R U' R' D R U' R' F R U R U' R' F'",         // pair left back (bL)
             // U bars
-            "R' F R U' R' U' R U R' F' R U R' U' R' F R F' R",// big block front right
-            "D R D' R2 F' R U R' Fw R Fw' R' U' F R2",// big block front left
-            "U' R2 F' R U R' U' R' F R2 U' R' U2 R2 U R' U R",// bar in front (opposites on both sides)
-            "U R' U R U R' F' R U R' U' R' F R2 U' R' U2 R U' R' U2 R",// T-perm in front
-            "x' R2 U2 R' U2 R' F R F' Rw U' L' U R'",// pair left front (fL)
-            "x' L2 U2 L U2 L F' L' F Lw' U R U' L",// pair right front (fR)
-            "U' Rw U R' U' Rw' F R2 U' R' U' R U2 R' U' F'",// pair left back (bL) + FR edge opposite
-            "R2 F R U R U' R' F' R U' R2 D' R U R' D R2",// pair right back (bR) + FR edge opposite
-            "U R' U' R U' R' U2 R U' R' U2 R' D' R U2 R' D R2",// pair right back (bR) + FR edge adjacent
-            "U R U R' U R U2 R' U R U2 R D R' U2 R D' R2",// pair left back (bL) + FR edge adjacent
-            "U' R' U' R F R2 D' R U R' D R2 U' F'",// nothing + FR edge goes right
-            "U' F U R2 D' R U' R' D R2 F' R' U R",// nothing + FR edge goes left
+            "R' F R U' R' U' R U R' F' R U R' U' R' F R F' R",          // big block front right
+            "D R D' R2 F' R U R' Fw R Fw' R' U' F R2",                  // big block front left
+            "U' R2 F' R U R' U' R' F R2 U' R' U2 R2 U R' U R",          // bar in front (opposites on both sides)
+            "U R' U R U R' F' R U R' U' R' F R2 U' R' U2 R U' R' U2 R", // T-perm in front
+            "x' R2 U2 R' U2 R' F R F' Rw U' L' U R'",                   // pair left front (fL)
+            "x' L2 U2 L U2 L F' L' F Lw' U R U' L",                     // pair right front (fR)
+            "U' Rw U R' U' Rw' F R2 U' R' U' R U2 R' U' F'",            // pair left back (bL) + FR edge opposite
+            "R2 F R U R U' R' F' R U' R2 D' R U R' D R2",               // pair right back (bR) + FR edge opposite
+            "U R' U' R U' R' U2 R U' R' U2 R' D' R U2 R' D R2",         // pair right back (bR) + FR edge adjacent
+            "U R U R' U R U2 R' U R U2 R D R' U2 R D' R2",              // pair left back (bL) + FR edge adjacent
+            "U' R' U' R F R2 D' R U R' D R2 U' F'",                     // nothing + FR edge goes right
+            "U' F U R2 D' R U' R' D R2 F' R' U R",                      // nothing + FR edge goes left
             // U Checkerboard
-            "F R U' R' U R U R' U R U' R' F'",// nothing + like Y-perm
-            "U F' R U R' U' R' F R2 U R' U2 R U R' U2 R U' R'",// nothing + like V-perm
-            "x' R2 D2 R' U2 R D2 R' U2 R' x",// block right
-            "U2 x R2 D2 R U2 R' D2 R U2 R x'",// block left
-            "R' U2 R U R' U R' D' R U' R' D R U R",// pair right front (fR)
-            "U2 R U2 R' U' R' D' R U R' D R U' R U' R'",// pair left front (fL)
-            "R' U' R U2 R' F' R U R' U' R' F R2 U2 R' U R",// pair right back (bR)
-            "U2 R U R' U R U R' U2 R U' R2 D' R U' R' D R",// pair left back (bL)
-            "U' R' U2 R U R' U R R R D R' U2 R D' R' U2 R'",// two pairs right like N-perm (Fl+fR)
-            "R U R' U R U' R' U2 R' D' R U2 R' D R2 U' R'",// two pairs left like N-perm (fL+Fr)
-            "U' R U' R' U' R U' R' U R' D' R U R' D R2 U R'",// two pairs right like other N-perm, i.e. more back (Fr+bR)
-            "U' R' U R U R' U R U' R D R' U' R D' R2 U' R",// two pairs left like other N-perm, i.e. more back (Fl+bL)
+            "F R U' R' U R U R' U R U' R' F'",                          // nothing + like Y-perm
+            "U F' R U R' U' R' F R2 U R' U2 R U R' U2 R U' R'",         // nothing + like V-perm
+            "x' R2 D2 R' U2 R D2 R' U2 R' x",                           // block right
+            "U2 x R2 D2 R U2 R' D2 R U2 R x'",                          // block left
+            "R' U2 R U R' U R' D' R U' R' D R U R",                     // pair right front (fR)
+            "U2 R U2 R' U' R' D' R U R' D R U' R U' R'",                // pair left front (fL)
+            "R' U' R U2 R' F' R U R' U' R' F R2 U2 R' U R" ,            // pair right back (bR)
+            "U2 R U R' U R U R' U2 R U' R2 D' R U' R' D R",             // pair left back (bL)
+            "U' R' U2 R U R' U R R R D R' U2 R D' R' U2 R'",            // two pairs right like N-perm (Fl+fR)
+            "R U R' U R U' R' U2 R' D' R U2 R' D R2 U' R'",             // two pairs left like N-perm (fL+Fr)
+            "U' R U' R' U' R U' R' U R' D' R U R' D R2 U R'",           // two pairs right like other N-perm, i.e. more back (Fr+bR)
+            "U' R' U R U R' U R U' R D R' U' R D' R2 U' R",             // two pairs left like other N-perm, i.e. more back (Fl+bL)
             // U left slash (BL and FR)
-            "R2 D' R U2 R' D R U2 R",// block left
-            "R2 D' Rw U2 Rw' D R U2 R",// block right
-            "U R' U' R2 D R' U' R D' R2 U2 R",// two pairs right front (Fl+fR)
-            "U2 R' U R U R' U2 R U R D R' U2 R D' R'",// pair front right and two pairs in back (Fr+bL+bR)
-            "U2 F R U R' U' R2 D R' U' R D' R2 U' R U R' F'",// one pair front right (Fr)
-            "U' R2 F' R U2 R U2 R' F U' R U R' U' R",// pair front left and right back (Fl+bR)
-            "U' R' U R U R' U2 R U' D' R U' R' U2 R U' R' D",// pair right front (fR)
-            "U' L U2 R' F R U' R U R' U F' R U2 R' L'",// pair left front (fL)
-            "U F U R U2 R' U R U2 R2 F R F' R U' R' F'",// pair right back and H perm left side (bR)
-            "U' R U R' U2 F2 R U2 R' U2 R' F2 R2 U R'",// no pairs and H perm right side
-            "U' R' U2 R' D' R U2 R' D R U2 R U R' U R",// pair left back and Z perm right side (bL)
-            "U' R' U R U' R' U' R U2 R D R' U' R D' R2 U' R",// no pairs and nothing else either (sorta G-perm-ish)
+            "R2 D' R U2 R' D R U2 R",                                   // block left
+            "R2 D' Rw U2 Rw' D R U2 R",                                 // block right
+            "U R' U' R2 D R' U' R D' R2 U2 R",                          // two pairs right front (Fl+fR)
+            "U2 R' U R U R' U2 R U R D R' U2 R D' R'",                  // pair front right and two pairs in back (Fr+bL+bR)
+            "U2 F R U R' U' R2 D R' U' R D' R2 U' R U R' F'",           // one pair front right (Fr)
+            "U' R2 F' R U2 R U2 R' F U' R U R' U' R",                   // pair front left and right back (Fl+bR)
+            "U' R' U R U R' U2 R U' D' R U' R' U2 R U' R' D",           // pair right front (fR)
+            "U' L U2 R' F R U' R U R' U F' R U2 R' L'",                 // pair left front (fL)
+            "U F U R U2 R' U R U2 R2 F R F' R U' R' F'",                // pair right back and H perm left side (bR)
+            "U' R U R' U2 F2 R U2 R' U2 R' F2 R2 U R'",                 // no pairs and H perm right side
+            "U' R' U2 R' D' R U2 R' D R U2 R U R' U R",                 // pair left back and Z perm right side (bL)
+            "U' R' U R U' R' U' R U2 R D R' U' R D' R2 U' R",           // no pairs and nothing else either (sorta G-perm-ish)
             // U right slash (FL and BR)
-            "U2 R2 D R' U2 R D' R' U2 R'",// block right
-            "U2 R2 D Rw' U2 Rw D' R' U2 R'",// block left
-            "U R U R2 D' R U R' D R2 U2 R'",// two pairs left front (Fr+fL)
-            "R U' R' U' R U2 R' U' R' D' R U2 R' D R",// pair front left and two pairs in back (Fl+bL+bR)
-            "R' U' R U R U R' U' R' U F R U R U' R' F'",// one pair front left (Fl)
-            "U' R U R' U R U' R' U F' R U2 R' U2 R' F R",// pair front right and left back (Fr+bL)
-            "R U R' U' R U R2 D' R U R' D R2 U R' U' R U' R'",// pair left front (fL)
-            "U R' U R' U' D' R U' R' U2 R U' R' D R U' R",// pair right front (fR)
-            "Rw U R' U R' D' R U R' D R U Rw' F R F'",// pair left back and H perm right side (bR)
-            "U R U R' U R U' R' U R U' R' U' Rw' F R F' M'",// no pairs and H perm left side
-            "U' R U2 R D R' U2 R D' R' U2 R' U' R U' R'",// pair right back and Z perm left side (bR)
-            "U' R U' R' U R U R' U2 R' D' R U R' D R2 U R'",// no pairs and nothing else either (sorta G-perm-ish)
+            "U2 R2 D R' U2 R D' R' U2 R'",                              // block right
+            "U2 R2 D Rw' U2 Rw D' R' U2 R'",                            // block left
+            "U R U R2 D' R U R' D R2 U2 R'",                            // two pairs left front (Fr+fL)
+            "R U' R' U' R U2 R' U' R' D' R U2 R' D R",                  // pair front left and two pairs in back (Fl+bL+bR)
+            "R' U' R U R U R' U' R' U F R U R U' R' F'",                // one pair front left (Fl)
+            "U' R U R' U R U' R' U F' R U2 R' U2 R' F R",               // pair front right and left back (Fr+bL)
+            "R U R' U' R U R2 D' R U R' D R2 U R' U' R U' R'",          // pair left front (fL)
+            "U R' U R' U' D' R U' R' U2 R U' R' D R U' R",              // pair right front (fR)
+            "Rw U R' U R' D' R U R' D R U Rw' F R F'",                  // pair left back and H perm right side (bR)
+            "U R U R' U R U' R' U R U' R' U' Rw' F R F' M'",            // no pairs and H perm left side
+            "U' R U2 R D R' U2 R D' R' U2 R' U' R U' R'",               // pair right back and Z perm left side (bR)
+            "U' R U' R' U R U R' U2 R' D' R U R' D R2 U R'",            // no pairs and nothing else either (sorta G-perm-ish)
     };
 
     private final String[] HZBLLs = {
@@ -185,40 +188,40 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "R U R' U R U' R' U R U' R' U R' U' R2 U' R' U R' U R",
             "R U R' U R U2 R' U' R' U2 R U R' U R",
             //H diag
-            "U F U R U' R' U R U' R' U R U' R' F'",// opposites
-            "x' U' R U' R' U R' F2 R U' R U R' U x",// bars
-            "U' R U R' U y' R' U R U' R2 F R F' R y",// bar front, back matches right
-            "F' U' F U' R U' R' U R2 B' R' B R'",// bar front, back matches left
-            "U Rw U2 R2 F R F' R U2 Rw2 F2 Rw U Rw' F Rw",// back opposite, front matches right
-            "R' U' F' U F R U' F U R U' R' U R U' R' F'",// back opposite, front matches left
-            "Rw U2 R2 F R F' R U2 Rw2 F' Rw U' Rw' F2 Rw",// adjacents, front matches right
-            "R U' R' U R U R' U' L U L' U' R U R' U2 L U L'",// adjacents, front matches left
+            "U F U R U' R' U R U' R' U R U' R' F'",                 // opposites
+            "x' U' R U' R' U R' F2 R U' R U R' U x",                // bars
+            "U' R U R' U y' R' U R U' R2 F R F' R y",               // bar front, back matches right
+            "F' U' F U' R U' R' U R2 B' R' B R'",                   // bar front, back matches left
+            "U Rw U2 R2 F R F' R U2 Rw2 F2 Rw U Rw' F Rw",          // back opposite, front matches right
+            "R' U' F' U F R U' F U R U' R' U R U' R' F'",           // back opposite, front matches left
+            "Rw U2 R2 F R F' R U2 Rw2 F' Rw U' Rw' F2 Rw",          // adjacents, front matches right
+            "R U' R' U R U R' U' L U L' U' R U R' U2 L U L'",       // adjacents, front matches left
             //H vertical column (on right)
-            "R' F' R U2 R U2 R' F U' R U' R'",// pair front right (Fr)
-            "R U R' U R U L' U R' U' L",// pair back right (Br)
-            "U R U R' U R U2 R' F R U' R' U' R U2 R' U' F'",// pairs front and back right (Fr+Br)
-            "R' U' R D' R U' R' U2 R U2 R U R U' R2 D",// opposites front and back right (Fr+Br)
-            "U' R U R2 F R F' Rw U' Rw' U Rw U Rw'",// pairs front right and back left (Fr+Bl)
-            "U R' F R' F' R2 U' Rw' U Rw U' Rw' U' Rw",// pairs front left and back right (Fl+Br)
-            "R' F' R U2 R U2 R' F R' U' R2 U' R' U R' U R",// pair front left (Fl) + solved/checkerboard thingy back right (br)
-            "U2 R' U' R U' R' U F' R U R' U' R' F R2 U' R' U R",// pair back left (Bl) + solved/checkerboard thingy front right (fr)
-            "U R' U2 R U R2 D' R U' R' D R2 U R' U R",// pair front left (Fl) + bar right
-            "U' R U2 R' U' R2 D R' U R D' R2 U' R U' R'",// pair back left (Bl) + bar right
-            "U' R' U2 R U R' U' F' R U R' U' R' F R U2 R",// solved/checkerboard thingy front left (fl)
-            "U2 R2 D' R U' R' D R2 U' R2 D' R U2 R' D R2",// solved/checkerboard thingy back left (bl)
+            "R' F' R U2 R U2 R' F U' R U' R'",                      // pair front right (Fr)
+            "R U R' U R U L' U R' U' L",                            // pair back right (Br)
+            "U R U R' U R U2 R' F R U' R' U' R U2 R' U' F'",        // pairs front and back right (Fr+Br)
+            "R' U' R D' R U' R' U2 R U2 R U R U' R2 D",             // opposites front and back right (Fr+Br)
+            "U' R U R2 F R F' Rw U' Rw' U Rw U Rw'",                // pairs front right and back left (Fr+Bl)
+            "U R' F R' F' R2 U' Rw' U Rw U' Rw' U' Rw",             // pairs front left and back right (Fl+Br)
+            "R' F' R U2 R U2 R' F R' U' R2 U' R' U R' U R",         // pair front left (Fl) + solved/checkerboard thingy back right (br)
+            "U2 R' U' R U' R' U F' R U R' U' R' F R2 U' R' U R",    // pair back left (Bl) + solved/checkerboard thingy front right (fr)
+            "U R' U2 R U R2 D' R U' R' D R2 U R' U R",              // pair front left (Fl) + bar right
+            "U' R U2 R' U' R2 D R' U R D' R2 U' R U' R'",           // pair back left (Bl) + bar right
+            "U' R' U2 R U R' U' F' R U R' U' R' F R U2 R",          // solved/checkerboard thingy front left (fl)
+            "U2 R2 D' R U' R' D R2 U' R2 D' R U2 R' D R2",          // solved/checkerboard thingy back left (bl)
             //H horizontal column (on front)
-            "F R U' R' U R U2 R' U' R U R' U' F'",// opposites front and back
-            "U2 R U R' U R U' R2 F' R U2 R U2 R' F R U' R'",// bar front and back
-            "U2 F U' R U2 R' U2 R U' R' U' R U R' U F'",// back opposite + pair front right (Fr)
-            "U2 R F R2 U' R2 U' R2 U2 R2 U' F' R'",// back opposite + pair front left (Fl)
-            "U F R' F' Rw U R U' Rw2 F2 Rw U L' U L",// bar in the back + pair front right (Fr)
-            "U' F' Rw U R' U' Rw' F R2 U2 R' U' R U' R'",// bar in the back + pair front left (Fl)
-            "U R' U2 R U2 R2 F' R U R U' R' F U R",// back matching right + front opposite
-            "U' F' R U2 R' U2 R' F R U R U R' U' R U' R'",// back matching left + front opposite
-            "U2 R U2 R' U' R U' R2 R' D' R U' R' D R U R",// back matching right + bar front
-            "R' U2 R U R' U R2 R D R' U R D' R' U' R'",// back matching left + bar front
-            "U R U2 R' U' R U R' U' F' R U R' U' R' F R2 U' R'",// back matching right + pair front right (Fr)
-            "R' U2 R2 U R2 U R U2 R' F R U R U' R' F'",// back matching left + pair front left (Fl)
+            "F R U' R' U R U2 R' U' R U R' U' F'",                  // opposites front and back
+            "U2 R U R' U R U' R2 F' R U2 R U2 R' F R U' R'",        // bar front and back
+            "U2 F U' R U2 R' U2 R U' R' U' R U R' U F'",            // back opposite + pair front right (Fr)
+            "U2 R F R2 U' R2 U' R2 U2 R2 U' F' R'",                 // back opposite + pair front left (Fl)
+            "U F R' F' Rw U R U' Rw2 F2 Rw U L' U L",               // bar in the back + pair front right (Fr)
+            "U' F' Rw U R' U' Rw' F R2 U2 R' U' R U' R'",           // bar in the back + pair front left (Fl)
+            "U R' U2 R U2 R2 F' R U R U' R' F U R",                 // back matching right + front opposite
+            "U' F' R U2 R' U2 R' F R U R U R' U' R U' R'",          // back matching left + front opposite
+            "U2 R U2 R' U' R U' R2 R' D' R U' R' D R U R",          // back matching right + bar front
+            "R' U2 R U R' U R2 R D R' U R D' R' U' R'",             // back matching left + bar front
+            "U R U2 R' U' R U R' U' F' R U R' U' R' F R2 U' R'",    // back matching right + pair front right (Fr)
+            "R' U2 R2 U R2 U R U2 R' F R U R U' R' F'",             // back matching left + pair front left (Fl)
     };
 
     private final String[] TZBLLs = {
@@ -236,19 +239,18 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "U2 z D' R2 D R' U' R D' R' U2 R' D R U' z'",               // E-perm horizontal (bar in back)
             "U Rw U Rw' R U R' U' R U R' U' Rw U' Rw' F R U R' U' F'",  // E-perm vertical (opposite in back)
             //T front headlights
-            "R' U R U2 L' R' U R U' L", // block right
-            "U2 R U' R' U2 L R U' R' U L' ", // block left
-            "U2 R' U' R2 U R' F' R U R' U' R' F R2 U' R' U' R' U R", // bar front
-            "U2 Rw U' Rw U2 R' F R U2 Rw2 F ", // pairs left and right
-            "U' R U R D R' U' R D' R' U2 R' U' R U' R'", // pair right
-            "U2 R' U' R U' R' U2 R' D' R U' R' D R U R ", // pair left
-            "R D R' U' R D' R' U' R' U R U' R' U R U R' U' R", // H-perm right
-            "F U' R' U2 R U F' R' U' R U R' U R", // H-perm left
-            "L' U' L U' L' U L F U R U2 R' U' F'", // opposite right
-            // R U' R' U R U R' U' R U R' U' R' D' R U' R' D R
-            "", // opposite left
-            "R' U2 R U R' U R F U R U2 R' U R U R' F'", // nothing front edge goes right
-            "r' U' R' F2 R F' R' F2 R2 U' R' U2 r", // nothing front edge goes left
+            "R' U R U2 L' R' U R U' L",                                 // block right
+            "U2 R U' R' U2 L R U' R' U L' ",                            // block left
+            "U2 R' U' R2 U R' F' R U R' U' R' F R2 U' R' U' R' U R",    // bar front
+            "U2 Rw U' Rw U2 R' F R U2 Rw2 F ",                          // pairs left and right
+            "U' R U R D R' U' R D' R' U2 R' U' R U' R'",                // pair right
+            "U2 R' U' R U' R' U2 R' D' R U' R' D R U R ",               // pair left
+            "R D R' U' R D' R' U' R' U R U' R' U R U R' U' R",          // H-perm right
+            "F U' R' U2 R U F' R' U' R U R' U R",                       // H-perm left
+            "L' U' L U' L' U L F U R U2 R' U' F'",                      // opposite right
+            "R U R' U R U' R' U' R' F2 R F2 L' U2 L",                   // opposite left
+            "R' U2 R U R' U R F U R U2 R' U R U R' F'",                 // nothing front edge goes right
+            "r' U' R' F2 R F' R' F2 R2 U' R' U2 r",                     // nothing front edge goes left
     };
     private int ZBLL;
     // Constructor to initialize the components, layout and arrays
