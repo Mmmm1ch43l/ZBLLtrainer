@@ -19,8 +19,8 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
     private static final int SYSTEM_WIDTH = (WIDTH - 3 * MARGIN) / 2;
     private static final int SYSTEM_HEIGHT = (HEIGHT - 3 * MARGIN) / 2;
     private static final boolean RANDOMIZED = false;
-    private static final boolean SYMMETRIC = false;
-    private static final boolean LONG = true;
+    private static final boolean SYMMETRIC = true;
+    private static final boolean LONG = false;
     private static final int RANDOMNESS_PRECISION = 1000;
 
 
