@@ -14,7 +14,7 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
 
     private final boolean include2GLL = true;
     private final boolean includeU = include2GLL;
-    private final boolean includeH = include2GLL;
+    private final boolean includeH = true;
     private final boolean includeT = false;
     private final double pseudoRandomNumberGeneratorDecay = 0.95;
 
