@@ -12,10 +12,10 @@ import java.util.concurrent.TimeUnit;
 public class ZBLLtrainer extends JFrame implements KeyListener {
     private static boolean runningWindows = false;
 
-    private final boolean include2GLL = true;
+    private final boolean include2GLL = false;
     private final boolean includeU = include2GLL;
     private final boolean includeH = include2GLL;
-    private final boolean includeT = false;
+    private final boolean includeT = true;
     private final double pseudoRandomNumberGeneratorDecay = 0.95;
 
     private final PseudoRandomNumberGenerator prng;
@@ -251,6 +251,20 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "R U R' U R U' R' U' R' F2 R F2 L' U2 L",                   // opposite left
             "R' U2 R U R' U R F U R U2 R' U R U R' F'",                 // nothing front edge goes right
             "r' U' R' F2 R F' R' F2 R2 U' R' U2 r",                     // nothing front edge goes left
+            //T back headlights
+            "U2 F R U R' U' R U' R' U' R U R' F'",                      // nothing
+            "U' R U R' U2 R U' R' U2 R U' R2 F' R U R U' R' F",         // nothing but V-perm
+            "U' x R' U2 R' D2 R U2 R' D2 R2 x'",                        // block right
+            "U' x' R U2 R D2 R' U2 R D2 R2 x",                          // block left
+            "R' U2 R' D' R U2 R' D R2 R U R' U R U2 R'",                // two pairs left
+            "F R U R' U' F' R U R' U R U' R' U' R' F R F'",             // two pairs right
+            "U R U R' U R' D' R U' R' D R U R U2 R'",                   // pair front right
+            "",             // pair front left
+            "",             // pair left front
+            "",             // pair right front
+            "U R' U' R U' F U' R' U R U F' R' U R",                     // opposite right
+            "",             // opposite left
+            //*/
     };
     private int ZBLL;
     // Constructor to initialize the components, layout and arrays
