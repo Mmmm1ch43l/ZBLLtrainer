@@ -297,6 +297,28 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
                         new VR(1,3,1,1),
                         new VR(15,11,-1,1),
                         new VR(-13,11,1,11)
+                },
+                {
+                        new VR(1,1,1,2),
+                        new VR(1,2,-1,2),
+                        new VR(-1,2,-1,1),
+                        new VR(-1,1,-1,2),
+                        new VR(-1,2,1,2),
+                        new VR(1,2,1,1)
+                },
+                {
+                        new VR(1,1,1,3),
+                        new VR(2,3,-1,3),
+                        new VR(-1,2,-1,1),
+                        new VR(-1,1,-1,3),
+                        new VR(-2,3,1,3),
+                        new VR(1,2,1,1)
+                },
+                {
+                        new VR(1,1,0,1),
+                        new VR(-1,2,-1,1),
+                        new VR(-1,1,0,1),
+                        new VR(1,2,1,1)
                 }
         };
 
