@@ -261,7 +261,7 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "U R U R' U R' D' R U' R' D R U R U2 R'",                   // pair front right
             "U R' U' R' D' R U R' D R U' R U' R' U2 R",                 // pair front left
             "U2 R U2 R' U' R U' R2 F' Rw U R U' Rw' F",                 // pair left front
-            "",                    // pair right front
+            "Rw U2 R2 F R F' R U' R' U' Rw' F R F'",                    // pair right front
             "U R' U' R U' F U' R' U R U F' R' U R",                     // opposite right
             "U R U R' L' U2 R U' R' U2 L U R U' R'",                    // opposite left
             //*/
