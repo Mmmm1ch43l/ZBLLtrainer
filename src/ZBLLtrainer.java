@@ -251,7 +251,7 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "R U R' U R U' R' U' R' F2 R F2 L' U2 L",                   // opposite left
             "R' U2 R U R' U R F U R U2 R' U R U R' F'",                 // nothing front edge goes right
             "Rw' U' R' F2 R F' R' F2 R2 U' R' U2 Rw",                     // nothing front edge goes left
-            //T back headlights
+            /*/T back headlights
             "U2 F R U R' U' R U' R' U' R U R' F'",                      // nothing
             "U' R U R' U2 R U' R' U2 R U' R2 F' R U R U' R' F",         // nothing but V-perm
             "U' x R' U2 R' D2 R U2 R' D2 R2 x'",                        // block right
