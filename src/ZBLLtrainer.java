@@ -250,19 +250,19 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "L' U' L U' L' U L F U R U2 R' U' F'",                      // opposite right
             "R U R' U R U' R' U' R' F2 R F2 L' U2 L",                   // opposite left
             "R' U2 R U R' U R F U R U2 R' U R U R' F'",                 // nothing front edge goes right
-            "Rw' U' R' F2 R F' R' F2 R2 U' R' U2 Rw",                     // nothing front edge goes left
+            "Rw' U' R' F2 R F' R' F2 R2 U' R' U2 Rw",                   // nothing front edge goes left
             //*/
             //T back headlights
             "U2 F R U R' U' R U' R' U' R U R' F'",                      // nothing
             "U' R U R' U2 R U' R' U2 R U' R2 F' R U R U' R' F",         // nothing but V-perm
             "U' x R' U2 R' D2 R U2 R' D2 R2 x'",                        // block right
             "U' x' R U2 R D2 R' U2 R D2 R2 x",                          // block left
-            "R' U2 R' D' R U2 R' D R2 R U R' U R U2 R'",                // two pairs left
             "F R U R' U' F' R U R' U R U' R' U' R' F R F'",             // two pairs right
+            "R' U2 R' D' R U2 R' D R2 R U R' U R U2 R'",                // two pairs left
             "U R U R' U R' D' R U' R' D R U R U2 R'",                   // pair front right
             "U R' U' R' D' R U R' D R U' R U' R' U2 R",                 // pair front left
-            "U2 R U2 R' U' R U' R2 F' Rw U R U' Rw' F",                 // pair left front
             "Rw U2 R2 F R F' R U' R' U' Rw' F R F'",                    // pair right front
+            "U2 R U2 R' U' R U' R2 F' Rw U R U' Rw' F",                 // pair left front
             "U R' U' R U' F U' R' U R U F' R' U R",                     // opposite right
             "U R U R' L' U2 R U' R' U2 L U R U' R'",                    // opposite left
     };
