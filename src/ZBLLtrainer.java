@@ -251,7 +251,8 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "R U R' U R U' R' U' R' F2 R F2 L' U2 L",                   // opposite left
             "R' U2 R U R' U R F U R U2 R' U R U R' F'",                 // nothing front edge goes right
             "Rw' U' R' F2 R F' R' F2 R2 U' R' U2 Rw",                     // nothing front edge goes left
-            /*/T back headlights
+            //*/
+            //T back headlights
             "U2 F R U R' U' R U' R' U' R U R' F'",                      // nothing
             "U' R U R' U2 R U' R' U2 R U' R2 F' R U R U' R' F",         // nothing but V-perm
             "U' x R' U2 R' D2 R U2 R' D2 R2 x'",                        // block right
@@ -264,7 +265,6 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "Rw U2 R2 F R F' R U' R' U' Rw' F R F'",                    // pair right front
             "U R' U' R U' F U' R' U R U F' R' U R",                     // opposite right
             "U R U R' L' U2 R U' R' U2 L U R U' R'",                    // opposite left
-            //*/
     };
     private int ZBLL;
     // Constructor to initialize the components, layout and arrays
