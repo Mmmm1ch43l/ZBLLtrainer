@@ -12,15 +12,14 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
     private int currentPolygonIndex;
 
     private static final int MARGIN = 20;
-    //private static final int HEIGHT = 640;
+    private static final int HEIGHT = 640;
     //private static final int HEIGHT = 1000;
-    private static final int HEIGHT = 1150;
+    //private static final int HEIGHT = 1150;
     private static final int WIDTH = HEIGHT;
     private static final int SYSTEM_WIDTH = (WIDTH - 3 * MARGIN) / 2;
     private static final int SYSTEM_HEIGHT = (HEIGHT - 3 * MARGIN) / 2;
-    private static final boolean RANDOMIZED = false;
-    private static final boolean SYMMETRIC = true;
-    private static final boolean LONG = false;
+    private static final boolean RANDOMIZED = true;
+    private static final boolean SYMMETRIC = false;
     private static final int RANDOMNESS_PRECISION = 1000;
 
 
@@ -33,11 +32,7 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
 
         if(RANDOMIZED) {
             if(SYMMETRIC) {
-                if(LONG) {
-                    this.tableOfVertices[0] = generateRandomLongPolygon();
-                } else {
-                    this.tableOfVertices[0] = generateRandomSymmetricPolygon();
-                }
+                this.tableOfVertices[0] = generateRandomSymmetricPolygon();
             } else {
                 this.tableOfVertices[0] = generateRandomPolygon();
             }
@@ -195,23 +190,9 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
     public void keyPressed(KeyEvent e) {
         if (RANDOMIZED) {
             if(SYMMETRIC) {
-                if(LONG) {
-                    double area = 4;
-                    while (area >= 2) {
-                        tableOfVertices[0] = generateRandomLongPolygon();
-                        area = computeArea(reduce(tableOfVertices[0]));
-                        System.out.println("Area: " + area);
-                    }
-                } else {
-                    this.tableOfVertices[0] = generateRandomSymmetricPolygon();
-                }
+                this.tableOfVertices[0] = generateRandomSymmetricPolygon();
             } else {
-                double area = 2;
-                while (area >= 1.5) {
-                    tableOfVertices[0] = generateRandomPolygon();
-                    area = computeArea(reduce(tableOfVertices[0]));
-                    System.out.println("Area: " + area);
-                }
+                this.tableOfVertices[0] = generateRandomPolygon();
             }
             System.out.println("Current random polygon:");
             for (VR vertex : tableOfVertices[0]) {
@@ -418,7 +399,16 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         }
     }
 
-    public VR containedInnerIntegerPoint(VR[] polygon){
+    public VR[] containedInnerIntegerPoint(VR[] polygon){
+        VR parent = polygon[2].subtract(polygon[1]).rotateLeft().parentPoint();
+        VR left = polygon[1].subtract(polygon[0]);
+        BR scale = (new BR(parent.scalarProduct(polygon[0]).floor().add(BigInteger.ONE))).subtract(parent.scalarProduct(polygon[0])).divide(parent.scalarProduct(left));
+        if (scale.compareTo(new BR(1)) >= 0) return null;
+        left = polygon[0].add(left.scale(scale));
+        VR right = polygon[2].subtract(polygon[0]);
+        right = polygon[0].add(right.scale(scale));
+        return integerPointsOnSegmentStrict(left, right);
+        /*
         int n = 0;
         for (VR vertex : polygon) {
             n = Math.max(n, vertex.floorAbs());
@@ -451,7 +441,7 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
                 return new VR(-i,-i);
             }
         }
-        return null;
+        return null;*/
     }
 
     public VR integerPointOnRayStrict (VR direction){
@@ -463,8 +453,23 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
         }
     }
 
-    public VR integerPointsOnSegment (VR left, VR right){
-        return null;
+    public VR[] integerPointsOnSegmentStrict (VR left, VR right){
+        VR parent = right.subtract(left).rotateLeft().parentPoint();
+        if (!parent.scalarProduct(left).isInt()) return null;
+        VR inverse;
+        if (parent.getY().signum() == 0) {
+            inverse = parent.clone();
+        } else {
+            BigInteger number = parent.getX().getEnumerator().modInverse(parent.getY().getEnumerator().abs());
+            inverse = new VR(new BR(number), new BR(BigInteger.ONE.subtract(parent.getX().getEnumerator().multiply(number)).divide(parent.getY().getEnumerator())));
+        }
+        VR point = inverse.scale(parent.scalarProduct(left));
+        parent = parent.rotateLeft();
+        BigInteger first = right.subtract(point).divide(parent).floor().add(BigInteger.ONE);
+        BigInteger second = left.subtract(point).divide(parent).ceiling().subtract(BigInteger.ONE);
+        if (first.compareTo(second) == 0) return new VR[] {point.add(parent.scale(new BR(first)))};
+        if (first.compareTo(second) < 0) return new VR[] {point.add(parent.scale(new BR(second))), point.add(parent.scale(new BR(first)))};
+        else return null;
     }
 
     public void intermediatePoints(ArrayList<VR> list, VR left, VR right, VR dual) {
@@ -657,10 +662,13 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
             int rightIndex = permutation[i];
             int leftIndex = (rightIndex + n - 1) % n;
             VR[] dual = dualize(randomPolygon);
-            while (containedInnerIntegerPoint(new VR[]{dual[leftIndex], dual[rightIndex], new VR(0,0)}) == null) {
+            System.out.print("making smaller");
+            while (containedInnerIntegerPoint(new VR[]{new VR(0,0), dual[leftIndex], dual[rightIndex]}) == null) {
                 randomPolygon[rightIndex] = randomPolygon[rightIndex].scale(new BR(1,2));
                 dual = dualize(randomPolygon);
             }
+            System.out.println(".");
+            System.out.print("making bigger");
             VR[] integerPoints = integerPointsInStarshapedStrict(dual);
             if (integerPoints.length > 0) {
                 BR scale = new BR(1);
@@ -672,6 +680,7 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
                 }
                 randomPolygon[rightIndex] = randomPolygon[rightIndex].scale(scale);
             }
+            System.out.println(".");
         }
         return randomPolygon;
     }
@@ -727,38 +736,6 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
                 randomPolygon[rightIndex] = randomPolygon[rightIndex].scale(scale);
             }
             randomPolygon[n+rightIndex] = randomPolygon[rightIndex].negate();
-        }
-        return randomPolygon;
-    }
-
-    public VR[] generateRandomLongPolygon() {
-        Random random = new Random();
-        int n = 7;
-        BigInteger x = BigInteger.valueOf(random.nextInt(n,n*n));
-        BigInteger y = BigInteger.valueOf(random.nextInt(Math.max(n*n,2*x.intValue()+1),3*n*n));
-        while (x.gcd(y).compareTo(BigInteger.ONE) > 0) {
-            x = BigInteger.valueOf(random.nextInt(n,n*n));
-            y = BigInteger.valueOf(random.nextInt(Math.max(n*n,2*x.intValue()+1),2*n*n));
-        }
-        VR[] randomPolygon = new VR[]{
-                new VR(new BR(x,BigInteger.valueOf(n)), new BR(y,BigInteger.valueOf(n))),
-                new VR(1,n,0,1),
-                new VR(new BR(x.negate(),BigInteger.valueOf(n)), new BR(y.negate(),BigInteger.valueOf(n))),
-                new VR(-1,n,0,1),
-        };
-        while (containedInnerIntegerPoint(dualize(randomPolygon)) != null) {
-            x = BigInteger.valueOf(random.nextInt(n,n*n));
-            y = BigInteger.valueOf(random.nextInt(Math.max(n*n,2*x.intValue()+1),2*n*n));
-            while (x.gcd(y).compareTo(BigInteger.ONE) > 0) {
-                x = BigInteger.valueOf(random.nextInt(n,n*n));
-                y = BigInteger.valueOf(random.nextInt(Math.max(n*n,2*x.intValue()+1),2*n*n));
-            }
-            randomPolygon = new VR[]{
-                    new VR(new BR(x,BigInteger.valueOf(n)), new BR(y,BigInteger.valueOf(n))),
-                    new VR(1,n,0,1),
-                    new VR(new BR(x.negate(),BigInteger.valueOf(n)), new BR(y.negate(),BigInteger.valueOf(n))),
-                    new VR(-1,n,0,1),
-            };
         }
         return randomPolygon;
     }
