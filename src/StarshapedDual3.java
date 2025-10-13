@@ -12,13 +12,13 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
     private int currentPolygonIndex;
 
     private static final int MARGIN = 20;
-    private static final int HEIGHT = 640;
-    //private static final int HEIGHT = 1000;
+    //private static final int HEIGHT = 640;
+    private static final int HEIGHT = 1000;
     //private static final int HEIGHT = 1150;
     private static final int WIDTH = HEIGHT;
     private static final int SYSTEM_WIDTH = (WIDTH - 3 * MARGIN) / 2;
     private static final int SYSTEM_HEIGHT = (HEIGHT - 3 * MARGIN) / 2;
-    private static final boolean RANDOMIZED = true;
+    private static final boolean RANDOMIZED = false;
     private static final boolean SYMMETRIC = false;
     private static final int RANDOMNESS_PRECISION = 1000;
 
@@ -217,7 +217,15 @@ public class StarshapedDual3 extends JPanel implements KeyListener {
     public void keyTyped(KeyEvent e) {}
 
     public static void main(String[] args) {
+        BR a = new BR(0, 1);
+        BR b = new BR(-1, 1);
+        BR c = new BR(0, 1);
         VR[][] tableOfVertices = {
+                {
+                        new VR(new BR(1), a),
+                        new VR(c, (new BR(-1)).subtract(c)),
+                        new VR(b, new BR(1))
+                },
                 {
                         new VR(3,5,4,5),
                         new VR(4,5,-3,5),

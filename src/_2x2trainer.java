@@ -12,8 +12,8 @@ import java.util.concurrent.TimeUnit;
 public class _2x2trainer extends JFrame implements KeyListener {
     private static boolean runningWindows = false;
 
-    private final boolean includeCLL = false;
-    private final boolean includeEG1 = true;
+    private final boolean includeCLL = true;
+    private final boolean includeEG1 = false;
     private final boolean includeEG2 = false;
     private final double pseudoRandomNumberGeneratorDecay = 0.95;
 

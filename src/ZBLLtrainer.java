@@ -225,7 +225,7 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
     };
 
     private final String[] TZBLLs = {
-            //T diag
+            /*/T diag
             "R' U R2 D Rw' U2 Rw D' R2 U' R",                           // N-perm right
             "U2 R U' R2 D' Rw U2 Rw' D R2 U R'",                        // N-perm left
             "U R U R' U' R U R2 D' R U' R' D R U2 R U' R'",             // pair front right (Fr)
@@ -251,7 +251,6 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "R U R' U R U' R' U' R' F2 R F2 L' U2 L",                   // opposite left
             "R' U2 R U R' U R F U R U2 R' U R U R' F'",                 // nothing front edge goes right
             "Rw' U' R' F2 R F' R' F2 R2 U' R' U2 Rw",                   // nothing front edge goes left
-            //*/
             //T back headlights
             "U2 F R U R' U' R U' R' U' R U R' F'",                      // nothing
             "U' R U R' U2 R U' R' U2 R U' R2 F' R U R U' R' F",         // nothing but V-perm
@@ -265,6 +264,33 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "U2 R U2 R' U' R U' R2 F' Rw U R U' Rw' F",                 // pair left front
             "U R' U' R U' F U' R' U R U F' R' U R",                     // opposite right
             "U R U R' L' U2 R U' R' U2 L U R U' R'",                    // opposite left
+            //*/
+            //T matching left
+            "U' Rw U R' U' Rw' F R F'",                                 // block left
+            "U' R U2 R' U2 R' F R U R U' R' F'",                        // pair left front (fL), front opposite
+            "U2 R' U' R U D' R U' R U R U' R2 D",                       // block right, pair left
+            "R' D R2 U' R' U R U R' U' R U R2 D' R",                    // two pairs right (Fl+fR)
+            "U' F' U' L' U2 L U' L' U' L F",                            // pair front left (Fl)
+            "U2 F R U R' U' R' F' U2 R U R U' R2 U2 R",                 // checkerboard right
+            "F U' B' R2 U' R2 U R2 F' B",                               // opposite front right, nothing else
+            "U R U R' U R U R' U2 L R U' R' U L'",                      // pair front right (Fr), right adjacent
+            "U R' U' R U R' U' R2 D R' U2 R D' R' U R' U R",            // opposites all sides (on front opposite to right)
+            "L U2 Rw' D' F Rw U' Rw' F' D Rw U' L'",                    // checkerboard left, pair right front (fR)
+            "U' R U R' U' R U' R' L U' R U R' L'",                      // pair front right (Fr), right opposite
+            "R' U' R U' R2 F' R U R U' R' F U R U' R' U2 R",            // opposites left and front
+            //T matching right
+            "U R' F' Rw U R U' Rw' F",                                  // block right
+            "",                        // pair right front (fR), front opposite
+            "",                       // block left, pair right
+            "",                    // two pairs right (fL+Fr)
+            "",                            // pair front right (Fr)
+            "",                 // checkerboard left
+            "",                               // opposite front left, nothing else
+            "",                      // pair front left (Fl), left adjacent
+            "",            // opposites all sides (on front opposite to left)
+            "",                    // checkerboard right, pair left front (fL)
+            "",                      // pair front left (Fl), left opposite
+            "",            // opposites right and front
     };
     private int ZBLL;
     // Constructor to initialize the components, layout and arrays
