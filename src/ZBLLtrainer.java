@@ -12,10 +12,10 @@ import java.util.concurrent.TimeUnit;
 public class ZBLLtrainer extends JFrame implements KeyListener {
     private static boolean runningWindows = false;
 
-    private final boolean include2GLL = true;
+    private final boolean include2GLL = false;
     private final boolean includeU = include2GLL;
     private final boolean includeH = include2GLL;
-    private final boolean includeT = false;
+    private final boolean includeT = true;
     private final double pseudoRandomNumberGeneratorDecay = 0.95;
 
     private final PseudoRandomNumberGenerator prng;
@@ -225,7 +225,7 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
     };
 
     private final String[] TZBLLs = {
-            /*/T diag
+            //T diag
             "R' U R2 D Rw' U2 Rw D' R2 U' R",                           // N-perm right
             "U2 R U' R2 D' Rw U2 Rw' D R2 U R'",                        // N-perm left
             "U R U R' U' R U R2 D' R U' R' D R U2 R U' R'",             // pair front right (Fr)
@@ -265,7 +265,7 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "U R' U' R U' F U' R' U R U F' R' U R",                     // opposite right
             "U R U R' L' U2 R U' R' U2 L U R U' R'",                    // opposite left
             //*/
-            //T matching left
+            /*/T matching left
             "U' Rw U R' U' Rw' F R F'",                                 // block left
             "U' R U2 R' U2 R' F R U R U' R' F'",                        // pair left front (fL), front opposite
             "U2 R' U' R U D' R U' R U R U' R2 D",                       // block right, pair left
@@ -290,7 +290,7 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "",            // opposites all sides (on front opposite to left)
             "",                    // checkerboard right, pair left front (fL)
             "",                      // pair front left (Fl), left opposite
-            "",            // opposites right and front
+            "",            // opposites right and front*/
     };
     private int ZBLL;
     // Constructor to initialize the components, layout and arrays
