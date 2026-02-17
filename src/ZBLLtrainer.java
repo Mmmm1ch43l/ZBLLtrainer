@@ -225,7 +225,7 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
     };
 
     private final String[] TZBLLs = {
-            //T diag
+            /*/T diag
             "R' U R2 D Rw' U2 Rw D' R2 U' R",                           // N-perm right
             "U2 R U' R2 D' Rw U2 Rw' D R2 U R'",                        // N-perm left
             "U R U R' U' R U R2 D' R U' R' D R U2 R U' R'",             // pair front right (Fr)
@@ -265,7 +265,7 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "U R' U' R U' F U' R' U R U F' R' U R",                     // opposite right
             "U R U R' L' U2 R U' R' U2 L U R U' R'",                    // opposite left
             //*/
-            /*/T matching left
+            //T matching left
             "U' Rw U R' U' Rw' F R F'",                                 // block left
             "U' R U2 R' U2 R' F R U R U' R' F'",                        // pair left front (fL), front opposite
             "U2 R' U' R U D' R U' R U R U' R2 D",                       // block right, pair left
@@ -278,7 +278,7 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "L U2 Rw' D' F Rw U' Rw' F' D Rw U' L'",                    // checkerboard left, pair right front (fR)
             "U' R U R' U' R U' R' L U' R U R' L'",                      // pair front right (Fr), right opposite
             "R' U' R U' R2 F' R U R U' R' F U R U' R' U2 R",            // opposites left and front
-            //T matching right
+            /*/T matching right
             "U R' F' Rw U R U' Rw' F",                                  // block right
             "",                        // pair right front (fR), front opposite
             "",                       // block left, pair right
