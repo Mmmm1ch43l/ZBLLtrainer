@@ -280,17 +280,18 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             "F U' B' R2 U' R2 U R2 F' B",                               // opposite front right, nothing else
             /*/T matching right
             "U R' F' Rw U R U' Rw' F",                                  // block right
-            "",                        // pair right front (fR), front opposite
             "",                       // block left, pair right
+            "",                        // pair right front (fR), front opposite
             "",                    // two pairs right (fL+Fr)
             "",                            // pair front right (Fr)
-            "",                 // checkerboard left
-            "",                               // opposite front left, nothing else
-            "",                      // pair front left (Fl), left adjacent
-            "",            // opposites all sides (on front opposite to left)
-            "",                    // checkerboard right, pair left front (fL)
             "",                      // pair front left (Fl), left opposite
-            "",            // opposites right and front*/
+            "",                      // pair front left (Fl), left adjacent
+            "",                    // checkerboard right, pair left front (fL)
+            "",                 // checkerboard left
+            "",            // opposites right and front
+            "",            // opposites all sides (on front opposite to left)
+            "",                               // opposite front left, nothing else
+            //*/
     };
     private int ZBLL;
     // Constructor to initialize the components, layout and arrays
