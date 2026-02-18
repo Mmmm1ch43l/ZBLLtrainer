@@ -267,17 +267,17 @@ public class ZBLLtrainer extends JFrame implements KeyListener {
             //*/
             //T matching left
             "U' Rw U R' U' Rw' F R F'",                                 // block left
-            "U' R U2 R' U2 R' F R U R U' R' F'",                        // pair left front (fL), front opposite
             "U2 R' U' R U D' R U' R U R U' R2 D",                       // block right, pair left
+            "U' R U2 R' U2 R' F R U R U' R' F'",                        // pair left front (fL), front opposite
             "R' D R2 U' R' U R U R' U' R U R2 D' R",                    // two pairs right (Fl+fR)
             "U' F' U' L' U2 L U' L' U' L F",                            // pair front left (Fl)
-            "U2 F R U R' U' R' F' U2 R U R U' R2 U2 R",                 // checkerboard right
-            "F U' B' R2 U' R2 U R2 F' B",                               // opposite front right, nothing else
-            "U R U R' U R U R' U2 L R U' R' U L'",                      // pair front right (Fr), right adjacent
-            "U R' U' R U R' U' R2 D R' U2 R D' R' U R' U R",            // opposites all sides (on front opposite to right)
-            "L U2 Rw' D' F Rw U' Rw' F' D Rw U' L'",                    // checkerboard left, pair right front (fR)
             "U' R U R' U' R U' R' L U' R U R' L'",                      // pair front right (Fr), right opposite
+            "U R U R' U R U R' U2 L R U' R' U L'",                      // pair front right (Fr), right adjacent
+            "L U2 Rw' D' F Rw U' Rw' F' D Rw U' L'",                    // checkerboard left, pair right front (fR)
+            "U2 F R U R' U' R' F' U2 R U R U' R2 U2 R",                 // checkerboard right
             "R' U' R U' R2 F' R U R U' R' F U R U' R' U2 R",            // opposites left and front
+            "U R' U' R U R' U' R2 D R' U2 R D' R' U R' U R",            // opposites all sides (on front opposite to right)
+            "F U' B' R2 U' R2 U R2 F' B",                               // opposite front right, nothing else
             /*/T matching right
             "U R' F' Rw U R U' Rw' F",                                  // block right
             "",                        // pair right front (fR), front opposite
